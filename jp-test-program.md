@@ -3,7 +3,7 @@
 雷上動プロセッサ上で実行可能なテスト・プログラムについて記述します。
 
 テスト・プログラムのビルドの際は，RISCV用のクロスコンパイラを環境変数に設定することが必要になります．Processor/Tools/SetEnv を参照してください．
-また，テスト後は[リポジトリの更新方法](jp-devel-repository-convention.md)も参照してください.
+また，テスト後は[リポジトリの更新方法](jp-devel-repository-convention)も参照してください.
 
 ## 一覧
 テスト・プログラムのディレクトリは，Src/Verification/TestCode です。
@@ -13,7 +13,7 @@
 |ディレクトリ名|ビルドコマンド|説明|h
 |Asm|test-build-asm|アセンブリ言語で記述するテストプログラム|
 |C|test-build-C|C言語で記述するテストプログラム|
-|Coremark|test-build-Coremark|Coremark （詳しくは[coremarkについて](jp-test-coremark.md)を参照）|
+|Coremark|test-build-Coremark|Coremark （詳しくは[coremarkについて](jp-test-coremark)を参照）|
 |Zephyr ([[#事前準備|※]])|test-build-Zephyr|Zephyr 上で動かすプログラム|
 |Dhrystone ([[#事前準備|※]])|test-build-Zephyr|Zephyr 上で動く Dhrystone （2018年に開催されたコンテスト用）|
 |riscv-compliance ([[#事前準備|※]])|test-build-riscv-compliance|riscv-compliance のテストスイート（現時点ではRV32Iのみ）|

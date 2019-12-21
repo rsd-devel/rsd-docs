@@ -11,7 +11,7 @@ ZYNQ についての基本的な情報は [公式ドキュメント](https://jap
 おおまかに，ZYNQ は図のように ARM ハードプロセッサを中心に構成される非リコンフィギャラブルな PS (Processing System) 部と，FPGA を中心に構成されるリコンフィギャラブルな PL (Programmagle Logic) 部で構成されています．  
 RSD は PL 部に実装します．  
 特別なボードを除き，ZYNQ 搭載ボードにおける外部メモリ (DDR3 など) は PS 部に接続されており，PL 部から外部メモリには PS 部を介してアクセスする必要があります．  
-メモリアクセスを担当する axi4Memory モジュールについては，[DRAM コントローラ](jp-fpga-zynq-mem-controller.md)を参照してください．  
+メモリアクセスを担当する axi4Memory モジュールについては，[DRAM コントローラ](jp-fpga-zynq-mem-controller)を参照してください．  
 
 
 axi4Memory の他に，PS 部の ARM プロセッサ上で動作するプログラムから RSD にアクセスするためのインターフェースを 2 種類実装しています．  
@@ -24,4 +24,4 @@ ARM 上で OS が動いていない場合は，これらのレジスタには物
 (例: Processor/Project/Vivado/Zedboard/project\_src/run\_simple.c)  
 一方，OS が動作している場合は物理アドレスは使えないため，UIO (Userspace I/O) ドライバでインストールされた /dev/uio* デバイスファイルをopen，mmap することでアクセスします．  
 /dev/uio1 が Axi4LitePlToPsControlRegister，/dev/uio2 が Axi4LitePsToPlControlRegister です．  
-Linux についての詳細は [ZYNQ の PS 向けの Linux](jp-fpga-zynq-linux.md) を参照してください．
+Linux についての詳細は [ZYNQ の PS 向けの Linux](jp-fpga-zynq-linux) を参照してください．

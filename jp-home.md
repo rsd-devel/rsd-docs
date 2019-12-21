@@ -17,36 +17,36 @@
 ## ページ一覧
 
 ### 開発
-* [はじめてみよう](jp-devel-getting-started.md)
-* [ディレクティブ一覧](jp-devel-directive.md)
-* [コーディング規約](jp-devel-coding-convention.md)
-* [リポジトリ更新規約](jp-devel-repository-convention.md)
-* [環境構築](jp-devel-setup.md)
+* [はじめてみよう](jp-devel-getting-started)
+* [ディレクティブ一覧](jp-devel-directive)
+* [コーディング規約](jp-devel-coding-convention)
+* [リポジトリ更新規約](jp-devel-repository-convention)
+* [環境構築](jp-devel-setup)
 
 ### テスト・デバッグ
-* [テスト・プログラム](jp-test-program.md)
-* [トラブルシューティング](jp-test-trouble-shooting.md)
-* [機能シミュレーション](jp-test-simulation.md)
-* [単体テスト](jp-test-unit-test.md)
-* [Coremark について](jp-test-coremark.md)
-* [Verilator による機能シミュレーション](jp-test-verilator.md)
-* [QEMU との実行結果の比較](jp-test-qemu.md)
+* [テスト・プログラム](jp-test-program)
+* [トラブルシューティング](jp-test-trouble-shooting)
+* [機能シミュレーション](jp-test-simulation)
+* [単体テスト](jp-test-unit-test)
+* [Coremark について](jp-test-coremark)
+* [Verilator による機能シミュレーション](jp-test-verilator)
+* [QEMU との実行結果の比較](jp-test-qemu)
 
 ### アーキテクチャ
-* [メモリ・マップ](jp-arch-mem-map.md)
-* [マイクロアーキテクチャ](jp-arch-microarch.md)
+* [メモリ・マップ](jp-arch-mem-map)
+* [マイクロアーキテクチャ](jp-arch-microarch)
 
 ### 合成
-* [制約](jp-synth-constrain.md)
-* [合成結果を使ったシミュレーション](jp-synth-simulation.md)
-* [合成の手順](jp-synth-howto.md)
-* [Synplify による合成結果の確認](jp-synth-synplify.md)
+* [制約](jp-synth-constrain)
+* [合成結果を使ったシミュレーション](jp-synth-simulation)
+* [合成の手順](jp-synth-howto)
+* [Synplify による合成結果の確認](jp-synth-synplify)
 
 ### FPGA (ZYNQ 向け合成時)
-* [クロック・ジェネレータ](jp-fpga-zynq-clock.md)   
-* [メモリ・コントローラ](jp-fpga-zynq-mem-controller.md)
-* [システム・アーキテクチャ](jp-fpga-zynq-arch.md)
-* [PS 部の Linux](jp-fpga-zynq-linux.md)                
-* [Linux の構築方法（詳細）](jp-fpga-zynq-build-linux-detail.md)
-* [Linux の構築方法（簡易版）](jp-fpga-zynq-build-linux-simple.md)    
+* [クロック・ジェネレータ](jp-fpga-zynq-clock)   
+* [メモリ・コントローラ](jp-fpga-zynq-mem-controller)
+* [システム・アーキテクチャ](jp-fpga-zynq-arch)
+* [PS 部の Linux](jp-fpga-zynq-linux)                
+* [Linux の構築方法（詳細）](jp-fpga-zynq-build-linux-detail)
+* [Linux の構築方法（簡易版）](jp-fpga-zynq-build-linux-simple)    
 

@@ -35,7 +35,7 @@ Getting started か Built from scratch のどちらか1つだけで十分です
     * .svファイルを追加(Src/Verification/以下は除く)
 
 * Implementation Options を設定
-    * [FPGAの型番情報](jp-fpga-board.md)を指定
+    * [FPGAの型番情報](jp-fpga-board)を指定
     * トップモジュールにMainを指定。モジュール・パラメータも適宜指定
     * Implementation Results タブでImplementation Nameに"$(TARGET\_BOARD)"と設定
     * Implementation Results タブでResult Base Nameに"rsd"と設定

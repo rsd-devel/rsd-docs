@@ -5,7 +5,7 @@ Vivadoで合成した結果をもとに、QuestaSimでシミュレーション�
 機能シミュレーションと実機の動作が食い違う場合のデバッグに利用できます。
 
 ## 準備
- [Vivado の初期設定](jp-devel-vivado.md)を元に初期設定を行っておく
+ [Vivado の初期設定](jp-devel-vivado)を元に初期設定を行っておく
 
 ## 大まかな流れ
 
@@ -53,7 +53,7 @@ Getting started か Built from scratch のどちらか1つだけで十分です
     * 先ほど設置した code.hex を追加
 
 * [Add Implementation]をクリックして Implementation Options を設定
-    * [FPGAの型番情報](jp-fpga-board.md)を指定
+    * [FPGAの型番情報](jp-fpga-board)を指定
     * トップモジュールにMainを指定。モジュール・パラメータも適宜指定
     * Implementation Results タブでImplementation Nameに"$(TARGET\_BOARD)\_post\_synthesis"と設定
     * Implementation Results タブでResult Base Nameに"rsd"と設定

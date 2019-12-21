@@ -24,9 +24,9 @@
 
 * 以下では RSD/master にプルリクエストを送ってマージするまでにチェックすべき項目について記します.
 * 別途, 下記を参照してください.
-    * [機能シミュレーション](jp-test-simulation.md)
-    * [QuestaSim で合成結果をシミュレーション](jp-synth-simulation.md)
-    * [Coremark について](jp-test-coremark.md)
+    * [機能シミュレーション](jp-test-simulation)
+    * [QuestaSim で合成結果をシミュレーション](jp-synth-simulation)
+    * [Coremark について](jp-test-coremark)
 
 
 ### マージ時のチェックリスト

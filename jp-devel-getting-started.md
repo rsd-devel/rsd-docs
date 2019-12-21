@@ -58,7 +58,7 @@ PC 上で機能シミュレーションを行うのみであれば，下記は�
     * Vivado の場合は，```make -f Makefile.vivado``` のように，Makefile.vivado を指定してください
 * 上記のサブコマンドは "konata" ではなく  "kanata" です
 * くわしくは下記を参照してください
-    * [機能シミュレーション](jp-devel-test-simulation.md) を参照
+    * [機能シミュレーション](jp-devel-test-simulation) を参照
 
 
 ## シミュレーション結果の可視化
@@ -68,12 +68,12 @@ PC 上で機能シミュレーションを行うのみであれば，下記は�
 
 ## 合成
 
-* [合成の手順](jp-synth-howto.md) を参照してください
+* [合成の手順](jp-synth-howto) を参照してください
 
 ## コードをいじる前に 
 下記に目を通しておいてください
-* [コーディング規約](jp-devel-coding-convention.md)
-* [リポジトリの更新方法](jp-devel-repository-convention.md)
+* [コーディング規約](jp-devel-coding-convention)
+* [リポジトリの更新方法](jp-devel-repository-convention)
 
 
 

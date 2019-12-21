@@ -17,40 +17,40 @@ Start from [here](en-devel-tutorial-getting-started).
 
 ## Pages
 ### Development
-* [Getting started](en-devel-tutorial-getting-started.md)
+* [Getting started](en-devel-tutorial-getting-started)
 
 ## Under construction
 ### Development
-* [List of directives](en-devel-directive.md)
-* [Coding convention](en-devel-coding-convention.md)
-* [Repository update rules](en-devel-repository-convention.md)
+* [List of directives](en-devel-directive)
+* [Coding convention](en-devel-coding-convention)
+* [Repository update rules](en-devel-repository-convention)
 
 ### Environment
-* [Setup](en-devel-setup.md)
+* [Setup](en-devel-setup)
 
 ### Test & debugging
-* [Test programs](en-test-program.md)
-* [Troubleshooting](en-test-trouble-shooting.md)
-* [Unit test](en-test-unit-test.md)
-* [Coremark](en-test-coremark.md)
-* [Comparison of execution results with QEMU](en-test-qemu.md)
-* [Functional simulation by Verilator](en-test-verilator.md)
-* [Functional simulation by Questa](en-test-questa.md)
+* [Test programs](en-test-program)
+* [Troubleshooting](en-test-trouble-shooting)
+* [Unit test](en-test-unit-test)
+* [Coremark](en-test-coremark)
+* [Comparison of execution results with QEMU](en-test-qemu)
+* [Functional simulation by Verilator](en-test-verilator)
+* [Functional simulation by Questa](en-test-questa)
 
 ### Architecture
-* [Memory map](en-arch-mem-map.md)
-* [Microarchitecture](en-arch-microarch.md)
+* [Memory map](en-arch-mem-map)
+* [Microarchitecture](en-arch-microarch)
 
 ### Synthesize
-* [Constraints](en-synth-constrain.md)
-* [Simulation using synthesis results](en-synth-simulation.md)
-* [Synthesis by Synplify](en-synth-synplify.md)
-* [Synthesis by Vivado](en-synth-vivado.md)
+* [Constraints](en-synth-constrain)
+* [Simulation using synthesis results](en-synth-simulation)
+* [Synthesis by Synplify](en-synth-synplify)
+* [Synthesis by Vivado](en-synth-vivado)
 
 ### FPGA (for synthesis for ZYNQ)
-* [Clock generator](en-fpga-zynq-clock.md)
-* [Memory controller](en-fpga-zynq-mem-controller.md)
-* [System architecture](en-fpga-zynq-arch.md)
-* [Linux in PS section](en-fpga-zynq-linux.md)
-* [How to build Linux (details)](en-fpga-zynq-build-linux-detail.md)
-* [How to build Linux (Simplified version)](en-fpga-zynq-build-linux-simple.md)
+* [Clock generator](en-fpga-zynq-clock)
+* [Memory controller](en-fpga-zynq-mem-controller)
+* [System architecture](en-fpga-zynq-arch)
+* [Linux in PS section](en-fpga-zynq-linux)
+* [How to build Linux (details)](en-fpga-zynq-build-linux-detail)
+* [How to build Linux (Simplified version)](en-fpga-zynq-build-linux-simple)
