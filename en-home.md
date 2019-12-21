@@ -6,6 +6,7 @@ This is a wiki about RSD development.
 ## Notice
 
 * Most pages are under construction. We are now preparing them.
+* We temporally provide auto-translated pages.
 * Be sure to write the title at the top of each page first in the form of "# page title".
 * Please create an English page under "en-".
     * Use "-" for grouping page names if needed.
@@ -13,44 +14,40 @@ This is a wiki about RSD development.
 
 ## Getting Started
 
-Start from [here](en-devel-tutorial-getting-started).
+Start from [here](en-devel-getting-started)
 
-## Pages
 ### Development
-* [Getting started](en-devel-tutorial-getting-started)
+* [Getting started](en-devel-getting-started)
 
-## Under construction
+## Pages (Auto Translated)
 ### Development
-* [List of directives](en-devel-directive)
-* [Coding convention](en-devel-coding-convention)
-* [Repository update rules](en-devel-repository-convention)
-
-### Environment
-* [Setup](en-devel-setup)
+* [List of directives](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-directive)
+* [Coding convention](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-coding-convention)
+* [Repository update rules](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-repository-convention)
 
 ### Test & debugging
-* [Test programs](en-test-program)
-* [Troubleshooting](en-test-trouble-shooting)
-* [Unit test](en-test-unit-test)
-* [Coremark](en-test-coremark)
-* [Comparison of execution results with QEMU](en-test-qemu)
-* [Functional simulation by Verilator](en-test-verilator)
-* [Functional simulation by Questa](en-test-questa)
+* [Test programs](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-program)
+* [Troubleshooting](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-trouble-shooting)
+* [Unit test](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-unit-test)
+* [Coremark](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-coremark)
+* [Comparison of execution results with QEMU](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-qemu)
+* [Functional simulation](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-simulation)
+* [Functional simulation by Verilator](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-verilator)
 
 ### Architecture
-* [Memory map](en-arch-mem-map)
-* [Microarchitecture](en-arch-microarch)
+* [Memory map](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-arch-mem-map)
+* [Microarchitecture](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-arch-microarch)
 
 ### Synthesize
-* [Constraints](en-synth-constrain)
-* [Simulation using synthesis results](en-synth-simulation)
-* [Synthesis by Synplify](en-synth-synplify)
-* [Synthesis by Vivado](en-synth-vivado)
+* [Constraints](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-constrain)
+* [Simulation using synthesis results](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-simulation)
+* [Synthesis by Synplify](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-synplify)
+* [How to Synthesis](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-howto)
 
 ### FPGA (for synthesis for ZYNQ)
-* [Clock generator](en-fpga-zynq-clock)
-* [Memory controller](en-fpga-zynq-mem-controller)
-* [System architecture](en-fpga-zynq-arch)
-* [Linux in PS section](en-fpga-zynq-linux)
-* [How to build Linux (details)](en-fpga-zynq-build-linux-detail)
-* [How to build Linux (Simplified version)](en-fpga-zynq-build-linux-simple)
+* [Clock generator](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-clock)
+* [Memory controller](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-mem-controller)
+* [System architecture](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-arch)
+* [Linux in PS section](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-linux)
+* [How to build Linux (details)](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-build-linux-detail)
+* [How to build Linux (Simplified version)](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-build-linux-simple)
