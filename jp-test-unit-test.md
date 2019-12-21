@@ -11,7 +11,8 @@ Src/Verification/UnitTest に、各単体テストのディレクトリが存在
 
 各テストにはMakefileが存在し、以下のようにコマンドを実行できます。
 
-|コマンド名|動作|備考|h
+|コマンド名|動作|備考|
+|---------|---|----|
 |make rtl / make rtl-run|ISEの合成結果を使わず、Modelsimのみでテスト対象のモジュールをコンパイル/実行します||
 |make translate / make translate-run|Post Translate Simulation Model を使ってテストをコンパイル/実行します|あらかじめ [Post Translate Simulation Modelを作成](jp-synth-howto) しておく必要があります|
 |make map / make map-run|Post Map Simulation Model を使ってテストをコンパイル/実行します|あらかじめ [Post Map Simulation Modelを作成](jp-synth-howto) しておく必要があります|

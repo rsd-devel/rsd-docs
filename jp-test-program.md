@@ -10,7 +10,8 @@
 テスト・プログラムはアセンブリ言語，C 言語，その他のベンチマークの3種類に大別されます．
 ビルド・コマンドは RSD/Processor/Src 下で実行できます．
 
-|ディレクトリ名|ビルドコマンド|説明|h
+|ディレクトリ名|ビルドコマンド|説明|
+|-------------|-------------|----|
 |Asm|test-build-asm|アセンブリ言語で記述するテストプログラム|
 |C|test-build-C|C言語で記述するテストプログラム|
 |Coremark|test-build-Coremark|Coremark （詳しくは[coremarkについて](jp-test-coremark)を参照）|

@@ -84,7 +84,8 @@ FPGA の資源というレベルで動作をシミュレーションするため
 
 $(RSD\_ROOT)/Processor/Src/Makefileには、合成結果をシミュレーションするためのコマンドが存在します。
 
-|コマンド名|動作|備考|h
+|コマンド名|動作|備考|
+|---------|----|----|
 |post-synthesis|Post Synthesis Simulation Model を使ってテストをコンパイルします|あらかじめ上記の手順でPost Synthesis Simulation Modelを作成しておく必要があります|
 |post-synthesis-run|Post Synthesis Simulation Model を使ってテストを実行します|あらかじめPost Synthesis Simulation Modelをコンパイルしておく必要があります|
 |post-synthesis-kanata|Post Synthesis Simulation Model を使ってテストを実行し、Kanata形式のログを出力します|あらかじめPost Synthesis Simulation Modelをコンパイルしておく必要があります|
