@@ -1,5 +1,5 @@
 Welcome to the rsd wiki!
 
-* [English pages](en-home.md)
-* [Japanese pages](jp-home.md)
+* [English pages](en-home)
+* [Japanese pages](jp-home)
 
