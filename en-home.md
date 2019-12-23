@@ -36,7 +36,7 @@ Start from [here](en-devel-getting-started)
 
 ### Architecture
 * [Memory map](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-arch-mem-map)
-* [Microarchitecture](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-arch-microarch)
+* [Microarchitecture](en-arch-microarch)
 
 ### Synthesize
 * [Constraints](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-constrain)
