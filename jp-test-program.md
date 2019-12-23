@@ -15,37 +15,36 @@
 |Asm|test-build-asm|アセンブリ言語で記述するテストプログラム|
 |C|test-build-C|C言語で記述するテストプログラム|
 |Coremark|test-build-Coremark|Coremark （詳しくは[coremarkについて](jp-test-coremark)を参照）|
-|Zephyr ([[#事前準備|※]])|test-build-Zephyr|Zephyr 上で動かすプログラム|
-|Dhrystone ([[#事前準備|※]])|test-build-Zephyr|Zephyr 上で動く Dhrystone （2018年に開催されたコンテスト用）|
-|riscv-compliance ([[#事前準備|※]])|test-build-riscv-compliance|riscv-compliance のテストスイート（現時点ではRV32Iのみ）|
+|Zephyr [*](#事前準備)|test-build-Zephyr|Zephyr 上で動かすプログラム|
+|Dhrystone [*](#事前準備)|test-build-Zephyr|Zephyr 上で動く Dhrystone （2018年に開催されたコンテスト用）|
+|riscv-compliance [*](#事前準備)|test-build-riscv-compliance|riscv-compliance のテストスイート（現時点ではRV32Iのみ）|
 
-補足1：ライセンス上の問題のため，一部のプログラムは RSD リポジトリには置いてありません．これらはビルドの際に RSD-env から自動的にコピーされるようになっています． \\
+補足1：ライセンス上の問題のため，一部のプログラムは RSD リポジトリには置いてありません．これらはビルドの際に RSD-env から自動的にコピーされるようになっています．
+
 補足2：Dhrystone は C 言語版と Zephyr 版の 2 種類があります．C 言語版は C ディレクトリ以下にあります．
 
 
 ## 事前準備
 
-一部のテスト・プログラム（[[#一覧]]で※印のついたもの）については，データのダウンロードや git リポジトリからのクローンが必要であるため，事前に次のことを行っておく必要があります．
+一部のテスト・プログラム（[一覧](#一覧)で*印のついたもの）については，データのダウンロードや git リポジトリからのクローンが必要であるため，事前に次のことを行っておく必要があります．
 
-1. Zephyr SDK のインストール \\
-RSD-env/Tools/OS/Zephyr へ移動し，以下のコマンドを実行してください（[[https://github.com/shioyadan/RSD-env/tree/master/Tools/OS/Zephyr|詳細はこちら]]）．
-
+1. Zephyr SDK のインストール
+    * RSD-env/Tools/OS/Zephyr へ移動し，以下のコマンドを実行してください．
+```
     sudo make install_deps  # apt で必要なものを入れる
     make install            # zephyr 自体や SDK を入れる
     make build              # zephyr のアプリ（ELFファイル）をビルドする
     make run_qemu_philosophers   # philosophers を QEMU で動かしてみる
+```
 
-2. Zephyr 上で動くアプリケーションの hex ファイルなどの生成 \\
-RSD-env/Tools/Testbench/Zephyr に移動して
-
-    make
-
- 1 の make build でも ELF ファイルはできるのだが，RSD の入力として使える hex ファイルは作られないので，ここで make する必要がある．
-RSD リポジトリでの make test-env-build-XXXX みたいなのはここでビルドしたものをコピーしてくるだけになっているので注意．
+2. Zephyr 上で動くアプリケーションの hex ファイルなどの生成
+    * RSD-env/Tools/Testbench/Zephyr に移動して `make` を実行
+        * 1 の make build でも ELF ファイルはできるのだが，RSD の入力として使える hex ファイルは作られないので，ここで make する必要がある．
+        * RSD リポジトリでの make test-env-build-XXXX みたいなのはここでビルドしたものをコピーしてくるだけになっているので注意．
 
 
-3. riscv-compliance のクローン／ビルド \\
-RSD-env/Tools/Testbench/riscv-compliance で make を実行してください．
+3. riscv-compliance のクローン／ビルド
+    * RSD-env/Tools/Testbench/riscv-compliance で make を実行してください．
 
 ## ビルド手順
 
@@ -56,7 +55,7 @@ RSD-env/Tools/Testbench/riscv-compliance で make を実行してください．
 RSD/Processor/Src へ移動し，以下のコマンドを実行すれば全てのプログラムを一括してビルドできます．（ただし，Zephyr 関連のプログラムと riscv-compliance は RSD-env からコピーしてくるだけでビルドはしません）．
 
     make test-build
-    
+
 Zephyr 関連のプログラムと riscv-compliance を再ビルドしたい場合は，以下のコマンドを実行してください．
 
     make test-env-build                       # Zephyr 関連のプログラムの再ビルド
@@ -65,7 +64,7 @@ Zephyr 関連のプログラムと riscv-compliance を再ビルドしたい場�
 
 ### 個別ビルド
 
-RSD/Processor/Src 上で，[[#一覧]]内にあるビルドコマンドを実行すれば，対象を特定の種類に絞ってビルドできます．
+RSD/Processor/Src 上で，[一覧](#一覧)内にあるビルドコマンドを実行すれば，対象を特定の種類に絞ってビルドできます．
 
 ### ビルド時の動作（仕様が昔と異なるため要修正？）
 
