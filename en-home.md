@@ -18,10 +18,13 @@ Start from [here](en-devel-getting-started)
 
 ### Development
 * [Getting started](en-devel-getting-started)
+* [List of directives](en-devel-directive)
+
+### Architecture
+* [Microarchitecture](en-arch-microarch)
 
 ## Pages (Auto Translated)
 ### Development
-* [List of directives](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-directive)
 * [Coding convention](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-coding-convention)
 * [Repository update rules](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-repository-convention)
 
@@ -36,7 +39,6 @@ Start from [here](en-devel-getting-started)
 
 ### Architecture
 * [Memory map](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-arch-mem-map)
-* [Microarchitecture](en-arch-microarch)
 
 ### Synthesize
 * [Constraints](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-constrain)
