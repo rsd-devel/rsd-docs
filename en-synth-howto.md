@@ -2,7 +2,7 @@
 This section describes the procedure for the synthesis using Vivado and Synplify
 
 ## Preparation
-Prepare a synthesis environment based on [this page](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-howto).
+Prepare a synthesis environment based on [this page](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-vivado).
 
 ## General flow of synthesis
 
