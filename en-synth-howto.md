@@ -37,7 +37,7 @@ Do either Getting started or Build from scratch.
     * Add .sv file (except Src/Verification/)
 
 1. Set Implementation Options
-    * Specify [FPGA model number information](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-howto).
+    * Specify [FPGA model number information](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-board).
     * Specify Main_Zynq_Wrapper as the top module. Specifying module parameters as appropriate
     * Set "$(TARGET_BOARD)" to Implementation Name in Implementation Results tab
     * Set "rsd" as the Result Base Name in the Implementation Results tab
@@ -102,12 +102,11 @@ If the IO port of the top module of RSD is changed, Block Design of Vivado needs
 ### ZC706
 
 * Connect the "USB-to-JTAG" port (microUSB port), "USB-to-UART" port (miniUSB port) and PC on the ZC706 PCIe placket with the miniUSB-USB cable and microUSB-USB cable to turn on the power. Put
-** TODO **
-* Since there is a possibility that the driver does not automatically enter, please check and install it based on [this page] (https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-synth-howto).
+* Since there is a possibility that the driver does not automatically enter, please check and install it based on [this page](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-fpga-board).
 
 * Start and configure software that can display input from the COM port corresponding to the installed UART port
+    * Tera Term, minicom, etc.
     * Baud rate 115200
-    * The author uses Tera Term.
 
 * Open the Vivado project and click [Menu Bar]-> [File]-> [Export]-> [Export Hardware]
 
