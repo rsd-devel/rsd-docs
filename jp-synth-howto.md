@@ -2,7 +2,7 @@
 QuestaSimでのシミュレーションが終わったコードを、SynplifyとVivadoを使って合成し、FPGAに焼く手順について説明する。
 
 ## 準備
- [開発環境/ツール/Vivado](jp/開発環境/ツール/Vivado)を元に初期設定を行っておく
+ [jp devel vivado](jp-devel-vivado)を元に初期設定を行っておく
 
 ## 大まかな流れ
 
@@ -104,11 +104,11 @@ TODO: IOポートを変更した際のVivado上の作業手順を書く
 
 * ZC706のPCIeプラケットにある"USB-to-JTAG"ポート(microUSBポート)と"USB-to-UART"ポート(miniUSBポート)とPCをminiUSB-USBケーブルとmicroUSB-USBケーブルで接続して電源を入れる  
 **TODO**  
-※ドライバは自動で入らない可能性があるので，調べてインストールしてここと[開発環境/fpgaボード](jp/開発環境/fpgaボード)を編集してください．
+※ドライバは自動で入らない可能性があるので，調べてインストールしてここと[FPGAの型番情報](jp-fpga-board)を編集してください．
 
 * インストールされたUARTポートに対応するCOMポートからの入力を表示できるソフトを起動して設定しておく
+    * Tera Term や minicom など
     * Baud rateは115200
-    * 筆者はTera Termを使用．
 
 * Vivadoのプロジェクトを開き，[メニューバー]->[File]->[Export]->[Export Hardware]をクリック
 
