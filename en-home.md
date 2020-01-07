@@ -19,13 +19,13 @@ Start from [here](en-devel-getting-started)
 ### Development
 * [Getting started](en-devel-getting-started)
 * [List of directives](en-devel-directive)
+* [Coding convention](en-devel-coding-convention)
 
 ### Architecture
 * [Microarchitecture](en-arch-microarch)
 
 ## Pages (Auto Translated)
 ### Development
-* [Coding convention](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-coding-convention)
 * [Repository update rules](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-repository-convention)
 
 ### Test & debugging
