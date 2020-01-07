@@ -191,4 +191,4 @@ IntAdder.sv
 * Use UTF-8.
 * Use LF line feed code.
 * Tabs are 4 spaces
-    * Do not use hard tabs.
+    * Do not use hard tabs.
