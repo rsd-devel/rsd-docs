@@ -40,10 +40,10 @@
 
 * Coremark の機能シミュレーションテストが正しく実行される
       * 対応するコマンド: `make test-Coremark`
-      * RSD レポジトリにはCoremarkのテストコードは含まれていないので, RSD_ENV を設定して RSD-env レポジトリからコピーする必要あり(Src/Verification/TestCode/C/Makefile.inc 参照)
+      * RSD レポジトリには Coremark のテストコードは含まれていないので, RSD_ENV を設定して RSD-env レポジトリからコピーする必要あり(Src/Verification/TestCode/C/Makefile.inc 参照)
 
 * Coremark の post-synthesis シミュレーションが正しく実行される
-      * 実行方法は [[jp:開発手順:fpga向けの実装と合成:questasimで合成結果をシミュレーション_vivado編]] 参照
+      * 実行方法は [QuestaSim で合成結果をシミュレーション](jp-synth-simulation) 参照
       * 実行結果の確認は Src/Verification/TestCode/C/Coremark/serial.out.txt が 同フォルダserial.ref.txt と一致しているかで行う
 
 ### プルリクエスト
