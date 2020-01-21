@@ -36,6 +36,7 @@ Start from [here](en-devel-getting-started)
 * [Comparison of execution results with QEMU](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-qemu)
 * [Functional simulation](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-simulation)
 * [Functional simulation by Verilator](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-verilator)
+* [How to compile and run your program](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program)
 
 ### Architecture
 * [Memory map](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-arch-mem-map)
