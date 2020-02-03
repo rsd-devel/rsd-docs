@@ -60,7 +60,7 @@ $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集
 ## 10   実行するバイナリの転送と実行
   1. 実行したいプログラムの code.hex をscpでZedboard上のDebianに転送     
   2. Zedboard上のDebianで以下を実行     
-    ./loader <path of code.hex> <byte size of code.hex>    
+      ./loader <path of code.hex> <byte size of code.hex>    
             
             
             
