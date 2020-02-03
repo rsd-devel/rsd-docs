@@ -15,10 +15,10 @@
     make arm-linux      
 
 ## 5   Debianの解凍        
-* Google driveからダウンロードしてきた ROOTFS.tar.gz を解凍     
+$(RSD_ARM_LINUX)/ROOTFS.tar.gz を解凍 (root権限が必要)  
 
 ## 6   arm-linuxのIPアドレスの設定     
-ROOTFS/etc/network/interfacesを編集     
+$(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集     
 以下は192.168.1.83に設定する場合のファイル内容の例．適宜変更        
 
     auto lo
@@ -42,10 +42,10 @@ ROOTFS/etc/network/interfacesを編集
     # 出来ない場合は再度sudo fdisk /dev/sdbしてw      http://marsee101.blog19.fc2.com/blog-entry-2818.html
     sudo mkfs.msdos -n BOOT /dev/sdb1       # http://marsee101.blog19.fc2.com/blog-entry-2929.html
     sudo mkfs.ext4 -L ROOTFS /dev/sdb2      
-    sudo cp -R <5で解凍したROOTFSディレクトリ>/* $sd_dir/ROOTFS     
-    sudo cp $RSD_ARM_LINUX/boot/devicetree.dtb $sd_dir/BOOT     
-    sudo cp $RSD_ARM_LINUX/boot/uImage $sd_dir/BOOT     
-    sudo cp $RSD_ARM_LINUX/boot/boot.bin $sd_dir/BOOT       
+    sudo cp -R $(RSD_ARM_LINUX)/ROOTFS/* $sd_dir/ROOTFS     
+    sudo cp $(RSD_ARM_LINUX)/boot/devicetree.dtb $sd_dir/BOOT     
+    sudo cp $(RSD_ARM_LINUX)/boot/uImage $sd_dir/BOOT     
+    sudo cp $(RSD_ARM_LINUX)/boot/boot.bin $sd_dir/BOOT       
 
 ## 8   ZedboardにSDを入れて起動        
     シリアル出力に起動ログが出る        
