@@ -10,6 +10,7 @@
     source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh      
 
 ## 4   必要なものをすべてbuild     
+    cd $(RSD_ROOT)/Processor/Src      
     make arm-linux      
 
 ## 5   Debianの解凍        
