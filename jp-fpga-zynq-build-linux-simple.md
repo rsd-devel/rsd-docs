@@ -6,8 +6,8 @@
     sudo ln -s /usr/bin/make /usr/bin/gmake     # Ubuntuの場合
     sudo apt-get install qemu-user-static debootstrap binfmt-support u-boot-tools ntp git device-tree-compiler     
 
-## 3   Vivadoの設定        
-    source /opt/Xilinx/Vivado/2016.4/settings64.sh      
+## 3   VitisとVivadoの設定        
+    source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh      
 
 ## 4   必要なものをすべてbuild     
     make arm-linux      
@@ -49,7 +49,7 @@ ROOTFS/etc/network/interfacesを編集
     シリアル出力に起動ログが出る        
     設定したIPにsshアクセスしてrootでログインして作業       
     ユーザー名: root        
-    パスワード: <実装中のプロセッサ名(小文字3文字)>     
+    パスワード: rsd    
             
             
             
