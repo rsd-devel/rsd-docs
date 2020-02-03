@@ -1,7 +1,7 @@
 # ZYNQ むけ Linux 構築 超簡易版
 
 
-## 1   Vivadoのインストール
+## 1   Vitis 2019.2のインストール
 ## 2   必要なパッケージのインストール      
     sudo ln -s /usr/bin/make /usr/bin/gmake     # Ubuntuの場合
     sudo apt-get install qemu-user-static debootstrap binfmt-support u-boot-tools ntp git device-tree-compiler     
