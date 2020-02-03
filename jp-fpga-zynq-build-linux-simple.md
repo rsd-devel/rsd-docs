@@ -54,13 +54,13 @@ $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集
     パスワード: rsd    
             
 ## 9   プログラムローダーをscpで転送・コンパイル       
-  1. $(RSD_ROOT)/Processor/Project/Linux/ARM/ProgramLoader/loader.c をscpでZedboard上のDebianに転送 
-  2. loader.cをコンパイル 
+  1. $(RSD_ROOT)/Processor/Project/Linux/ARM/ProgramLoader/loader.c をscpでZedboard上のDebianに転送     
+  2. loader.cをコンパイル     
 
 ## 10   実行するバイナリの転送と実行
-  1. 実行したいプログラムの code.hex をscpでZedboard上のDebianに転送 
-  2. Zedboard上のDebianで以下を実行 
-    ./loader <path of code.hex> <byte size of code.hex> 
+  1. 実行したいプログラムの code.hex をscpでZedboard上のDebianに転送     
+  2. Zedboard上のDebianで以下を実行     
+    ./loader <path of code.hex> <byte size of code.hex>    
             
             
             
