@@ -49,12 +49,17 @@ $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集
 
 ## 8   ZedboardにSDを入れて起動        
     シリアル出力に起動ログが出る        
-    設定したIPにsshアクセスしてrootでログインして作業       
+    設定したIPアドレスにsshアクセスしてrootでログインして作業       
     ユーザー名: root        
     パスワード: rsd    
             
-            
-            
+## 9   プログラムローダーをscpで転送・コンパイル       
+    $(RSD_ROOT)/Processor/Project/Linux/ARM/ProgramLoader/loader.c をscpでZedboard上のDebianに転送
+    loader.cをコンパイル
+
+## 10   実行するバイナリの転送と実行
+    実行したいプログラムの code.hex をscpでZedboard上のDebianに転送
+    ./loader <path of code.hex> <byte size of code.hex>
             
             
             
