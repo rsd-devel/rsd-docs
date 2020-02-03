@@ -11,6 +11,7 @@
 
 ## 4   必要なものをすべてbuild     
     cd $(RSD_ROOT)/Processor/Src      
+    source ../Tools/SetEnv/SetEnv.sh      
     make arm-linux      
 
 ## 5   Debianの解凍        
