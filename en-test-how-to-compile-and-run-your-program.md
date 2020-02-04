@@ -1,4 +1,4 @@
-This page describes how to compile and run your program on RSD on Verilator.
+# How to compile and run your program on RSD on Verilator.
 
 ## 0. Go to $RSD_ROOT/Processor/Src.
 * Make sure RSD is correctly compiled by ```make -f Makefile.verilator.mk```.
