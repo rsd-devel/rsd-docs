@@ -135,6 +135,8 @@ Note: root privileges are required.
 
 1.  Send your program code.hex via SCP.
 
+    * See [this page](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program) to learn how to make your program code.hex.
+
 2.  Run your program using the program loader.
     ```
     ./loader <path of code.hex> <byte size of code.hex>
