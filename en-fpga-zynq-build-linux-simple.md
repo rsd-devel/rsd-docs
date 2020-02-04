@@ -1,22 +1,10 @@
 # How to run RSD on a Xilinx Zynq board
 
-## 0.  Tested OS environments.
+## 0.  Setup the required development environment.
 
-* Debian 8
-* Ubuntu 18.04
+See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment).
 
-## 1.  Install the following software.
-
-* Xilinx Vitis 2019.2
-* Synopsys Synplify 2017-03 or later
-
-## 2.  Install required packages using apt.
-```
-sudo ln -s /usr/bin/make /usr/bin/gmake  # If you use Ubuntu    
-sudo apt-get install u-boot-tools ntp device-tree-compiler    
-```
-
-## 3.  Set the following environment variables in Processor/Tools/SetEnv/SetEnv.sh.
+## 1.  Set the following environment variables in Processor/Tools/SetEnv/SetEnv.sh.
 
 * RSD_ROOT
 * RSD_GCC_PATH
@@ -25,24 +13,24 @@ sudo apt-get install u-boot-tools ntp device-tree-compiler
 * RSD_VIVADO_BIN
 * RSD_ARM_LINUX
 
-## 4.  Setup the environment variables and Vitis.
+## 2.  Setup the environment variables and Vitis.
 ```
 source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh   
 source Processor/Tools/SetEnv/SetEnv.sh
 ```
 
-## 5.  Specify the target Zynq board in Processor/Src/Makefiles/Vivado.inc.mk.
+## 3.  Specify the target Zynq board in Processor/Src/Makefiles/Vivado.inc.mk.
 
 Modify the ```TARGET_BOARD``` variable.  
 Note: ```Zedboard``` is considered in the following steps.
 
-## 6.  Generate the netlist file (rsd.vm) of RSD using Synplify.
+## 4.  Generate the netlist file (rsd.vm) of RSD using Synplify.
 
 1.  Open Processor/Project/Synplify/ver2017-03.prj on Synplify.  
 2.  In Synplify, select "Zedboard" in the opened project and click "Run".  
 3.  If the synthesis ran successfully, rsd.vm is generated in Project/Synplify/Zedboard/.  
 
-## 7.  Download and build all the necessary files.
+## 5.  Download and build all the necessary files.
 ```
 cd Processor/Src/      
 make xilinx-arm-linux      
@@ -55,7 +43,7 @@ These commands generate the following files in $(RSD_ARM_LINUX)/boot.
 
 A Debian rootfs for Zynq PS (ROOTFS.tar.gz) is also downloaded in $(RSD_ARM_LINUX).
 
-## 8.  Extract the Debian rootfs for Zynq PS (ROOTFS.tar.gz).
+## 6.  Extract the Debian rootfs for Zynq PS (ROOTFS.tar.gz).
 
 Note: root privileges are required. 
 
@@ -63,7 +51,7 @@ Note: root privileges are required.
 tar -xf ROOTFS.tar.gz
 ```
 
-## 9.  Set an IP address in the Debian rootfs.
+## 7.  Set an IP address in the Debian rootfs.
 
 Edit $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfaces using a text editor.  
 Note: root privileges are required.  
@@ -79,7 +67,7 @@ gateway 192.168.1.1
 dns-nameservers 192.168.1.2
 ```
 
-## 10. Send all the necessary files to an SD card.  
+## 8. Send all the necessary files to an SD card.  
 
 Note: a high-speed 16GB>= SD card is recoomended.  
 Note: root privileges are required.  
@@ -115,7 +103,7 @@ Note: root privileges are required.
     sudo cp $(RSD_ARM_LINUX)/boot/boot.bin $sd_dir/BOOT       
     ```
 
-## 11. Insert the SD card into Zedboard and boot.  
+## 9. Insert the SD card into Zedboard and boot.  
 
 * Login via SSH.  
     ```
@@ -125,13 +113,13 @@ Note: root privileges are required.
     
 * Please check the boot log via the USB-UART port if SSH connection is not established.
 
-## 12. Send and compile the RSD program loader.  
+## 10. Send and compile the RSD program loader.  
 
 1.  Send Processor/Project/Linux/ARM/ProgramLoader/loader.c to Zedboard via SCP.
 
 2.  Compile loader.c on Zedboard.
 
-## 13. Run your program on RSD on Zedboard.
+## 11. Run your program on RSD on Zedboard.
 
 1.  Send your program code.hex via SCP.
 
