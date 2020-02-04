@@ -81,7 +81,7 @@ dns-nameservers 192.168.1.2
 
 ## 10. Send all the necessary files to an SD card.  
 
-Note: A 16GB>= high-speed SD card is recoomended.  
+Note: a high-speed 16GB>= SD card is recoomended.  
 Note: root privileges are required.  
 
 1.  Check the device name of the SD card in /dev/.
