@@ -26,7 +26,7 @@ Start from [here](en-devel-getting-started)
 * [Microarchitecture](en-arch-microarch)
 
 ### Test & Debugging
-* [How to compile and run your program](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program)
+* [How to compile and run your program on Verilator](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program)
 
 ### FPGA
 * [How to run RSD on a Zynq board](https://github.com/rsd-devel/rsd/wiki/en-fpga-zynq-build-linux-simple)
