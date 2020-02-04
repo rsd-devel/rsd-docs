@@ -2,10 +2,7 @@
 
 ## 0. Go to $RSD_ROOT/Processor/Src.
 * Make sure RSD is correctly compiled by ```make -f Makefile.verilator.mk```.
-    * Tested environment
-        * Verilator 4.026 2020-01-11 rev v4.026-2-g0c6c83e
-        * GCC 6.5.0 (x86-64)
-        * GCC 8.1.0 (RISC-V)
+
 ## 1. Open Verification/TestCode/Makefile.inc and update the version number of gcc to the version you are using.
 * example (I'm using 8.1.0):
     ``` 
