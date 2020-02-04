@@ -1,6 +1,6 @@
 # How to run RSD on a Xilinx Zynq board
 
-## 0.  Tested environments.
+## 0.  Tested OS environments.
 
 * Debian 8
 * Ubuntu 18.04
