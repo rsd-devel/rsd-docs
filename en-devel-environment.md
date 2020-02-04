@@ -54,3 +54,10 @@ The following is also required to synthesize RSD for ASIC.
 | ---- | ---- |
 | Synopsys Design Compiler | O-2018.06-SP4 |
 
+## Recommended Tools
+
+* Pipeline viewer [Konata](https://github.com/shioyadan/Konata)
+    * Download and extract the pre-built binary archive.
+* [Visual Studio Code](https://code.visualstudio.com/)
+    * Please install SystemVerilog extension after introduction.
+    * We strongly recommend to use [svls-vscode](https://github.com/dalance/svls-vscode).
