@@ -5,49 +5,7 @@
 
 ## Environment
 
-* For Windows
-    * Install cygwin
-        * Make sure to install "make" at the same time
-    * You can use cygwin's python and git, but it may be better to install Windows version
-    * Note that Windows cannot be used to run RSD on a Zynq board.  
-* For Windows and Linux
-    * Install python, make, git, gcc (x86-64), gcc (RISC-V)
-* Tested environment
-    * GNU Make 4.0
-    * Python 3.4.2
-    * GCC 6.5.0 (x86-64)
-    * GCC 8.1.0 (RISC-V)
-
-### Tools required for functional simulation
-
-* One of the following is required
-    * Mentor QuestaSim or ModelSim
-    * Verilator
-    * Xilinx Vitis (including Vivado)
-* Tested environment
-    * Mentor QuestaSim 2019.4.2
-    * Verilator 4.026 2020-01-11 rev v4.026-2-g0c6c83e
-    * Xilinx Vitis 2019.2
-
-### Tools required for synthesis for Xilinx Zynq FPGA
-
-* The following is not required if you only perform functional simulation.
-    * Synopsys Synplify
-        * Used for compiling (logic synthesis) of SystemVerilog
-    * Xilinx Vitis (including Vivado)
-        * Output bitstream for FPGA based on netlist output by Synplify
-* Tested environment
-    * Synopsys Synplify 2017-03
-    * Xilinx Vitis 2019.2
-
-### Recommended tools
-
-* Pipeline viewer Konata
-    * Download and extract the pre-built binary archive from [Konata](https://github.com/shioyadan/Konata)
-* Editor
-    * [Visual Studio Code] (https://code.visualstudio.com/) is recommended
-    * Please install SystemVerilog extension after introduction
-    * It is recommended to install [svls-vscode](https://github.com/dalance/svls-vscode)
+See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the required environment.
 
 ## Setting environment variables
 * Refer to files in "Processor/Tools/SetEnv" and set environment variables
