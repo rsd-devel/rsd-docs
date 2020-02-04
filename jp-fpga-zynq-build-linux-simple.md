@@ -12,7 +12,7 @@
 ## 4   必要なものをすべてbuild     
     cd $(RSD_ROOT)/Processor/Src      
     source ../Tools/SetEnv/SetEnv.sh      
-    make arm-linux      
+    make xilinx-arm-linux      
 
 ## 5   Debianの解凍        
 $(RSD_ARM_LINUX)/ROOTFS.tar.gz を解凍 (root権限が必要)  
