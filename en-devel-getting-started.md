@@ -23,11 +23,11 @@
 * One of the following is required
     * Mentor QuestaSim or ModelSim
     * Verilator
-    * Vitis (including Vivado)
+    * Xilinx Vitis (including Vivado)
 * Tested environment
-    * QuestaSim 2019.4.2
+    * Mentor QuestaSim 2019.4.2
     * Verilator 4.026 2020-01-11 rev v4.026-2-g0c6c83e
-    * Vitis 2019.2
+    * Xilinx Vitis 2019.2
 
 ### Tools required for synthesis for Xilinx Zynq FPGA
 
@@ -38,7 +38,7 @@
         * Output bitstream for FPGA based on netlist output by Synplify
 * Tested environment
     * Synopsys Synplify 2017-03
-    * Vitis 2019.2
+    * Xilinx Vitis 2019.2
 
 ### Recommended tools
 
