@@ -39,7 +39,7 @@ Note: ```Zedboard``` is considered in the following steps.
 ## 6.  Generate the netlist file (rsd.vm) of RSD using Synplify.
 
 1.  Open Processor/Project/Synplify/ver2017-03.prj on Synplify.  
-2.  In Synplify, select "Zedboaed" in the opened project and click "Run".  
+2.  In Synplify, select "Zedboard" in the opened project and click "Run".  
 3.  If the synthesis ran successfully, rsd.vm is generated in Project/Synplify/Zedboard/.  
 
 ## 7.  Download and build all the necessary files.
