@@ -47,7 +47,7 @@ Note: ```Zedboard``` is considered in the following steps.
 cd Processor/Src/      
 make xilinx-arm-linux      
 ```
-This step may take for minutes or hours, depending on your machine and network speed.
+This step may take for minutes or hours, depending on your machine and network speed.  
 These commands generate the following files in $(RSD_ARM_LINUX)/boot.
 * ARM Linux kernel for Zynq PS (uImage) 
 * Device tree for ARM Linux kernel (devicetree.dtb)
