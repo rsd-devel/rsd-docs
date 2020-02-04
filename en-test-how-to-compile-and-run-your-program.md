@@ -1,7 +1,9 @@
 # How to compile and run your program on RSD on Verilator.
 
-## 0. Go to $RSD_ROOT/Processor/Src.
-* Make sure RSD is correctly compiled by ```make -f Makefile.verilator.mk```.
+## 0. Build RSD using Verilator.
+1. See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the required development environment.
+2. Go to $RSD_ROOT/Processor/Src.
+3. Make sure RSD is correctly compiled by ```make -f Makefile.verilator.mk```.
 
 ## 1. Open Verification/TestCode/Makefile.inc and update the version number of gcc to the version you are using.
 * example (I'm using 8.1.0):
@@ -27,7 +29,7 @@ cd Verification/TestCode/C/YourTest
 make
 ```
 * This command will compile YourTest and generate code.hex in Verification/TestCode/C/YourTest.
-## 8. Go back to $RSD_ROOT/Processor/Src, open Makefile.verilator.mk, and modify the TEST_CODE variable as below.
+## 8. Go to $RSD_ROOT/Processor/Src, open Makefile.verilator.mk, and modify the TEST_CODE variable as below.
 ```
 TEST_CODE = Verification/TestCode/C/YourTest
 ```
