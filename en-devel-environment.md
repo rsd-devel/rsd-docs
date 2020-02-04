@@ -46,6 +46,12 @@ The followings are also required to boot RSD on Xilinx Zynq FPGA boards.
 | Synopsys Synplify | M-2017.03-SP1 |
 | Xilinx Vitis (including Vivado) | 2019.2.01 |
 
+In addition, run the following command to install necessary packages via apt-get.
+```
+sudo ln -s /usr/bin/make /usr/bin/gmake  # If you use Ubuntu    
+sudo apt-get install u-boot-tools ntp device-tree-compiler    
+```
+
 ### For Synthesis for ASIC (experimental)
 
 The following is also required to synthesize RSD for ASIC.
