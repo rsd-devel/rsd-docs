@@ -39,6 +39,8 @@
     * main 関数に入る前にこれが実行される
     * スタックの初期値はここでレジスタに代入している
     * ローダ（Verification/TestCode/rsd-loader.c ）がここで呼ばれ，ROM にあるデータを RAM に展開する
+    * テキスト領域はコピーしない．ROM上で実行する
+        * 現在は Zephyr を動かす際も `CONFIG_XIP` (Execute In Place)オプションをつけてコードは ROM 上に置いたままにしている
 
 * Verification/TestCode/rsd-ld.script
     * リンカースクリプト
