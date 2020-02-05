@@ -10,6 +10,11 @@ This page considers the following three purposes.
 Please read this page carefully and setup required OS, tools, and packages.  
 The version of each software that we tested is also listed, but RSD could work with other versions.  
 
+## Related documents
+
+You must also setup some environment variables after setting up the development environment.  
+Please see [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) for the details.
+
 ## Operating System
 
 Cygwin on Windows or Linux can be used, depending on your purpose.
