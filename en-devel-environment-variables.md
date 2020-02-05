@@ -43,7 +43,7 @@ Some environment variables below are also required to simulate RSD on software s
 
     | Variable Name | Detail |
     | ---- | ---- |
-    | RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /<Xilinx tool install path>/Vivado/2019.2/bin |   
+    | RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /Xilinx_tool_install_path/Vivado/2019.2/bin |   
 
 ### For Boot on Xilinx Zynq FPGA Boards
 
