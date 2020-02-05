@@ -3,16 +3,13 @@
 * This section describes the procedure from compiling the source code to perform functional simulation.
 
 
-## Environment
+## Development Environment
 
 See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the required environment.
 
-## Setting environment variables
-* Refer to files in "Processor/Tools/SetEnv" and set environment variables
-* See "SetEnv.bat" for Windows and "SetEnv.sh" for Linux
-* At least RSD_ROOT must be set for simulation
-    * On Windows, RSD_CYGWIN_PATH must also be set
-* Set RSD_QUESTASIM_PATH when using Modelsim / QuestaSim
+## Environment Variables
+
+See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the required variables.
 
 ## Simulation on Verilator/Modelsim/QuestaSim/Vitis
 
