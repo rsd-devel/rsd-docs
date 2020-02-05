@@ -11,7 +11,7 @@ See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment)
 
 See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the required variables.
 
-## 3-1. Simulation on Verilator/Modelsim/QuestaSim/Vitis
+## 3-1. Simulation on Verilator/Modelsim/QuestaSim/Vitis(Vivado)
 
 * Move to "Processor/Src" and make as follows.
     * For Modelsim / QuestaSim
