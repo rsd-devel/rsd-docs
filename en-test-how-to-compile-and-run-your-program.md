@@ -1,9 +1,10 @@
 # How to compile and run your program on RSD on Verilator.
 
 ## 0. Build RSD using Verilator.
-1. See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the required development environment.
-2. Go to $RSD_ROOT/Processor/Src.
-3. Make sure RSD is correctly compiled by ```make -f Makefile.verilator.mk```.
+1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for ```Software simulation```.
+2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for ```Software simulation```.
+3. Go to $RSD_ROOT/Processor/Src.
+4. Make sure RSD is correctly compiled by ```make -f Makefile.verilator.mk```.
 
 ## 1. Open Verification/TestCode/Makefile.inc and update the version number of gcc to the version you are using.
 * example (I'm using 8.1.0):
