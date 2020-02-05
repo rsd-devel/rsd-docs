@@ -7,6 +7,9 @@ This page considers the following three purposes.
 * Boot on Xilinx Zynq FPGA boards
 * Synthesis for ASIC (experimental)
 
+Please read this page carefully and setup required OS, tools, and packages.  
+The version of each software that we tested is also listed, but RSD could work with other versions.  
+
 ## Operating System
 
 Cygwin on Windows or Linux can be used, depending on your purpose.
