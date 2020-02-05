@@ -33,7 +33,7 @@ The followings are required for all the three purposes on both Windows and Linux
 
 ### For Software Simulation
 
-One of the following is also required to simulate RSD on software simulators.
+One of the followings is also required to simulate RSD on software simulators.
 
 |    |  Tested version  |
 | ---- | ---- |
