@@ -35,6 +35,10 @@ See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-
 
 * See [this RSD wiki page](https://github.com/rsd-devel/rsd/wiki/en-fpga-zynq-build-linux-simple).
 
+## 3-3. Synthesis for ASIC
+
+[TODO]
+
 ## Before editing the code
 * [Coding convention](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-coding-convention)
 * [Repository update rules](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-repository-convention)
