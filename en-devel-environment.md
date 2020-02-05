@@ -28,8 +28,7 @@ The followings are required for all the three purposes on both Windows and Linux
 | ---- | ---- |
 | Git |  |
 | Python 3 | 3.4.2 |
-| GCC (x86-64) | 6.5.0 |
-| GCC (RISC-V) | 8.1.0 |
+| RISC-V GCC cross compiler | 8.1.0 |
 
 ### For Software Simulation
 
