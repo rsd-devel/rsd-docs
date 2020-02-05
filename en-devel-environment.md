@@ -13,6 +13,7 @@ The version of each software that we tested is also listed, but RSD could work w
 ## Operating System
 
 Cygwin on Windows or Linux can be used, depending on your purpose.
+Only x86-64 machines are tested.
 
 |    |  OS  |  Tested version  |
 | ---- | ---- | ---- |
