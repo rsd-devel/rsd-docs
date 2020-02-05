@@ -20,6 +20,7 @@ Start from [here](en-devel-getting-started)
 ### Development
 * [Getting started](en-devel-getting-started)
 * [Development environment](en-devel-environment)
+* [Environment variables](en-devel-environment-variables)
 * [List of directives](en-devel-directive)
 * [Coding convention](en-devel-coding-convention)
 
