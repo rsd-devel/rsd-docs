@@ -32,7 +32,7 @@ Some environment variables below are also required to simulate RSD on software s
 
     | Variable Name | Detail |
     | ---- | ---- |
-    | RSD_QUESTASIM_PATH | Specify the binary path of Modelsim or QuestaSim. |
+    | RSD_QUESTASIM_PATH | Specify the ```bin``` directory of Modelsim or QuestaSim. |
 
 * Verilator
 
