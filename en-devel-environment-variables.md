@@ -7,6 +7,8 @@ This page considers the following three purposes.
 * Boot on Xilinx Zynq FPGA boards
 * Synthesis for ASIC (experimental)
 
+Note that you must setup the [development environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) first.
+
 All the environment variables of RSD are written in SetEnv.* file in [Processor/Tools/SetEnv](https://github.com/rsd-devel/rsd/tree/master/Processor/Tools/SetEnv).
 * SetEnv.bat : for Windows
 * SetEnv.sh  : for Linux  
