@@ -1,6 +1,7 @@
 # Development Environment
 
-Development environment required for RSD depends on what you want to do.  
+This page describes the development environment required for RSD.  
+The Development environment depends on what you want to do.  
 This page considers the following three purposes.
 * Software simulation
 * Boot on Xilinx Zynq FPGA boards
