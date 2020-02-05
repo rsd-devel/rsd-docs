@@ -40,7 +40,7 @@ One of the followings is also required to simulate RSD on software simulators.
 | Mentor QuestaSim | 2019.4.2 |
 | Mentor ModelSim |  |
 | Verilator | 4.026<br>3.922 |
-| Xilinx Vitis | 2019.2.1 |
+| Xilinx Vitis (including Vivado) | 2019.2.1 |
 
 ### For Boot on Xilinx Zynq FPGA Boards
 
