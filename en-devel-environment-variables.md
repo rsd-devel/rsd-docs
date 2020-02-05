@@ -57,6 +57,7 @@ The followings are also required to boot RSD on Xilinx Zynq FPGA boards.
 ### For Synthesis for ASIC (experimental)
 
 The following is also required to synthesize RSD for ASIC.
+
 | Name of Variable | Detail |
 | ---- | ---- |
 | RSD_DC_SHELL_BIN | Specify the ```dc_shell``` directory of Design Compiler. |
