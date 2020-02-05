@@ -62,5 +62,5 @@ The following is also required to synthesize RSD for ASIC.
 
 | Variable Name | Detail |
 | ---- | ---- |
-| RSD_DC_SHELL_BIN | Specify the ```dc_shell``` directory of Design Compiler. |
+| RSD_DC_SHELL_BIN | Specify the ```dc_shell``` binary of Design Compiler. |
 
