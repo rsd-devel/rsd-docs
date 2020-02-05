@@ -40,7 +40,7 @@ One of the following is also required to simulate RSD on software simulators.
 | Mentor QuestaSim | 2019.4.2 |
 | Mentor ModelSim |  |
 | Verilator | 4.026<br>3.922 |
-| Xilinx Vitis | 2019.2.01 |
+| Xilinx Vitis | 2019.2.1 |
 
 ### For Boot on Xilinx Zynq FPGA Boards
 
@@ -49,7 +49,7 @@ The followings are also required to boot RSD on Xilinx Zynq FPGA boards.
 |    |  Tested version  |
 | ---- | ---- |
 | Synopsys Synplify | M-2017.03-SP1 |
-| Xilinx Vitis (including Vivado) | 2019.2.01 |
+| Xilinx Vitis (including Vivado) | 2019.2.1 |
 
 In addition, run the following command to install necessary packages via apt-get.
 ```
