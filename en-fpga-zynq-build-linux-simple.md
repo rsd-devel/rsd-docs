@@ -2,8 +2,8 @@
 
 ## 0.  Setup the required development environment and environment variables.
 
-1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment.
-2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables.
+1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for ```Boot on Xilinx Zynq FPGA boards```.
+2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for ```Boot on Xilinx Zynq FPGA boards```.
 
 ## 1.  Setup the environment variables of Vitis.
 ```
