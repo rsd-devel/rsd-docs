@@ -1,0 +1,63 @@
+# Environment Variables
+
+This page describes the environment variables that must be set to use RSD.
+The required environment variables depend on what you want to do.  
+This page considers the following three purposes.
+* Software simulation
+* Boot on Xilinx Zynq FPGA boards
+* Synthesis for ASIC (experimental)
+
+All the environment variables of RSD are written in SetEnv.* file in [Processor/Tools/SetEnv](https://github.com/rsd-devel/rsd/tree/master/Processor/Tools/SetEnv).
+* SetEnv.bat : for Windows
+* SetEnv.sh  : for Linux  
+
+Please copy the SetEnv.* to MySetEnv.* to create your own SetEnv file.   
+(MySetEnv.* is gitignored.)
+
+## Necessary Environment Variables
+
+The followings are necessary for all the three purposes.
+
+| Name of Variable | Detail |
+| ---- | ---- |
+| RSD_ROOT | Specify the root directory where you checked out RSD. |
+| RSD_GCC_PATH | Specify the directory that contains a RISC-V GCC binary. |
+| RSD_GCC_PREFIX | Specify the prefix of the RISC-V GCC binary.<br>Example: riscv32-unknown-elf- |
+
+### For Software Simulation
+
+Some environment variables below are also required to simulate RSD on software simulators, depending on the simulator you use.
+
+* Mentor QuestaSim, Mentor ModelSim
+
+    | Name of Variable | Detail |
+    | ---- | ---- |
+    | RSD_QUESTASIM_PATH | Specify the binary path of Modelsim or QuestaSim. |
+
+* Verilator
+
+    No additional variable is required.  
+    Make sure the ```verilator``` command is functioning.
+
+* Xilinx Vitis (Vivado)
+
+    | Name of Variable | Detail |
+    | ---- | ---- |
+    | RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /<Xilinx tool install path>/Vivado/2019.2/bin |   
+
+### For Boot on Xilinx Zynq FPGA Boards
+
+The followings are also required to boot RSD on Xilinx Zynq FPGA boards.  
+
+| Name of Variable | Detail |
+| ---- | ---- |
+| RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /Xilinx_tool_install_path/Vivado/2019.2/bin |
+| RSD_ARM_LINUX | Specify a directory where [Zynq PS Linux](https://github.com/rsd-devel/rsd/wiki/en-fpga-zynq-build-linux-simple) is downloaded and built.<br>A directory outside $(RSD_ROOT) is recommended. |
+
+### For Synthesis for ASIC (experimental)
+
+The following is also required to synthesize RSD for ASIC.
+| Name of Variable | Detail |
+| ---- | ---- |
+| RSD_DC_SHELL_BIN | Specify the ```dc_shell``` directory of Design Compiler. |
+
