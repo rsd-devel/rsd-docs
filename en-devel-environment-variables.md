@@ -1,6 +1,6 @@
 # Environment Variables
 
-This page describes the environment variables that must be set to use RSD.
+This page describes the environment variables that must be set to use RSD.  
 The required environment variables depend on what you want to do.  
 This page considers the following three purposes.
 * Software simulation
