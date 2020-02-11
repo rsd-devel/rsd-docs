@@ -21,7 +21,7 @@
 * [ディレクティブ一覧](jp-devel-directive)
 * [コーディング規約](jp-devel-coding-convention)
 * [リポジトリ更新規約](jp-devel-repository-convention)
-* [環境構築](jp-devel-setup)
+* [環境構築](https://translate.google.com/translate?hl=ja&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment)
 
 ### テスト・デバッグ
 * [テスト・プログラム](jp-test-program)
