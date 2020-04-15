@@ -15,16 +15,22 @@ source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh
 Modify the ```TARGET_BOARD``` variable.  
 Note: ```Zedboard``` is considered in the following steps.
 
-## 3.  Generate the netlist file (rsd.vm) of RSD using Synplify.
+## 3. <!-- (Optional) --> Generate the netlist file (rsd.vm) of RSD using Synplify.
 
 1.  Open Processor/Project/Synplify/ver2017-03.prj on Synplify.  
 2.  In Synplify, select "Zedboard" in the opened project and click "Run".  
-3.  If the synthesis ran successfully, rsd.vm is generated in Project/Synplify/Zedboard/.  
+3.  If the synthesis ran successfully, rsd.vm is generated in Project/Synplify/Zedboard/. 
+<!-- 
+4. Go to $(RSD_ROOT)/Processor/Src and run below command to create Vivado project.
+```
+make vivado-create-using-synplify-netlist
+```
+-->
 
 ## 4.  Download and build all the necessary files.
+* Go to $(RSD_ROOT)/Processor/Src and run below command. 
 ```
-cd Processor/Src/      
-make xilinx-arm-linux      
+make xilinx-arm-linux
 ```
 This step may take minutes or hours, depending on your machine and network speed.  
 These commands generate the following files in $(RSD_ARM_LINUX)/boot.
