@@ -1,23 +1,39 @@
 # ZYNQ むけ Linux 構築 超簡易版
 
 
-## 1   Vitis 2019.2のインストール
-## 2   必要なパッケージのインストール      
+## 1.   Vitis 2019.2のインストール
+## 2.   必要なパッケージのインストール      
     sudo ln -s /usr/bin/make /usr/bin/gmake     # Ubuntuの場合
     sudo apt-get install qemu-user-static debootstrap binfmt-support u-boot-tools ntp git device-tree-compiler     
 
-## 3   VitisとVivadoの設定        
-    source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh      
+## 3. ターゲットボードの設定
 
-## 4   必要なものをすべてbuild     
+Processor/Src/Makefiles/Vivado.inc.mk をエディタで開き，TARGET_BOARD 変数を設定する．
+* **注：以降の説明は，TARGET_BOARD に Zedboard が設定されているものとして行う．**
+
+## 3.   VitisとVivadoの設定        
+    source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh
+
+## 4. <!-- (Optional) --> Synplify を用いて RSD のネットリストを作成する．
+
+1.  Synplify で Processor/Project/Synplify/ver2017-03.prj を開く．
+2.  プロジェクト内で "Zedboard" を選択し，"Run" をクリック.  
+3.  合成がうまくいくと, Project/Synplify/Zedboard/ に rsd.vm が生成される． 
+<!-- 
+4. Go to $(RSD_ROOT)/Processor/Src and run below command to create Vivado project.
+```
+make vivado-create-using-synplify-netlist
+```
+-->
+## 5. 必要なものをすべてbuild
     cd $(RSD_ROOT)/Processor/Src      
     source ../Tools/SetEnv/SetEnv.sh      
     make xilinx-arm-linux      
 
-## 5   Debianの解凍        
+## 6. Debianの解凍        
 $(RSD_ARM_LINUX)/ROOTFS.tar.gz を解凍 (root権限が必要)  
 
-## 6   arm-linuxのIPアドレスの設定     
+## 7. arm-linuxのIPアドレスの設定     
 $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集     
 以下は192.168.1.83に設定する場合のファイル内容の例．適宜変更        
 
@@ -30,7 +46,7 @@ $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集
     gateway 192.168.1.1
     dns-nameservers 192.168.1.2
 
-## 7   SDカードの準備      
+## 8.   SDカードの準備      
     lsblk       # SDカードディレクトリの確認
     sudo fdisk /dev/sdb   (sdbは例)    # sdbは先ほどのSDカードディレクトリ
     d       すべてのパーティションの削除
@@ -47,17 +63,17 @@ $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集
     sudo cp $(RSD_ARM_LINUX)/boot/uImage $sd_dir/BOOT     
     sudo cp $(RSD_ARM_LINUX)/boot/boot.bin $sd_dir/BOOT       
 
-## 8   ZedboardにSDを入れて起動        
+## 9.   ZedboardにSDを入れて起動        
     シリアル出力に起動ログが出る        
     設定したIPアドレスにsshアクセスしてrootでログインして作業       
     ユーザー名: root        
     パスワード: rsd    
             
-## 9   プログラムローダーをscpで転送・コンパイル       
+## 10.   プログラムローダーをscpで転送・コンパイル       
   1. $(RSD_ROOT)/Processor/Project/Linux/ARM/ProgramLoader/loader.c をscpでZedboard上のDebianに転送     
   2. loader.cをコンパイル     
 
-## 10   実行するバイナリの転送と実行
+## 11.   実行するバイナリの転送と実行
   1. 実行したいプログラムの code.hex をscpでZedboard上のDebianに転送     
   2. Zedboard上のDebianで以下を実行     
     ```
