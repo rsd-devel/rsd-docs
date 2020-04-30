@@ -53,8 +53,8 @@ The followings are also required to boot RSD on Xilinx Zynq FPGA boards.
 
 In addition, run the following commands to install necessary packages via apt-get.
 ```
-sudo ln -s /usr/bin/make /usr/bin/gmake  # If you use Ubuntu    
-sudo apt-get install u-boot-tools ntp device-tree-compiler    
+alias gmake=make  # If you use Ubuntu    
+sudo apt-get install u-boot-tools ntp device-tree-compiler flex openssl   
 ```
 
 ### For Synthesis for ASIC (experimental)
