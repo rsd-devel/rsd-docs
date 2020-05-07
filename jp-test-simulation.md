@@ -12,8 +12,8 @@ Kanata や QuestaSim の波形ビューアを使ってデバッグを行いま�
 ## 使用するシミュレータ
 
 * 下記では基本的には QuestaSim を仮定していますが，Verilator や Vivado の場合でも基本的には操作は同じです．
-* Verilator の場合は，```make -f Makefile.verilator``` のように，Makefile.verilator を指定してください
-* Vivado の場合は，```make -f Makefile.vivado``` のように，Makefile.vivado を指定してください
+* Verilator の場合は，```make -f Makefile.verilator.mk``` のように，Makefile.verilator を指定してください
+* Vivado の場合は，```make -f Makefile.vivado.mk``` のように，Makefile.vivado を指定してください
 
 
 ### HDL コードのコンパイル 
