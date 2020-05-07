@@ -45,7 +45,7 @@ One of the followings is also required to simulate RSD on software simulators.
 
 ### For Boot on Xilinx Zynq FPGA Boards / Post-synthesis Simulation For FPGA
 
-The followings are also required to boot RSD on Xilinx Zynq FPGA boards.  
+The followings are also required to boot RSD on Xilinx Zynq FPGA boards or run post-synthesis simulation for FPGA.  
 
 |    |  Tested version  |
 | ---- | ---- |
@@ -70,7 +70,6 @@ sudo apt-get install u-boot-tools ntp device-tree-compiler flex openssl
     In addition, the following is required for post-synthesis simulation for the Synplify+Vivado design. 
     |    |  Tested version  |
     | ---- | ---- |
-    | Synopsys Synplify | M-2017.03-SP1 |
     | Mentor QuestaSim | 2019.4.2 |
 
 
