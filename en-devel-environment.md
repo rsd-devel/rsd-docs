@@ -44,11 +44,10 @@ One of the followings is also required to simulate RSD on software simulators.
 
 ### For Boot on Xilinx Zynq FPGA Boards
 
-The followings are also required to boot RSD on Xilinx Zynq FPGA boards.
+The followings are also required to boot RSD on Xilinx Zynq FPGA boards.  
 
 |    |  Tested version  |
 | ---- | ---- |
-| Synopsys Synplify | M-2017.03-SP1 |
 | Xilinx Vitis (including Vivado) | 2019.2.1 |
 
 In addition, run the following commands to install necessary packages via apt-get.
@@ -66,6 +65,18 @@ The following is also required to synthesize RSD for ASIC.
 | Synopsys Design Compiler | O-2018.06-SP4 |
 
 ## Recommended Tools
+
+### For Boot on Xilinx Zynq FPGA Boards
+
+RSD can be synthesized using Synopsys Synplify.  
+**In our evaluation, Synplify+Vitis provided better operating frequency than Vitis-only**.  
+We therefore recommend to use Synplify if you have its license.  
+
+|    |  Tested version  |
+| ---- | ---- |
+| Synopsys Synplify | M-2017.03-SP1 |
+
+### For Development
 
 * Pipeline viewer [Konata](https://github.com/shioyadan/Konata)
     * Download and extract the pre-built binary archive.
