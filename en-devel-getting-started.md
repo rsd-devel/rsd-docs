@@ -20,8 +20,8 @@ See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-
         make run        # run simulation
         make kanata     # run simulation & outputs a konata log file
         ```
-    * For Verilator, specify Makefile.verilator, like ```make -f Makefile.verilator```
-    * For Vivado, specify Makefile.vivado, like ```make -f Makefile.vivado```
+    * For Verilator, specify Makefile.verilator, like ```make -f Makefile.verilator.mk```
+    * For Vivado, specify Makefile.vivado, like ```make -f Makefile.vivado.mk```
 * The above sub-command is "kanata", not "konata".
 * See [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program) to learn how to compile and run your code on RSD on Verilator.
 * See [Functional simulation](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-test-simulation) for details.
