@@ -6,8 +6,8 @@
 1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for ```Boot on Xilinx Zynq FPGA boards```.
 2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for ```Boot on Xilinx Zynq FPGA boards```.
 3. (Optional, but recommended) Install Synplify.
-    * You can choose either from synthesizing using Synplify netlist and synthesizing using Vivado only  
-    * **However, Synplify+Vivado provided better operating frequency compared to Vivado only in our evaluation**  
+    * You can choose either from synthesizing using Synplify netlist and synthesizing using Vivado only.  
+    * **However, Synplify+Vivado provided better operating frequency compared to Vivado only in our evaluation**.  
 
 ## 1.  Setup the environment variables of Vitis.
 ```
