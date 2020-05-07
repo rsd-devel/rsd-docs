@@ -1,4 +1,4 @@
-# Run post-synthesis (implementation) simulation
+# Run post-synthesis (implementation) simulation for FPGA
 
 This page describes the procedure to perform post-synthesis simulation.  
 This simulation may help debugging when RSD runs correctly on the functional simulation but an FPGA.  
