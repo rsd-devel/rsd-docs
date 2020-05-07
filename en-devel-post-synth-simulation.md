@@ -5,8 +5,8 @@ This simulation may help debugging when RSD runs correctly on the functional sim
 
 ## Setup the required development environment and environment variables.
 
-1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for ```Post-Synthesis Simulation```.
-2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for ```Post-Synthesis Simulation```.
+1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for ```Boot on Xilinx Zynq FPGA Boards```.
+2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for ```Boot on Xilinx Zynq FPGA Boards```.
 3. (Optional) Install Synplify.
 
 ## For using Vivado only  
