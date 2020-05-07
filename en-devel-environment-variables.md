@@ -56,7 +56,7 @@ The followings are also required to boot RSD on Xilinx Zynq FPGA boards or run p
 | Variable Name | Detail |
 | ---- | ---- |
 | RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /Xilinx_tool_install_path/Vivado/2019.2/bin |
-| RSD_ARM_LINUX | Specify a directory where you want to download and build a RSD bitstream and all necessary files for boot  on Xilinx Zynq FPGA boards.<br>A directory outside $(RSD_ROOT) is recommended. |
+| RSD_ARM_LINUX | Specify a directory where you want to download and build all necessary files for boot on Xilinx Zynq FPGA boards.<br>A directory outside $(RSD_ROOT) is recommended. |
 
 ### For Synthesis for ASIC (experimental)
 
