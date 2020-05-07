@@ -31,13 +31,7 @@ This simulation may help debugging when RSD runs correctly on the functional sim
     make -f Makefile.vivado.mk post-synthesis-clean
     ```
 
-## For using synplify netlist
-
-### 0. Requirements
-* Synplify v2017-02
-* QuestaSim
-* Vivado 2019.2
-
+## For using synplify netlist  
 ### 1. Generate the netlist file (rsd.vm) of RSD using Synplify.
 
 1. Open Processor/Project/Synplify/ver2017-03.prj on Synplify.  
