@@ -2,9 +2,10 @@
 
 This page describes the environment variables that must be set to use RSD.  
 The required environment variables depend on what you want to do.  
-This page considers the following three purposes.
+This page considers the following four purposes.
 * Software simulation
 * Boot on Xilinx Zynq FPGA boards
+* Post-synthesis Simulation For FPGA
 * Synthesis for ASIC (experimental)
 
 Note that you must setup the [development environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) first.
@@ -18,7 +19,7 @@ Please copy the SetEnv.* to MySetEnv.* to create your own SetEnv file.
 
 ## Necessary Environment Variables
 
-The followings are necessary for all the three purposes.
+The followings are necessary for all the four purposes.
 
 | Variable Name | Detail |
 | ---- | ---- |
@@ -48,9 +49,9 @@ Some environment variables below are also required to simulate RSD on software s
     | ---- | ---- |
     | RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /Xilinx_tool_install_path/Vivado/2019.2/bin |   
 
-### For Boot on Xilinx Zynq FPGA Boards
+### For Boot on Xilinx Zynq FPGA Boards / Post-synthesis Simulation For FPGA
 
-The followings are also required to boot RSD on Xilinx Zynq FPGA boards.  
+The followings are also required to boot RSD on Xilinx Zynq FPGA boards or run post-synthesis simulation for FPGA.  
 
 | Variable Name | Detail |
 | ---- | ---- |
