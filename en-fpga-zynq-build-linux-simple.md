@@ -46,7 +46,7 @@ This step may take minutes or hours, depending on your machine and network speed
 
 A Debian rootfs for Zynq PS (ROOTFS.tar.gz) is also downloaded in $(RSD_ARM_LINUX).
 
-**If you want to add your new source files into Vivado project, please refer "Add New Files into Project" in [this page](en-fpga-post-synth-simulation.md)**
+**If you want to add your new source files into Vivado project, please refer "Add New Files into Project" in [this page](en-fpga-post-synth-simulation)**
 
 ## 5.  Extract the Debian rootfs for Zynq PS (ROOTFS.tar.gz).
 
