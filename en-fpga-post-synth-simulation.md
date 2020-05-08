@@ -61,3 +61,26 @@ make post-synthesis
     ```
     make post-synthesis-clean
     ```
+
+# Add New Files into Project
+## For using Vivado only  
+* Open Processor/Src/Makefiles/CoreSources.inc.mk and add new source file name in this file, according to the file type.
+    * if you want to add new module file, append to `TYPES` variable
+        ```
+        MODULES  = \
+            Main_Zynq_Wrapper.sv \
+            Main_Zynq.sv \
+            Core.sv \
+            ...
+        ```
+    * The below table summarizes variables for each file type
+
+    | File Type | Variable in CoreSources.inc.mk |
+    | ---- | ---- |
+    | Package | TYPES |
+    | Module / Interface | MODULES |
+    | Test Module | TEST_MODULES |
+    | Header File | HEADERS |
+
+## For using synplify netlist
+* Launch Synplify and add your new files into the project.
