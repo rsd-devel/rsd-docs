@@ -25,7 +25,7 @@ Only x86-64 machines are tested.
 
 ## Necessary Dependencies
 
-The followings are required for all the three purposes on both Windows and Linux.
+The followings are required for all the four purposes on both Windows and Linux.
 
 |    |  Tested version  |
 | ---- | ---- |
