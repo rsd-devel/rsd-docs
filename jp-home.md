@@ -32,7 +32,7 @@
 * [Coremark について](jp-test-coremark)
 * [Verilator による機能シミュレーション](jp-test-verilator)
 * [QEMU との実行結果の比較](jp-test-qemu)
-* [自分のプログラムをコンパイルして実行する方法（自動翻訳）](https://translate.google.com/translate?hl=jp&sl=en&tl=jp&u=https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program)
+* [自分のプログラムをコンパイルして実行する方法（自動翻訳）](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program)
 
 ### アーキテクチャ
 * [メモリ・マップ](jp-arch-mem-map)
