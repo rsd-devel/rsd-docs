@@ -22,6 +22,7 @@
 * [コーディング規約](jp-devel-coding-convention)
 * [リポジトリ更新規約](jp-devel-repository-convention)
 * [環境構築](https://translate.google.com/translate?hl=ja&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment)
+* [ツール導入手順](jp-devel-tools)
 
 ### テスト・デバッグ
 * [テスト・プログラム](jp-test-program)
