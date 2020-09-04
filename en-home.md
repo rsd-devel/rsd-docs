@@ -25,6 +25,7 @@ Start from [here](en-devel-getting-started)
 * [Coding convention](en-devel-coding-convention)
 
 ### Architecture
+* [Binary](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-arch-binary)
 * [Microarchitecture](en-arch-microarch)
 
 ### Test & Debugging
