@@ -8,14 +8,13 @@
 * 32ビットの論理アドレスから，物理アドレスへの変換が行われる
     * 各キャッシュや LSQ ではこの物理アドレスに基づいて処理が行われる
     * 論理から物理アドレスへのマッピングは，現在は固定ルールで行われる
-    * 物理アドレスは，メモリと IO で別れている（１ビットのフラグで識別）
 * アドレス変換時に論理アドレスの範囲がチェックされ，無効な場合は例外が発生する
-* 物理メモリの実際の容量は Src/BasicType.sv の MEMORY\_ADDR\_BIT\_SIZE によって決められる.
+* 物理メモリの実際の容量は Src/BasicType.sv の MEMORY\_ADDR\_BIT\_SIZE によって決められる．現在のRSDの物理アドレス幅はisIOも含めて21-bitである．
 
 ## アドレス・マッピング
 
 物理アドレスは，下記のように最上位ビットがisIOのpacked structで定義される．
-現在のRSDの物理アドレス幅はisIOも含めて21-bitである．
+
 ```
     typedef struct packed {
         logic isIO; // True if address is IO
