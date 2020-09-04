@@ -36,6 +36,7 @@
 
 ### アーキテクチャ
 * [メモリ・マップ](jp-arch-mem-map)
+* [バイナリ](jp-arch-binary)
 * [マイクロアーキテクチャ](jp-arch-microarch)
 
 ### 合成
