@@ -44,7 +44,7 @@ RSD外部のプログラムローダーの実装は，RSDの動作環境ごと�
 |Verilator|[C++ test bench code](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/SysDeps/Verilator/TestMain.cpp) directly initializes the ROM|
 |Vivado(Functional)|[SystemVerilog test bench code](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestMain.sv) initializes the ROM using $readmemh|
 |Vivado(Post-synthesis)|Vivado synthesizes the ROM with a code.hex using $readmemh|
-|Xilinx Zynq FPGA|[C++ loader](https://github.com/rsd-devel/rsd/blob/master/Processor/Project/Vivado/ARM_Linux/ProgramLoader/loader.c) on ARM host processor loads a code.hex|
+|Xilinx Zynq FPGA|[C++ loader](https://github.com/rsd-devel/rsd/blob/master/Processor/Project/Vivado/ARM_Linux/ProgramLoader/loader.c) on an ARM host processor loads a code.hex|
 
 この仕様によりRAM領域に割り当てられたセクションはVMA≠LMAとなるため，バイナリがロードされた後にROM領域からRAM領域へのコピーが必要になります．
 具体的には，RSDはmain関数に入る前のスタートアップルーチンで.dataセクションをROM領域からRAM領域にコピーし，.bssセクションが割り当てられたRAM領域を初期化します．
