@@ -37,6 +37,13 @@ RSDのVMA空間にはROM領域とRAM領域があり，バイナリの.textセク
 バイナリのすべてのセクションは，まず始めにRSD外のプログラムローダーによってROM領域にロードされます．
 つまり，VMA空間ではRAM領域に割り当てられた.dataセクションなどもすべてROM領域にロードされます．
 ここで各セクションがROM領域にロードされる際のアドレスをLMA(Load Memory Address)と呼びます．
+RSD外部のプログラムローダーの実装は，RSDの動作環境ごとに以下の通りです．
+|動作環境|プログラムローダー|
+|-------|-----------------|
+|QuestaSim|[Test bench code](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestMain.sv) initializes the ROM using $readmemh|
+|Verilator|[Test bench code](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/SysDeps/Verilator/TestMain.cpp) directly initializes the ROM|
+|Vivado(Functional)|[Test bench code](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestMain.sv) initializes the ROM using $readmemh|
+|Vivado(Post-synthesis)|Vivado synthesizes the ROM with a code.hex using $readmemh|
 
 この仕様によりRAM領域に割り当てられたセクションはVMA≠LMAとなるため，バイナリがロードされた後にROM領域からRAM領域へのコピーが必要になります．
 具体的には，RSDはmain関数に入る前のスタートアップルーチンで.dataセクションをROM領域からRAM領域にコピーし，.bssセクションが割り当てられたRAM領域を初期化します．
