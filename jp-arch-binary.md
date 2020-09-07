@@ -48,6 +48,7 @@ RSD外部のプログラムローダーの実装は，RSDの動作環境ごと�
 
 この仕様によりRAM領域に割り当てられたセクションはVMA≠LMAとなるため，バイナリがロードされた後にROM領域からRAM領域へのコピーが必要になります．
 具体的には，RSDはmain関数に入る前のスタートアップルーチンで.dataセクションをROM領域からRAM領域にコピーし，.bssセクションが割り当てられたRAM領域を初期化します．
+このコピー操作の実装は[このファイル](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/rsd-loader.c)にあります．
 一方，ROM領域に割り当てられるセクション(.textなど)はVMA=LMAとなるように設定されるため，コピーなどは不要です．
 
 まとめると，RSDの起動時のバイナリ(code.hex)のロードは以下のフローで行われます．
