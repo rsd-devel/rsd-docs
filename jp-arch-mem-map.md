@@ -13,10 +13,11 @@
 
 ## アドレス・マッピング
 
-物理アドレスは，下記のように最上位ビットがisIOのpacked structで定義される．
+物理アドレスは，下記のように最上位ビットがisUncachableとisIOのpacked structで定義される．
 
 ```
     typedef struct packed {
+        logic isUncachable // True if address is uncachable
         logic isIO; // True if address is IO
         PhyRawAddrPath addr;
     } PhyAddrPath;
