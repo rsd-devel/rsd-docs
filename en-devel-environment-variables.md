@@ -26,7 +26,6 @@ The followings are necessary for all the four purposes.
 | RSD_ROOT | Specify the root directory where you checked out RSD. |
 | RSD_GCC_PATH | Specify the directory that contains a RISC-V GCC binary. |
 | RSD_GCC_PREFIX | Specify the prefix of the RISC-V GCC binary.<br>Example: riscv32-unknown-elf- |
-| RSD_GCC_VERSION | Specify the version number of the RISC-V gcc cross compiler.<br>Example: 8.1.0 |
 
 ### For Software Simulation
 
