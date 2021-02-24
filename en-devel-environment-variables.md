@@ -39,8 +39,9 @@ Some environment variables below are also required to simulate RSD on software s
 
 * Verilator
 
-    No additional variable is required.  
-    Make sure the ```verilator``` command is functioning.
+    | Variable Name | Detail |
+    | ---- | ---- |
+    | RSD_VERILATOR_BIN | Specify the path of a ```verilator``` binary. |
 
 * Xilinx Vitis (Vivado)
 
