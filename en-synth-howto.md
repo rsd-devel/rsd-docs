@@ -1,5 +1,11 @@
 # Basic synthesis procedure (require both Vivado and Synplify)
-This section describes the procedure for the synthesis using Vivado and Synplify
+* This section describes the procedure for the synthesis using Vivado and Synplify
+* There are two ways to synthesize RSDs for Zynq FPGAs
+    1. Boot RSD via ARM Linux on Zynq
+        * See [here](en-fpga-zynq-build-linux-simple)
+    2. Boot RSD directly without ARM Linux
+* This page describes the second method.
+
 
 ## Preparation
 Prepare a synthesis environment based on [this page](https://translate.google.com/translate?hl=en&sl=ja&tl=en&u=https://github.com/rsd-devel/rsd/wiki/jp-devel-vivado).
@@ -15,7 +21,7 @@ Prepare a synthesis environment based on [this page](https://translate.google.co
 Set target board name to TARGET_BOARD of $(RSD_ROOT)/Processor/Src/Makefiles/Vivado.inc.mk
 (Compatible boards as of 06.24.2017)
 
-* Zedboard
+* ZedBoard
 * ZC706 (provisional)
 
 
