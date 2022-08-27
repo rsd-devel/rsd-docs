@@ -1,21 +1,18 @@
 # Environment Variables
 
-This page describes the environment variables that must be set to use RSD.  
-The required environment variables depend on what you want to do.  
-This page considers the following four purposes.
-* Software simulation
-* Boot on Xilinx Zynq FPGA boards
-* Post-synthesis Simulation For FPGA
-* Synthesis for ASIC (experimental)
-
-Note that you must setup the [development environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) first.
-
-All the environment variables of RSD are written in SetEnv.* file in [Processor/Tools/SetEnv](https://github.com/rsd-devel/rsd/tree/master/Processor/Tools/SetEnv).
-* SetEnv.bat : for Windows
-* SetEnv.sh  : for Linux  
-
-Please copy the SetEnv.* to MySetEnv.* to create your own SetEnv file.   
-(MySetEnv.* is gitignored.)
+* This page describes the environment variables that must be set to use RSD.  
+    * The required environment variables depend on what you want to do.  
+* This page considers the following four purposes.
+    * Software simulation
+    * Boot on Xilinx Zynq FPGA boards
+    * Post-synthesis Simulation For FPGA
+    * Synthesis for ASIC (experimental)
+* How to:
+    * All the environment variables of RSD are written in SetEnv.* file in [Processor/Tools/SetEnv](https://github.com/rsd-devel/rsd/tree/master/Processor/Tools/SetEnv).
+        * SetEnv.bat : for Windows
+        * SetEnv.sh  : for Linux  
+    * Please copy the SetEnv.* to MySetEnv.* to create your own SetEnv file. (MySetEnv.* is gitignored.)
+    * Note that you must setup the [development environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) first.
 
 ## Necessary Environment Variables
 

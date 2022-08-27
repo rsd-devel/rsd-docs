@@ -1,20 +1,19 @@
 # Development Environment
 
-This page describes the development environment required for RSD.  
-The environment depends on what you want to do.  
-This page considers the following four purposes.
-* Functional simulation
-* Boot on Xilinx Zynq FPGA boards
-* Post-Synthesis Simulation For FPGA
-* Synthesis for ASIC (experimental)
-
-Please read this page carefully and setup required OS, tools, and packages.  
-The version of each software that we tested is also listed, but RSD could work with other versions.  
+* This page describes the development environment required for RSD.  
+    * The environment depends on what you want to do.  
+* This page considers the following four purposes.
+    * Functional simulation
+    * Boot on Xilinx Zynq FPGA boards
+    * Post-Synthesis Simulation For FPGA
+    * Synthesis for ASIC (experimental)
+* Please read this page carefully and setup required OS, tools, and packages.  
+* The version of each software that we tested is also listed, but RSD could work with other versions.  
 
 ## Operating System
 
-Cygwin on Windows or Linux can be used, depending on your purpose.  
-Only x86-64 machines are tested.
+* Linux or Cygwin on Windows can be used, depending on your purpose.  
+* Only x86-64 machines are tested.
 
 |    |  OS  |  Tested version  |
 | ---- | ---- | ---- |
@@ -57,23 +56,22 @@ alias gmake=make  # If you use Ubuntu
 sudo apt-get install u-boot-tools ntp device-tree-compiler flex openssl   
 ```
 
-* **(Optional)**  
-    RSD can be synthesized using Synopsys Synplify.  
-    **In our evaluation, Synplify+Vivado provided better operating frequency than Vivado-only**.  
-    We therefore recommend to use Synplify if you have its license.  
-    The following is required for running the Synplify+Vivado design on Xilinx Zynq FPGA boards.
-
+### Synplify (Optional, but recommended)
+* RSD can be synthesized using Synopsys Synplify.  
+    * **In our evaluation, Synplify+Vivado provided better operating frequency than Vivado-only**.  
+* We therefore recommend to use Synplify if you have its license.  
+* The following is required for running the Synplify+Vivado design on Xilinx Zynq FPGA boards.
     |    |  Tested version  |
     | ---- | ---- |
     | Synopsys Synplify | M-2017.03-SP1 |
 
-    In addition, the following is required for post-synthesis simulation for the Synplify+Vivado design. 
+* In addition, the following is required for post-synthesis simulation for the Synplify+Vivado design. 
     |    |  Tested version  |
     | ---- | ---- |
     | Mentor QuestaSim | 2019.4.2 |
 
 
-### For Synthesis for ASIC (experimental)
+## For Synthesis for ASIC (experimental)
 
 The following is also required to synthesize RSD for ASIC.
 
