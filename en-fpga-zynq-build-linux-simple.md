@@ -137,11 +137,11 @@ Note: root privileges are required.
 
 ## 11. How to execute when re-synthesizing
 
-1. Regenerate boot image (boot.bin) containing RSD bitstream file
+1. Regenerate boot image (boot.bin) containing RSD bitstream file in your local machine
     ```bash
     make -f Makefile.(synplify|vivado).mk xilinx-arm-linux
     ```
-2. mount the BOOT partition
+2. Mount the BOOT partition in Zynq 
     ```bash
     mkdir boot
     mount /dev/mmcblk0p1 boot

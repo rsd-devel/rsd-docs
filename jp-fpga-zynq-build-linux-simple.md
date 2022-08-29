@@ -50,7 +50,7 @@ VivadoのみでRSDを合成する場合は，この手順は不要です
     * ARM Linux カーネル用デバイスツリー (devicetree.dtb)
     * RSD ビットストリームファイルを含むブートイメージ (boot.bin)
 * Zynq PS 用 Debian rootfs (ROOTFS.tar.gz) も $(RSD_ARM_LINUX) にダウンロードされます
-* **新しいソースファイルをVivadoプロジェクトに追加する場合は，[この](en-fpga-post-synth-simulation) の "Add New Files into Project" を参照してください**
+* **新しいソースファイルをVivadoプロジェクトに追加する場合は，[ここ](en-fpga-post-synth-simulation) の "Add New Files into Project" を参照してください**
 
 
 ## 5. Debianの解凍        
@@ -141,11 +141,11 @@ dns-nameservers 192.168.1.2
 
 ## 11. 再合成時の実行方法
 
-1. RSD ビットストリームファイルを含むブートイメージ (boot.bin) を再生成
+1. ローカルで RSD ビットストリームファイルを含むブートイメージ (boot.bin) を再生成
     ```bash
     make -f Makefile.(synplify|vivado).mk xilinx-arm-linux
     ```
-2. BOOT パーティションをマウント
+2. Zynq 側で BOOT パーティションをマウント
     ```bash
     mkdir boot
     mount /dev/mmcblk0p1 boot

@@ -2,6 +2,7 @@
     "cSpell.words": [
         "ASIC",
         "bitstream",
+        "bootable",
         "coremark",
         "Cygwin",
         "devicetree",
@@ -13,6 +14,7 @@
         "Makefiles",
         "minicom",
         "mkdir",
+        "mmcblk",
         "msdos",
         "netlist",
         "ROOTFS",
