@@ -12,6 +12,7 @@
         "inet",
         "Makefiles",
         "minicom",
+        "mkdir",
         "msdos",
         "netlist",
         "ROOTFS",
