@@ -4,12 +4,13 @@
 
 ## 1. 環境構築
 
-* [ここ](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment) を参照して，必要なツールをインストールしてください
+* [ここ](en-devel-environment) 
+（[日本語版](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment)）を参照して，必要なツールをインストールしてください
 
 
 ## 2. 環境変数の設定
 
-* [ここ](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) を参照して，環境変数を設定してください
+* [ここ](en-devel-environment-variables)（[日本語版](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables)） を参照して，環境変数を設定してください
 
 
 ## 3. シミュレーション

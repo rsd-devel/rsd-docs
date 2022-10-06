@@ -15,42 +15,46 @@
 * Linux or Cygwin on Windows can be used, depending on your purpose.  
 * Only x86-64 machines are tested.
 
-|    |  OS  |  Tested version  |
-| ---- | ---- | ---- |
+|      |  OS  |  Tested version     |
+| ---- | ---- | ----                |
 | Functional simulation | Windows<br>Linux | Cygwin on Windows 10<br>Debian 8<br>Ubuntu 18.04 | 
 | Boot on Xilinx Zynq FPGA boards | Linux | Debian 8<br>Ubuntu 18.04 | 
 | Post-Synthesis Simulation For FPGA | Linux | Debian 8<br>Ubuntu 18.04 | 
 | Synthesis for ASIC | Linux | Debian 8<br>Ubuntu 18.04 | 
 
+
 ## Necessary Dependencies
 
-The followings are required for all the four purposes on both Windows and Linux.
+* The followings are required for all the four purposes on both Windows and Linux.
 
-|    |  Tested version  |
-| ---- | ---- |
-| Git |  |
-| Python 3 | 3.4.2 |
-| RISC-V GCC cross compiler | 8.1.0 |
+|                           |  Tested version   |
+| ----                      | ----              |
+| Git                       |                   |
+| Python 3                  | 3.4.2             |
+| RISC-V GCC cross compiler | 8.1.0             |
+
 
 ### For Functional Simulation
 
-One of the followings is also required to simulate RSD on software simulators.
+* One of the followings is also required to simulate RSD on software simulators.
 
-|    |  Tested version  |
-| ---- | ---- |
-| Mentor QuestaSim | 2019.4.2 |
-| Verilator | 4.026<br>3.922 |
-| Xilinx Vitis (including Vivado) | 2019.2.1 |
+|                                   |  Tested version   |
+| ----                              | ----              |
+| Mentor QuestaSim                  | 2019.4.2          |
+| Verilator                         | 4.026<br>3.922    |
+| Xilinx Vitis (including Vivado)   | 2019.2.1          |
+
 
 ### For Boot on Xilinx Zynq FPGA Boards / Post-synthesis Simulation For FPGA
 
-The followings are also required to boot RSD on Xilinx Zynq FPGA boards or run post-synthesis simulation for FPGA.  
+* The followings are also required to boot RSD on Xilinx Zynq FPGA boards or run post-synthesis simulation for FPGA.  
 
-|    |  Tested version  |
-| ---- | ---- |
-| Xilinx Vitis (including Vivado) | 2019.2.1 |
+|                                   |  Tested version   |
+| ----                              | ----              |
+| Xilinx Vitis (including Vivado)   | 2019.2.1          |
 
-In addition, run the following commands to install necessary packages via apt-get.
+* In addition, run the following commands to install necessary packages via apt-get.
+
 ```
 alias gmake=make  # If you use Ubuntu    
 sudo apt-get install u-boot-tools ntp device-tree-compiler flex openssl   
@@ -61,23 +65,26 @@ sudo apt-get install u-boot-tools ntp device-tree-compiler flex openssl
     * **In our evaluation, Synplify+Vivado provided better operating frequency than Vivado-only**.  
 * We therefore recommend to use Synplify if you have its license.  
 * The following is required for running the Synplify+Vivado design on Xilinx Zynq FPGA boards.
-    |    |  Tested version  |
-    | ---- | ---- |
-    | Synopsys Synplify | M-2017.03-SP1 |
+
+|                   |  Tested version   |
+| ----              | ----              |
+| Synopsys Synplify | M-2017.03-SP1     |
 
 * In addition, the following is required for post-synthesis simulation for the Synplify+Vivado design. 
-    |    |  Tested version  |
-    | ---- | ---- |
-    | Mentor QuestaSim | 2019.4.2 |
+
+|                   |  Tested version   |
+| ----              | ----              |
+| Mentor QuestaSim  | 2019.4.2          |
 
 
 ## For Synthesis for ASIC (experimental)
 
-The following is also required to synthesize RSD for ASIC.
+* The following is also required to synthesize RSD for ASIC.
 
-|    |  Tested version  |
-| ---- | ---- |
-| Synopsys Design Compiler | O-2018.06-SP4 |
+|                           |  Tested version   |
+| ----                      | ----              |
+| Synopsys Design Compiler  | O-2018.06-SP4     |
+
 
 ## Recommended Tools
 
@@ -89,5 +96,5 @@ The following is also required to synthesize RSD for ASIC.
 
 ## Related documents
 
-You must also setup some environment variables after setting up the development environment.  
-Please see [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) for the details.
+* You must also setup some environment variables after setting up the development environment.  
+* Please see [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) for the details.
