@@ -10,17 +10,18 @@
 * Please read this page carefully and setup required OS, tools, and packages.  
 * The version of each software that we tested is also listed, but RSD could work with other versions.  
 
+
 ## Operating System
 
 * Linux or Cygwin on Windows can be used, depending on your purpose.  
 * Only x86-64 machines are tested.
 
-|      |  OS  |  Tested version     |
-| ---- | ---- | ----                |
-| Functional simulation | Windows<br>Linux | Cygwin on Windows 10<br>Debian 8<br>Ubuntu 18.04 | 
-| Boot on Xilinx Zynq FPGA boards | Linux | Debian 8<br>Ubuntu 18.04 | 
-| Post-Synthesis Simulation For FPGA | Linux | Debian 8<br>Ubuntu 18.04 | 
-| Synthesis for ASIC | Linux | Debian 8<br>Ubuntu 18.04 | 
+|                                       | OS    | Tested version            |
+| ----                                  | ----  | ----                      |
+| Functional simulation                 | Linux | Debian 8<br>Ubuntu 20.04  | 
+| Boot on Xilinx Zynq FPGA boards       | Linux | Debian 8<br>Ubuntu 20.04  | 
+| Post-Synthesis Simulation For FPGA    | Linux | Debian 8<br>Ubuntu 20.04  | 
+| Synthesis for ASIC                    | Linux | Debian 8<br>Ubuntu 20.04  | 
 
 
 ## Necessary Dependencies
@@ -58,6 +59,7 @@
 ```
 alias gmake=make  # If you use Ubuntu    
 sudo apt-get install u-boot-tools ntp device-tree-compiler flex openssl   
+sudo apt-get install libtinfo5
 ```
 
 ### Synplify (Optional, but recommended)
