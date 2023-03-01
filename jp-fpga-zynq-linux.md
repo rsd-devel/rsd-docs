@@ -1,13 +1,14 @@
 # ZYNQ の PS 向けの Linux  
 
-おおまかに，ZYNQ は ARM ハードプロセッサを中心に構成される非リコンフィギャラブルな PS (Processing System) 部と，FPGA を中心に構成されるリコンフィギャラブルな PL (Programmagle Logic) 部で構成されています． 
-RSD の ZYNQ への実装に際し，開発における利便性やシステムコール命令のサポートのために PS 部で Linux を動作させます．  
-このページではその Linux について説明します．  
-**RSD 上で動作する Linux についてではないことに注意してください．**  
-ここに書いてある内容は Xilinx Zynq-7000 向けです．  
-このページでは，ZYNQ についての基本的な知識は省略しています．  
-ZYNQ についての基本的な情報は[公式ドキュメント](https://japan.xilinx.com/support/documentation/user_guides/j_ug585-Zynq-7000-TRM.pdf)を参照してください．  
-**また，このページの記述は [zynq向けのシステムアーキテクチャ](jp-fpga-zynq-arch) のシステムアーキテクチャを前提としたものとなっているので，先にそちらを読むことをお勧めします．**  
+* ZYNQ とは
+    * おおまかに，ZYNQ は ARM ハードプロセッサを中心に構成される非リコンフィギャラブルな PS (Processing System) 部と，FPGA を中心に構成されるリコンフィギャラブルな PL (Programmagle Logic) 部で構成されています． 
+    * このページでは，ZYNQ についての基本的な知識は省略しています．  
+    * ZYNQ についての基本的な情報は[公式ドキュメント](https://japan.xilinx.com/support/documentation/user_guides/j_ug585-Zynq-7000-TRM.pdf)を参照してください．  
+* RSD の ZYNQ への実装に際し，開発における利便性やシステムコール命令のサポートのために PS 部で Linux を動作させます．
+    * このページではその Linux について説明します．  
+        * **RSD 上で動作する Linux についてではないことに注意してください．**  
+    * ここに書いてある内容は Xilinx Zynq-7000 向けです．  
+    * **また，このページの記述は [zynq向けのシステムアーキテクチャ](jp-fpga-zynq-arch) のシステムアーキテクチャを前提としたものとなっているので，先にそちらを読むことをお勧めします．**  
 
 ## 概要 
 PS 部で Linux を動作させるためには，主に以下の要素が必要になります．  
@@ -27,7 +28,7 @@ PS 部で Linux を動作させるためには，主に以下の要素が必要�
 
 ## ターゲットボードの設定
 
-$(RSD\_ROOT)/Processor/Src/MakefileのTARGET\_BOARDに対象のボード名を設定  
+"$(RSD\_ROOT)/Processor/Src/MakefileのTARGET\_BOARD" に対象のボード名を設定  
 (07.04.2017現在の対応ボード)
 
 * Zedboard

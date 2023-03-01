@@ -40,16 +40,17 @@
 * [マイクロアーキテクチャ](jp-arch-microarch)
 
 ### 合成
-* [制約](jp-synth-constrain)
+* [合成方法](jp-synth-howto)
+* [制約とは](jp-synth-constrain)
 * [合成結果を使ったシミュレーション](jp-synth-simulation)
-* [合成の手順](jp-synth-howto)
 * [Synplify による合成結果の確認](jp-synth-synplify)
 
-### FPGA (ZYNQ 向け合成時)
+### FPGA ZYNQ 向けの情報
 * [クロック・ジェネレータ](jp-fpga-zynq-clock)   
 * [メモリ・コントローラ](jp-fpga-zynq-mem-controller)
 * [システム・アーキテクチャ](jp-fpga-zynq-arch)
 * [PS 部の Linux](jp-fpga-zynq-linux)                
-* [Linux の構築方法（詳細）](jp-fpga-zynq-build-linux-detail)
-* [Linux の構築方法（簡易版）](jp-fpga-zynq-build-linux-simple)    
+* [PS 部用 Linux の構築方法](jp-fpga-zynq-build-linux)
+* [ZYNQ において Linux を介して起動する場合の合成方法](jp-fpga-zynq-synth-for-linux)
+* [ZYNQ において直接起動する場合の合成方法](jp-fpga-zynq-synth-for-baremetal)
 
