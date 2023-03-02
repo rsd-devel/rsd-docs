@@ -106,6 +106,9 @@ Note: root privileges are required.
     sudo cp $(RSD_ARM_LINUX)/boot/devicetree.dtb BOOT_MNT
     sudo cp $(RSD_ARM_LINUX)/boot/uImage BOOT_MNT
     sudo cp $(RSD_ARM_LINUX)/boot/boot.bin BOOT_MNT
+    # You must unmount these directories!
+    sudo umount BOOT_MNT
+    sudo umount ROOTFS_MNT
     ```
 
 ## 8. Insert the SD card into ZedBoard and boot.  
@@ -120,7 +123,7 @@ Note: root privileges are required.
 
 ## 9. Send and compile the RSD program loader.  
 
-1.  Send Processor/Project/Linux/ARM/ProgramLoader/loader.c to ZedBoard via SCP.
+1.  Send $(RSD_ROOT)/Processor/Project/Vivado/ARM_Linux/ProgramLoader/loader.c to ZedBoard via SCP.
 2.  Compile loader.c on ZedBoard.
 
 

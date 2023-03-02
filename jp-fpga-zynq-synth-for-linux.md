@@ -44,12 +44,14 @@ VivadoのみでRSDを合成する場合は，この手順は不要です
         ```bash
         make -f Makefile.synplify.mk xilinx-arm-linux
         ```
-* このステップはマシンやネットワークの速度によって，数分から数時間かかる場合があります
 * これらのコマンドにより、$(RSD_ARM_LINUX)/boot に以下のファイルが生成されます
     * Zynq PS 用の ARM Linux カーネル (uImage) 
     * ARM Linux カーネル用デバイスツリー (devicetree.dtb)
     * RSD ビットストリームファイルを含むブートイメージ (boot.bin)
-* Zynq PS 用 Debian rootfs (ROOTFS.tar.gz) も $(RSD_ARM_LINUX) にダウンロードされます
+    * Zynq PS 用 Debian rootfs (ROOTFS.tar.gz) も $(RSD_ARM_LINUX) にダウンロードされます
+* 備考
+    * このステップはマシンやネットワークの速度によって，数分から数時間かかる場合があります
+    * 一部の Xilinx ツールは GUI 環境がある場合のみ起動出来ます．うまく行かない場合は GUI から上記の Make を実行してください．
 * **新しいソースファイルをVivadoプロジェクトに追加する場合は，[ここ](en-fpga-post-synth-simulation) の "Add New Files into Project" を参照してください**
 
 
@@ -89,8 +91,8 @@ dns-nameservers 192.168.1.2
     # 以下は fdisk コマンド内の操作は「;」で区切っており，一つずつ実行する
     lsblk       # SDカードディレクトリの確認
     sudo fdisk /dev/sdd         # (sdd は例) sdd は先ほど確認した SD カードデバイス
-    d                           # すべてのパーティションの削除
-    n; p; 1; Enter; +1024M;     # 第一パーティションの設定
+    d                           # すべてのパーティションの削除（削除されるまで d を繰り返す）
+    n; p; 1; Enter; +1024M;     # 第一パーティションの設定（「;」のところで実際にはエンターを押す）
     n; p; 2; Enter; Enter;      # 第二パーティションの設定
     t; 1; b;    # 第一パーティションをFAT32(Win95)に設定
     a; 1;       # ブート可能フラグの設定
@@ -110,22 +112,28 @@ dns-nameservers 192.168.1.2
     mkdir ROOTFS_MNT
     sudo mount /dev/sdd1 BOOT_MNT
     sudo mount /dev/sdd2 ROOTFS_MNT
-    sudo cp -R $(RSD_ARM_LINUX)/ROOTFS/* ROOTFS_MNT
-    sudo cp $(RSD_ARM_LINUX)/boot/devicetree.dtb BOOT_MNT
-    sudo cp $(RSD_ARM_LINUX)/boot/uImage BOOT_MNT
-    sudo cp $(RSD_ARM_LINUX)/boot/boot.bin BOOT_MNT
+    # ROOTFS を /dev/shm に展開した場合の例
+    sudo cp -R /dev/shm/ROOTFS/* ROOTFS_MNT
+    sudo cp ${RSD_ARM_LINUX}/boot/devicetree.dtb BOOT_MNT
+    sudo cp ${RSD_ARM_LINUX}/boot/uImage BOOT_MNT
+    sudo cp ${RSD_ARM_LINUX}/boot/boot.bin BOOT_MNT
+    # きちんと umount しないとコピーが反映されない可能性があるので注意！
+    sudo umount BOOT_MNT
+    sudo umount ROOTFS_MNT
     ```
 
 ## 8. ZedBoard に SD を入れて起動        
-* シリアル出力に起動ログが出る        
 * 設定した IP アドレスに ssh アクセスして root でログインして作業       
-* ユーザー名: root        
-* パスワード: rsd    
-
+    * ユーザー名: root        
+    * パスワード: rsd    
+* 起動出来ない場合は USB-UART の出力を確認する
+    * Windows の場合は UART を USB で接続して TeraTerm でシリアルポートに接続する
+    * Linux の場合は ```minicom -D /dev/ttyACM0 -b 115200```
+    * Baud rate は 115200
 
 ## 9. プログラムローダーを scp で転送・コンパイル       
 
-1. $(RSD_ROOT)/Processor/Project/Linux/ARM/ProgramLoader/loader.c を scp で ZedBoard 上の Debian に転送     
+1. $(RSD_ROOT)/Processor/Project/Vivado/ARM_Linux/ProgramLoader/loader.c を scp 等で ZedBoard 上の Debian に転送     
 2. loader.cをコンパイル     
 
 
