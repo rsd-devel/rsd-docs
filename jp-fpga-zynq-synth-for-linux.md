@@ -44,6 +44,11 @@ VivadoのみでRSDを合成する場合は，この手順は不要です
         ```bash
         make -f Makefile.synplify.mk xilinx-arm-linux
         ```
+    * *一度 Vivado/Synplify で合成を行った後に合成系を切り替える場合は必ず vivado-clean を実行すること *
+        ```bash
+        make -f Makefile.vivado.mk vivado-clean
+        make -f Makefile.synplify.mk vivado-clean
+        ```
 * これらのコマンドにより、$(RSD_ARM_LINUX)/boot に以下のファイルが生成されます
     * Zynq PS 用の ARM Linux カーネル (uImage) 
     * ARM Linux カーネル用デバイスツリー (devicetree.dtb)
