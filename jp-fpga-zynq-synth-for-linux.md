@@ -154,7 +154,7 @@ dns-nameservers 192.168.1.2
 
 ## 11. 再合成時の実行方法
 
-1. ローカルで RSD ビットストリームファイルを含むブートイメージ (boot.bin) を再生成
+1. ローカルで RSD ビットストリームファイルを含むブートイメージ（boot.bin）を再生成
     ```bash
     make -f Makefile.(synplify|vivado).mk xilinx-arm-linux
     ```
@@ -164,6 +164,7 @@ dns-nameservers 192.168.1.2
     mount /dev/mmcblk0p1 boot
     ```
 3. SCP 等で boot.bin を Zynq に転送
+    * boot.bin は ```${RSD_ARM_LINUX}/boot/boot.bin/boot.bin``` にある
     * 先ほどマウントした boot 内の boot.bin を上書きする
 4. リブートする
     ```bash

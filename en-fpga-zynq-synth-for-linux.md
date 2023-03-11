@@ -157,6 +157,7 @@ Note: root privileges are required.
     ```
 3. Transfer boot.bin to Zynq
     * Overwrite the boot.bin in the "boot" that you just mounted. 
+    * boot.bin is generated at  ```${RSD_ARM_LINUX}/boot/boot.bin/boot.bin```.
 4. Reboot
     ```bash
     shutdown -r now
