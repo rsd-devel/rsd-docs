@@ -4,7 +4,7 @@
 
 Please refer to the following link.
 
-* [An Open Source FPGA-Optimized Out-of-Order RISC-V Soft Processor](http://sv.rsg.ci.i.u-tokyo.ac.jp/pdfs/Mashimo-FPT'19.pdf)
+* [An Open Source FPGA-Optimized Out-of-Order RISC-V Soft Processor](https://www.rsg.ci.i.u-tokyo.ac.jp/members/shioya/pdfs/Mashimo-FPT%2719.pdf)
 * [面積効率を指向するプロセッサ「雷上動」の設計と実装 (Japanese)](https://repository.dl.itc.u-tokyo.ac.jp/?action=repository_action_common_download&item_id=5849&item_no=1&attribute_id=14&file_no=1)
 
 
