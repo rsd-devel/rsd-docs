@@ -25,7 +25,7 @@ PS 部で Linux を動作させるためには，主に以下の要素が必要�
 
 ## 準備
  [Vivado の初期設定](jp-devel-vivado)を元に初期設定を行っておく．  
-また，必ず Linux 上で作業してください．  
+[環境変数](jp-devel-environment-variables) も設定します．また，必ず Linux 上で作業してください．
 
 
 ## ターゲットボードの設定

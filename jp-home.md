@@ -25,7 +25,7 @@
 * [コーディング規約](jp-devel-coding-convention)
 * [リポジトリ更新規約](jp-devel-repository-convention)
 * [環境構築](jp-devel-environment)
-* [環境変数（英語）](jp-devel-environment-variables)
+* [環境変数](jp-devel-environment-variables)
 * [旧ツールの導入記録](jp-devel-tools)
 
 ### テスト・デバッグ

@@ -151,9 +151,9 @@ make test/External/riscv-arch-test/run ACT_TESTS="I-addi-00 I-sub-00"
 
 InterruptsSm は MEI/MSI/MTI と SEI/SSI/STI のenable mask，Direct/Vectored入口，委譲，混在優先度，遅延timerとWFI pollingを検査します．非同期trap PCは比較せず，cause・status・pending・回数を署名に含めます．priority検査では待機を挟んでから要求を消し，パイプライン排出とpending配信を待ちます．
 
-割り込みテストは `EnableUART_Interrupts` を有効にし，共通RTLテストベンチがUART DC1/DC3でPLIC source1を制御します．他のテストは全UART byteを保持します．アダプタはM/S contextと通常のclaim/completeを使い，CSR pending bitを強制しません．要求はモジュール入力経由でCoreへ渡り，合成ラッパではボード割り込みデバイス接続までlowに固定します．この刺激はRTLシミュレーション専用で，合成後や実機では使えません．
+割り込みテストは `EnableUART_Interrupts` を有効にし，共通RTLテストベンチがUART DC1/DC3でPLIC source1を DC1（`0x11`）で assert，DC3（`0x13`）で deassert するよう制御します．他のテストは全UART byteを保持します．アダプタはM/S contextと通常のclaim/completeを使い，CSR pending bitを強制しません．要求はモジュール入力経由でCoreへ渡り，合成ラッパではボード割り込みデバイス接続までlowに固定します．この刺激はRTLシミュレーション専用で，合成後や実機では使えません．
 
-Zifencei はRAM上の自己書換えコード，無視される非ゼロrs1/rd/funct12，rdの保持を検査し，CSRケースはmepc bit1のreadbackを検査します．参照設定は未割当アドレスでのaccess fault優先，illegal instructionとinstruction access faultのmtval=0に合わせます．
+`ACT_EXTENSIONS=Zifencei` で単独実行できます．Zifencei はRAM上の自己書換えコード，無視される非ゼロrs1/rd/funct12，rdの保持を検査し，CSRケースはmepc bit1のreadbackを検査します．参照設定は未割当アドレスでのaccess fault優先，illegal instructionとinstruction access faultのmtval=0に合わせます．
 
 Fは全5丸めモードで数値結果と例外フラグを除算・平方根も含めて検査します．参照FPプロファイルは標準のmstatus.FSを有効化し，基本 `Asm/CSR` がFS/SD，FS Off時アクセス，dirty trackingを別に検査します．SモードはBareのみで，ページングと完全なSモード適合性は対象外です．`test/ex/run`・`test/ex/build` に含まれ，実行前にfetch/setupが必要です．`test/clean` または個別のcleanで生成物を削除し，個別cleanは導入済みツールを保持します．
 

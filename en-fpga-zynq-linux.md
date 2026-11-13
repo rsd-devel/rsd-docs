@@ -8,7 +8,7 @@ The PS Linux environment needs the RSD system bitstream, first-stage bootloader 
 
 ## Setup and build
 
-Work on Linux, configure Vivado and the [environment variables](en-devel-environment-variables), and select `TARGET_BOARD=Zedboard` in `Processor/Src/Makefiles/Vivado.inc.mk`. Follow [Run RSD via Linux](en-fpga-zynq-synth-for-linux) to build and prepare the SD card.
+Work on Linux, follow [Initial Vivado setup](en-devel-vivado) and configure the [environment variables](en-devel-environment-variables), and select `TARGET_BOARD=Zedboard` in `Processor/Src/Makefiles/Vivado.inc.mk`. Follow [Run RSD via Linux](en-fpga-zynq-synth-for-linux) to build and prepare the SD card.
 
 ## Loading a program
 

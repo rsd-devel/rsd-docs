@@ -4,11 +4,11 @@ This hardware procedure retains the Zedboard and Vivado/Vitis 2019.2 environment
 
 ## 0.  Setup the required development environment and environment variables.
 
-1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for FPGA tools and board builds.
-2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for FPGA tools and board builds.
+1. See [Development Environment](en-devel-environment) and setup the development environment for FPGA tools and board builds.
+2. See [Environment Variables](en-devel-environment-variables) and set up the FPGA tools, including `RSD_VIVADO_BIN` and `RSD_ARM_LINUX`.
 3. (Optional, but recommended) Install Synplify.
     * You can choose either from synthesizing using Synplify netlist and synthesizing using Vivado only.  
-    * **However, Synplify+Vivado provided better operating frequency compared to Vivado only in our evaluation**.  
+    * A historical evaluation found a higher operating frequency with Synplify+Vivado. This is not a comparison using the current RTL and tools.
 
 ## 1.  Setup the environment variables of Vitis.
 ```bash
@@ -44,13 +44,13 @@ This procedure is unnecessary if you will synthesis RSD using Vivado only.
         make synth/synplify/clean
         ```
 
-* This step may take minutes or hours, depending on your machine and network speed.  
-* These commands generate the following files in $(RSD_ARM_LINUX)/boot.
+* This step may take minutes or hours, depending on your machine and network speed. Some Xilinx tools require a graphical session; if necessary, run make from such a session.
+* These commands generate the following files in ${RSD_ARM_LINUX}/boot.
     * ARM Linux kernel for Zynq PS (uImage) 
     * Device tree for ARM Linux kernel (devicetree.dtb)
     * Boot image including the RSD bitstream file (boot.bin)
 
-* A Debian rootfs for Zynq PS (ROOTFS.tar.gz) is also downloaded in $(RSD_ARM_LINUX).
+* A Debian rootfs for Zynq PS (ROOTFS.tar.gz) is also downloaded in ${RSD_ARM_LINUX}.
 
 **If you want to add your new source files into Vivado project, please refer "Adding RTL sources" in [this page](en-fpga-post-synth-simulation)**
 
@@ -62,12 +62,14 @@ Note: root privileges are required.
 tar -xf ROOTFS.tar.gz
 ```
 
+If extraction on NFS fails under root, use a directory under `/dev/shm`, which is memory-backed. The later copy example assumes `${RSD_ARM_LINUX}/ROOTFS`; adjust the source if you extract elsewhere.
+
 ## 6.  Set an IP address in the Debian rootfs.
 
-Edit $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfaces using a text editor.  
+Edit ${RSD_ARM_LINUX}/ROOTFS/etc/network/interfaces using a text editor.
 Note: root privileges are required.  
 Example (set the IP address statically to 192.168.1.83):  
-```
+```text
 auto lo
 iface lo inet loopback
 auto eth0
@@ -89,7 +91,7 @@ Note: root privileges are required.
     ```
     Note: ```/dev/sdd``` is considered in the following steps.
 2.  Create partitions in the SD card.          
-    ```bash
+    ```text
     # The following operations in the fdisk command are separated by ";" and are executed one by one.
     sudo fdisk /dev/sdd
     d        # Delete all the partitions in the SD card
@@ -110,10 +112,10 @@ Note: root privileges are required.
     mkdir ROOTFS_MNT
     sudo mount /dev/sdd1 BOOT_MNT
     sudo mount /dev/sdd2 ROOTFS_MNT
-    sudo cp -R $(RSD_ARM_LINUX)/ROOTFS/* ROOTFS_MNT
-    sudo cp $(RSD_ARM_LINUX)/boot/devicetree.dtb BOOT_MNT
-    sudo cp $(RSD_ARM_LINUX)/boot/uImage BOOT_MNT
-    sudo cp $(RSD_ARM_LINUX)/boot/boot.bin BOOT_MNT
+    sudo cp -R ${RSD_ARM_LINUX}/ROOTFS/* ROOTFS_MNT
+    sudo cp ${RSD_ARM_LINUX}/boot/devicetree.dtb BOOT_MNT
+    sudo cp ${RSD_ARM_LINUX}/boot/uImage BOOT_MNT
+    sudo cp ${RSD_ARM_LINUX}/boot/boot.bin BOOT_MNT
     # You must unmount these directories!
     sudo umount BOOT_MNT
     sudo umount ROOTFS_MNT
@@ -126,7 +128,7 @@ Note: root privileges are required.
     User name : root
     Password  : rsd
     ```
-* Please check the boot log via the USB-UART port if SSH connection is not established.
+* Please check the boot log via USB-UART if SSH does not connect. Use Tera Term on Windows, or `minicom -D /dev/ttyACM0 -b 115200` on Linux. The baud rate is 115200.
 
 
 ## 9. Send and compile the RSD program loader.  
@@ -138,12 +140,11 @@ Note: root privileges are required.
 ## 10. Run your program on RSD on Zedboard.
 
 1.  Send your program code.hex via SCP.
-    * See [this page](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program) to learn how to make your program code.hex.
+    * See [this page](en-test-how-to-compile-and-run-your-program) to learn how to make your program code.hex.
 2.  Run your program using the program loader.
-    ```bash
+    ```text
     # "byte size of code.hex" is the size in binary, which matches the size of code.bin
-    # Currently 98304
-    ./loader <path of code.hex> <byte size of code.hex>
+    ./loader code.hex <size-of-code.bin-in-bytes>
     ```
 
 ## 11. How to execute when re-synthesizing
@@ -159,7 +160,7 @@ Note: root privileges are required.
     ```
 3. Transfer boot.bin to Zynq
     * Overwrite the boot.bin in the "boot" that you just mounted. 
-    * boot.bin is generated at  ```${RSD_ARM_LINUX}/boot/boot.bin/boot.bin```.
+    * boot.bin is generated at  ```${RSD_ARM_LINUX}/boot/boot.bin```.
 4. Reboot
     ```bash
     shutdown -r now

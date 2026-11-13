@@ -8,7 +8,7 @@ This page concerns Xilinx Zynq-7000. Read [System architecture](en-fpga-zynq-arc
 
 RSD occupies the PL, while external memory normally connects to the ARM-based PS. PL-to-PS access can use AXI4 high-performance ports HP0–3 or general-purpose ports GP0–1. This design uses an HP port. GP ports implement a broader set of AXI features; HP ports prioritize memory throughput.
 
-AXI requests originate at a master and are handled by a slave, whose input/output directions complement the master's. The PS HP port is a slave. `Axi4Memory` provides the master interface and translates RSD read/write requests into AXI transactions.
+[AXI4](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0534b/index.html) requests originate at a master and are handled by a slave, whose input/output directions complement the master's. The PS HP port is a slave. `Axi4Memory` provides the master interface and translates RSD read/write requests into AXI transactions.
 
 ![AXI read transaction](img/axi4_read.png)
 ![AXI write transaction](img/axi4_write.png)

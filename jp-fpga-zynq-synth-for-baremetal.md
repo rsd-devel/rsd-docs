@@ -37,7 +37,7 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
 
 1. Vivado のみを使う場合
     1. Vivado でソースコードから回路を合成して Bitstream ファイル(.bit)を作成する
-    3. Bitstream ファイルを FPGA ボードに焼いて動作確認する
+    2. Bitstream ファイルを FPGA ボードに焼いて動作確認する
 2. Synplify と Vivadoを使う場合
     1. Synplify でソースコードから回路を合成してネットリスト(.vm)を作成する
     2. ネットリストを含んだシステムを Vivado で合成して Bitstream ファイル(.bit)を作成する
@@ -80,8 +80,7 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
         * Implementation Results タブでImplementation Nameに"$(TARGET\_BOARD)"と設定
         * Implementation Results タブでResult Base Nameに"rsd"と設定
     3. 画面下部のTCLコンソールで"set\_option -hdl\_define -set 適切な定義"を入力して適切なhdl\_defineを設定  
-        * (06.12.2017現在の対応リスト)  
-            * RSD\_SYNTHESIS\_ZedBoard ($(TARGET\_BOARD)=ZedBoard)
+        * `Processor/Src/Config/SynthesisMacros.sv` の現在の定義に合わせる．Zedboard 用には `RSD_SYNTHESIS_ZEDBOARD` を使う
     4. [Project Files]内の"$(TARGET\_BOARD)"を選択して[Run]でコンパイル/合成
 
 

@@ -1,6 +1,6 @@
 # Verilator による機能シミュレーション
 
-RSD では Verilator 5.054 と，共通の SystemVerilog テストベンチ `Verification/TestMain.sv` を使用します．環境構築は [はじめよう](jp-devel-getting-started) を参照してください．手動導入では `RSD_VERILATOR_BIN` に Verilator 実行ファイルを設定します．
+RSD では Verilator 5.054 と，共通の SystemVerilog テストベンチ `Verification/TestMain.sv` を使用します．環境構築は [はじめよう](jp-devel-getting-started) を参照してください．手動導入では `RSD_VERILATOR_BIN` に Verilator 実行ファイルを設定できます．省略時は `PATH` 上の `verilator` を使います．
 
 ## ビルドと実行
 
@@ -36,7 +36,7 @@ make sim/dump TEST_CODE=Verification/TestCode/C/Fibonacci
 
 ## 実装を調べる場合
 
-[Makefiles/VerilatorCore.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/VerilatorCore.inc.mk) は `TestMain` をトップとして `--main`・`--timing` で実行ループを生成します．生成モデルは `Processor/Project/Verilator/obj_dir/VTestMain` です．モデルを直接実行する場合の引数は `+TEST_CODE=...` のような plusarg 形式です．通常は make または TestDriver 経由で実行します．
+[Makefiles/VerilatorCore.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/VerilatorCore.inc.mk) と [共有オプション](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Verilator.inc.mk) は `TestMain` をトップとして `--main`・`--timing` で実行ループを生成します．生成モデルは `Processor/Project/Verilator/obj_dir/VTestMain` です．モデルを直接実行する場合の引数は `+TEST_CODE=...` のような plusarg 形式です．通常は make または TestDriver 経由で実行します．
 
 FP などの構成を変えるときは，シミュレータとテストをクリーンしてからビルドします．
 

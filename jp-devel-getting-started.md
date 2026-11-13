@@ -51,6 +51,7 @@ ModelSim/QuestaSim と Vivado XSim は別途インストールし，[環境変�
 
 ## 5. 合成・開発
 
+- [Zynq ボードでの Linux 経由起動](jp-fpga-zynq-synth-for-linux)
 - [合成手順](jp-synth-howto)
 - [合成後のシミュレーション](jp-synth-simulation)
 - [コーディング規約](jp-devel-coding-convention)

@@ -1,6 +1,6 @@
 # Synplify の合成結果の確認方法
 
-Synplify で合成後の回路の資源量とクリティカル・パスの解析方法について説明する．
+Synplify で合成後の回路の資源量とクリティカル・パスの解析方法について説明する．GUI の名前やレポートのパスはツール版・プロジェクトにより異なります．
 
 ## 準備
 
@@ -11,7 +11,7 @@ Synplify で回路合成を行っておくこと．
 ## クリティカル・パス解析
 ### スケマティックでの解析
 
-Synplify のメイン画面の上のタブ　HDL-Analist -> Technology -> Hierarchical Critical Path を選択． 
+Synplify のメイン画面の上のタブ　HDL Analyst -> Technology -> Hierarchical Critical Path を選択．
 
 回路のクリティカル・パスのブロック図が表示される．
 - この方法ではワーストケース・パスは1種類のみしか解析できない？（要調査）

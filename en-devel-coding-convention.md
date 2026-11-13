@@ -97,11 +97,11 @@ IntAdder.sv
 * Use always_comb or always_ff.
   * Do not use always
 * Do not use raw values.
-  * Always use variables or constants with meaningful names.
+  * Always define constants with meaningful names before using them.
 
 ### function and modport
 
-* When defining arguments, be sure to use typedef after typedef (except for 1-bit logic)
+* When defining arguments, first declare a named type with typedef and use that type (except for 1-bit logic)
 * For the function and modport arguments, write output in principle, and then write input in the order
 
 

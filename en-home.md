@@ -26,6 +26,7 @@ Start from [here](en-devel-getting-started)
 * [Compiler directives](en-devel-directive)
 * [Coding convention](en-devel-coding-convention)
 * [Repository update rules](en-devel-repository-convention)
+* [Older tool installation notes](en-devel-tools)
 
 ## Tests and debugging
 
@@ -54,6 +55,7 @@ Start from [here](en-devel-getting-started)
 ## Zynq FPGA
 
 * [Run RSD via Linux](en-fpga-zynq-synth-for-linux)
+* [Bare-metal ARM startup](en-fpga-zynq-synth-for-baremetal)
 * [System architecture](en-fpga-zynq-arch)
 * [Clock configuration](en-fpga-zynq-clock)
 * [Memory controller](en-fpga-zynq-mem-controller)

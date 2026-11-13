@@ -38,7 +38,7 @@ make sim/kanata TEST_CODE=Verification/TestCode/C/Fibonacci
 
 Open `Processor/Src/Kanata.log` with [Konata](https://github.com/shioyadan/Konata/releases). The make target is spelled `sim/kanata`, and the log filename starts with an uppercase `K`.
 
-To run your own program, see [Compiling and running your program](en-test-how-to-compile-and-run-your-program).
+See [Functional simulation](en-test-simulation), [Verilator waveforms](en-test-verilator), and [Compiling and running your program](en-test-how-to-compile-and-run-your-program).
 
 ## 4. Other simulators
 

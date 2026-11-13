@@ -51,28 +51,34 @@ VivadoのみでRSDを合成する場合は，この手順は不要です
         make synth/vivado/clean
         make synth/synplify/clean
         ```
-* これらのコマンドにより、$(RSD_ARM_LINUX)/boot に以下のファイルが生成されます
+* これらのコマンドにより、${RSD_ARM_LINUX}/boot に以下のファイルが生成されます
     * Zynq PS 用の ARM Linux カーネル (uImage) 
     * ARM Linux カーネル用デバイスツリー (devicetree.dtb)
     * RSD ビットストリームファイルを含むブートイメージ (boot.bin)
-    * Zynq PS 用 Debian rootfs (ROOTFS.tar.gz) も $(RSD_ARM_LINUX) にダウンロードされます
+    * Zynq PS 用 Debian rootfs (ROOTFS.tar.gz) も ${RSD_ARM_LINUX} にダウンロードされます
 * 備考
     * このステップはマシンやネットワークの速度によって，数分から数時間かかる場合があります
     * 一部の Xilinx ツールは GUI 環境がある場合のみ起動出来ます．うまく行かない場合は GUI から上記の Make を実行してください．
-* **新しいソースファイルをVivadoプロジェクトに追加する場合は，[ここ](en-fpga-post-synth-simulation) の "Adding RTL sources" を参照してください**
+* **新しいソースファイルをVivadoプロジェクトに追加する場合は，[合成後シミュレーション](jp-synth-simulation) の「その他のターゲットとソース追加」 を参照してください**
 
 
 ## 5. Debianの解凍        
-* "$(RSD_ARM_LINUX)/ROOTFS.tar.gz" を解凍
+* "${RSD_ARM_LINUX}/ROOTFS.tar.gz" を解凍
+
+```text
+tar -xf ROOTFS.tar.gz
+```
+
 * インストール対象のシステムをいじるため，この解凍は root 権限で行う必要がある
 * NFS 上などで root 権限ではうまく展開できない場合は /dev/shm 上にディレクトリを掘って使うと良い
     * /dev/shm はメモリ上の仮想ディスク
+    * 後のコピー例は `${RSD_ARM_LINUX}/ROOTFS` に展開した場合です．別の場所に展開した場合はコピー元も変更してください
 
 ## 6. arm-linuxのIPアドレスの設定     
-* $(RSD_ARM_LINUX)/ROOTFS/etc/network/interfacesを編集     
+* ${RSD_ARM_LINUX}/ROOTFS/etc/network/interfacesを編集
 * 以下は192.168.1.83に設定する場合のファイル内容の例．適宜変更        
 
-```bash
+```text
 auto lo
 iface lo inet loopback
 auto eth0
@@ -94,9 +100,8 @@ dns-nameservers 192.168.1.2
     * 以下では ```/dev/sdd``` を SD カードのデバイスとして説明します
 2. パーティションの作成
     * 
-    ```bash
+    ```text
     # 以下は fdisk コマンド内の操作は「;」で区切っており，一つずつ実行する
-    lsblk       # SDカードディレクトリの確認
     sudo fdisk /dev/sdd         # (sdd は例) sdd は先ほど確認した SD カードデバイス
     d                           # すべてのパーティションの削除（削除されるまで d を繰り返す）
     n; p; 1; Enter; +1024M;     # 第一パーティションの設定（「;」のところで実際にはエンターを押す）
@@ -119,8 +124,8 @@ dns-nameservers 192.168.1.2
     mkdir ROOTFS_MNT
     sudo mount /dev/sdd1 BOOT_MNT
     sudo mount /dev/sdd2 ROOTFS_MNT
-    # ROOTFS を /dev/shm に展開した場合の例
-    sudo cp -R /dev/shm/ROOTFS/* ROOTFS_MNT
+    # 以下は ${RSD_ARM_LINUX}/ROOTFS に展開した場合の例
+    sudo cp -R ${RSD_ARM_LINUX}/ROOTFS/* ROOTFS_MNT
     sudo cp ${RSD_ARM_LINUX}/boot/devicetree.dtb BOOT_MNT
     sudo cp ${RSD_ARM_LINUX}/boot/uImage BOOT_MNT
     sudo cp ${RSD_ARM_LINUX}/boot/boot.bin BOOT_MNT
@@ -146,12 +151,11 @@ dns-nameservers 192.168.1.2
 
 ## 10. 実行するバイナリの転送と実行
 1. 実行したいプログラムの code.hex を scp で Zedboard 上の Debian に転送\
-    * 自身で書いたプログラムを走らせる場合は [ここ](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program) を参考に
+    * 自身で書いたプログラムを走らせる場合は [ここ](jp-test-how-to-compile-and-run-your-program) を参考に
 2. Zedboard 上の Debian で以下を実行
-    ```bash
+    ```text
     # "byte size of code.hex" はバイナリ時のサイズであり，code.bin のサイズに一致
-    # 現在は 98304
-    ./loader <path of code.hex> <byte size of code.hex>
+    ./loader code.hex <size-of-code.bin-in-bytes>
     ```     
 
 ## 11. 再合成時の実行方法
@@ -166,7 +170,7 @@ dns-nameservers 192.168.1.2
     mount /dev/mmcblk0p1 boot
     ```
 3. SCP 等で boot.bin を Zynq に転送
-    * boot.bin は ```${RSD_ARM_LINUX}/boot/boot.bin/boot.bin``` にある
+    * boot.bin は ```${RSD_ARM_LINUX}/boot/boot.bin``` にある
     * 先ほどマウントした boot 内の boot.bin を上書きする
 4. リブートする
     ```bash
@@ -176,6 +180,6 @@ dns-nameservers 192.168.1.2
 
 ## 関連文章
 
-* [Zynq 上の RSD のシステムアーキテクチャ](https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-arch)
-* [Zynq 上のクロック周波数の変更方法](https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-clock)
-* [Zynq 上の RSD のメモリインターフェース](https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-mem-controller)
+* [Zynq 上の RSD のシステムアーキテクチャ](jp-fpga-zynq-arch)
+* [Zynq 上のクロック周波数の変更方法](jp-fpga-zynq-clock)
+* [Zynq 上の RSD のメモリインターフェース](jp-fpga-zynq-mem-controller)
