@@ -1,53 +1,13 @@
 # 制約ファイル
 
-## 制約ファイル 
+制約ファイルは，HDL だけでは表せないピン配置，クロック周期，配置条件などを合成・配置配線ツールへ伝えます．Vivado は XDC，Synplify は SDC/FDC 形式の制約を使用します．
 
-### 制約ファイル 
-制約ファイルは、HDLでは記述しきれない回路の設計情報を記述するものです。
-例として、以下のようなものがあります。
+## Zedboard の制約
 
-* ピン配置
-* クロック周波数
-* 使用するFPGAの資源の位置
+ピン制約は [zedboard.xdc](https://github.com/rsd-devel/rsd/blob/master/Processor/Project/Vivado/TargetBoards/Zedboard/project_src/zedboard.xdc)，プロジェクト生成とクロック設定は [Vivado スクリプト](https://github.com/rsd-devel/rsd/tree/master/Processor/Project/Vivado/TargetBoards/Zedboard/scripts/synthesis) を参照してください．
 
-処理系は、与えられた制約を完全に満たすように論理合成および配置配線を行います。
+## タイミングの確認
 
-制約ファイルで与えられる制約には、非常に多くの種類があります。
-[ISE の制約ガイド](http://www.xilinx.com/support/documentation/sw_manuals_j/xilinx14_6/cgd.pdf)なんかを見てもらえればわかると思います。
-現在の雷上動で使っているのはそのごく一部にすぎません。
-回路に新しい制約を加えたいと思った場合は、上記のようなマニュアルを読んで必要な制約を選んでください。
+クロック周期は要求するタイミング条件です．設定するだけで動作周波数が保証されるわけではなく，合成・配置配線後のレポートで制約を満たすか確認します．厳しすぎる制約や過大な資源使用量は配置配線の収束を妨げます．
 
-制約ファイルはもともと各ベンダが独自に作っていたもののようで、
-フォーマットにいくつかの種類があります。
-代表的なのものとして以下が挙げられます。
-
-* SDC : Standard Design Constraints
-* FDC : Fpga Design Constraints
-* UCF : User Constraints File (Xilinx 系？)
-
-どんな制約が使えるかは処理系ごとに違ってくるので、
-逐一処理系のマニュアルを読むのが無難です。
-
-
-### ふつうの制約ファイルの使い方 
-制約が多すぎると、いつまでたっても制約を満たす回路配置が見つからず、論理合成ないし配置配線が終了しなくなってしまいます。
-そのため、制約は必要最低限にするのがふつうです。
-必要最低限な制約とは、多くの場合は以下の2つです。
-
-* ピン配置
-* グローバル・クロックの周波数
-
-
-### クロック周波数の制約について 
-クロック周波数についての制約は非常に重要です。
-この制約を与えてやることで、回路全体がそのクロックで動作するように合成が行われます。
-高い周波数で回路を動作させるためには、制約を厳しくして論理合成と配置配線を数時間行うということも必要になります。
-
-しかし、クロック周波数についての制約をちゃんと説明するのは難しいです。筆者にできる気がしません；；
-そんなわけで、参考となる情報源を紹介しておきます。
-
-* MONOist「必修！ FPGAタイミング解析の基礎」
-    * http://monoist.atmarkit.co.jp/mn/kw/fpga_timing.html
-
-* Synopsys Timing Constraints and Optimization User Guide の 2. Clocks
-
+クロック，入出力遅延，対象外パスなどの前提を記録して結果を比較してください．[VCS によるタイミング検証](jp-synth-simulation) の `POST_IMPLEMENTATION_CLOCK_NS` と [ボードのクロック設定](jp-fpga-zynq-clock) は別の設定です．

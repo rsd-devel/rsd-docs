@@ -1,26 +1,48 @@
-# コンパイラ・ディレクティブ一覧
+# コンパイラ・ディレクティブ
 
-現在(2014/02/24)の雷上動で定義されているコンパイラ・ディレクティブの一覧。
+設定元は [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MicroArch.toml) です．共通値を `parameters`，モード別の差分を `overrides.simulation`・`overrides.synthesis` に記述します．
 
-## コンパイル時に定義されるコンパイラ・ディレクティブ 
+通常の make が `Config/MicroArchConf.sv`，`Config/MicroArchMacros.svh`，`Makefiles/MicroArch.inc.mk` を再生成します．これらは Git 管理される生成物です．直接編集せず TOML または `Config/MicroArchConf.template.sv` を変更してください．ツール・ボード固有の設定は [Config/SynthesisMacros.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Config/SynthesisMacros.sv) にあります．
 
-|名前|意味|
-|----|----|
-|RSD\_FUNCTIONAL\_SIMULATION|機能シミュレーションのためのコンパイル時に、定義される。|
-|RSD\_POST\_SYNTHESIS\_SIMULATION|合成結果をシミュレーションするためのコンパイル時に、定義される。|
-|RSD\_SYNTHESIS|論理合成のためのコンパイル時に、定義される。|
-|RSD\_SYNTHESIS\_ATLYS|ターゲットが Digilent Atlys の論理合成のコンパイル時に、定義される。|
-|RSD\_SYNTHESIS\_TED|ターゲットが 東京エレクトロンデバイス TB-6V-LX760-LSI の論理合成のコンパイル時に、定義される。|
-|RSD\_USE\_EXTERNAL\_MEMORY|FPGA外部のメモリをメイン・メモリとして使用するとき、定義される。|
-|RSD\_USE\_PROGRAM\_LOADER|プログラム・ローダを使用するとき、定義される。|
+`RSD_SRC_CFG` はシミュレーションとソフトウェアビルドに適用され，合成用の既定値は `RSD_SYNTHESIS_SRC_CFG` と生成ヘッダに反映されます．合成後テストベンチも合成設定を使います．コマンドラインでの `RSD_SRC_CFG` 指定は合成設定を変更しません．ブール型マクロを無効化する場合は定義を省略します．`=0` で定義しても有効扱いです．
 
+## マイクロアーキテクチャ・命令の構成
 
-## ユーザが設計の意図に応じて定義するコンパイラ・ディレクティブ 
+| 名前 | 意味・既定値 |
+| --- | --- |
+| `RSD_MARCH_INT_ISSUE_WIDTH` (`int_issue_width`) | 整数発行幅．1 または 2，既定値は 2 |
+| `RSD_MARCH_FP_PIPE` (`enable_fp_pipe`) | FP パイプラインを有効にする．既定で有効 |
+| `RSD_MARCH_UNIFIED_LDST_MEM_PIPE` (`enable_unified_ldst_mem_pipe`) | ロード・ストアのパイプラインを統合する．既定では未定義 |
+| `RSD_MARCH_UNIFIED_MULDIV_MEM_PIPE` (`enable_unified_muldiv_mem_pipe`) | 乗除算をメモリパイプラインへ統合する．既定では未定義 |
+| `RSD_ENABLE_ZBA` (`enable_zba`) | Zba 命令のデコードを有効にする．既定で有効 |
+| `RSD_ENABLE_ZICOND` (`enable_zicond`) | Zicond 命令のデコードを有効にする．既定で有効 |
+| `RSD_ENABLE_ZICFILP` (`enable_zicfilp`) | Zicfilp のランディングパッド保護を有効にする．既定で有効 |
+| `RSD_NARROW_PC` | PC 表現の幅を縮める．`Processor/Config/MemoryMap.toml` の `memory_map.pc` から生成され，既定では無効 |
 
-|名前|意味|
-|----|----|
-|RSD\_NARROW\_PC|定義すると、面積削減のために PC を32ビットより小さくする。|
-|RSD\_DISABLE\_DEBUG\_REGISTER|定義すると、デバッグ・レジスタがコンパイルされない。回路規模が小さくなるが、Kanataへデバッグ出力できなくなる。|
-|RSD\_DISABLE\_HARDWARE\_COUNTER|定義すると、ハードウェア・カウンタがコンパイルされない。|
-|RSD\_STOP\_FETCH\_ON\_PRED\_MISS||
-|RSD\_ENABLE\_REISSUE\_ON\_CACHE\_MISS|定義すると、キャッシュ・ミスしたロード命令とそれに依存する命令を再発行する。定義しない場合、キャッシュミスしたロード命令から再フェッチされる。|
+`RSD_HAS_FP` は `RSD_SRC_CFG` から求められる make 変数で，RTL のディレクティブではありません．テストの FP 選択とコンパイル対象 ISA を一致させるために使用します．FP の有無を変更した後は，シミュレータとプログラムをクリーンし，同じ構成で再ビルド・実行してください．
+
+## ビルドの種類
+
+| 名前 | 用途 |
+| --- | --- |
+| `RSD_FUNCTIONAL_SIMULATION` | シミュレーション用の処理を有効にする |
+| `RSD_SYNTHESIS` | 論理合成用の処理を有効にする |
+| `RSD_POST_SYNTHESIS` | 合成後テスト用ネットリストを生成する側の構成 |
+| `RSD_POST_SYNTHESIS_SIMULATION` | 生成済みネットリストとテストベンチをシミュレーションする側の構成 |
+| `RSD_SYNTHESIS_VIVADO` / `RSD_SYNTHESIS_SYNPLIFY` | 使用する合成ツールを選択する |
+| `RSD_SYNTHESIS_ZEDBOARD` / `RSD_SYNTHESIS_ZYNQ` | Zedboard 用の設定 / Zynq 用の実装経路 |
+| `RSD_SYNTHESIS_DESIGN_COMPILER` | 実験的な Design Compiler 合成 |
+| `RSD_USE_EXTERNAL_MEMORY` | 外部メモリを使用する実装経路 |
+
+これらは各 Makefile・合成スクリプトが設定します．`RSD_POST_SYNTHESIS` と `RSD_POST_SYNTHESIS_SIMULATION` は異なる段階の指定です．通常の利用では，手作業で追加せず，対応するビルドターゲットを使用します．
+
+## デバッグ・内部制御
+
+| 名前 | 用途 |
+| --- | --- |
+| `RSD_DISABLE_DEBUG_REGISTER` | デバッグ用レジスタを省略する．パイプライントレースなどに影響する |
+| `RSD_DISABLE_PERFORMANCE_COUNTER` | `enable_performance_counter = false` で生成．既定では合成時のみ無効． `Debug/PerformanceCounter.sv` のマイクロアーキテクチャ用カウンタを省略する．CSR の `mcycle` とは別の機構 |
+| `RSD_STOP_FETCH_ON_PRED_MISS` | `NextPCStage.sv` の予測ミス後の待機制御．同ファイル内の定義は既定でコメントアウト |
+| `RSD_ENABLE_REISSUE_ON_CACHE_MISS` | メモリアクセスの再発行に関する経路．現在は `MemoryTagAccessStage.sv` 内で定義 |
+
+最後の 2 項目はソース内の制御で，すべてを `RSD_SRC_CFG` の任意の組み合わせとして検証しているわけではありません．

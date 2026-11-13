@@ -15,13 +15,13 @@ RSD は PL 部に実装します．
 
 
 axi4Memory の他に，PS 部の ARM プロセッサ上で動作するプログラムから RSD にアクセスするためのインターフェースを 2 種類実装しています．  
-Axi4LitePlToPsControlRegister は基本的に ARM が RSD からの出力を所得するため，Axi4LitePsToPlControlRegister は ARM から RSD にデータを送るために使用します．  
+Axi4LitePlToPsControlRegister は基本的に ARM が RSD からの出力を取得するため，Axi4LitePsToPlControlRegister は ARM から RSD にデータを送るために使用します．\
 どちらのモジュールも，PS 部 との通信には AXI4 Lite プロトコルで規定されたインターフェースを持つメモリマップドレジスタ (mmap regs) を利用します．  
 AXI4 とは，[ARM が策定するバス用通信プロトコル](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0534b/index.html) です．   
 **各モジュールの中について，mmap regs 以外のアーキテクチャは今後大幅に変更になる可能性があるため，ここでは言及しません**
 
 ARM 上で OS が動いていない場合は，これらのレジスタには物理アドレスを用いて直接アクセスします．  
-(例: Processor/Project/Vivado/Zedboard/project\_src/run\_simple.c)  
+(例: Processor/Project/Vivado/TargetBoards/Zedboard/project\_src/run\_simple.c)\
 一方，OS が動作している場合は物理アドレスは使えないため，UIO (Userspace I/O) ドライバでインストールされた /dev/uio* デバイスファイルをopen，mmap することでアクセスします．  
 /dev/uio1 が Axi4LitePlToPsControlRegister，/dev/uio2 が Axi4LitePsToPlControlRegister です．  
 Linux についての詳細は [ZYNQ の PS 向けの Linux](jp-fpga-zynq-linux) を参照してください．

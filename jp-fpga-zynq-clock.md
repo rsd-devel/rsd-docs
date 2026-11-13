@@ -1,5 +1,7 @@
 # クロック
 
+以下の GUI 操作は Vivado 2016.4 の記録です．現行のプロジェクト生成処理は [design_1.tcl](https://github.com/rsd-devel/rsd/blob/master/Processor/Project/Vivado/TargetBoards/Zedboard/scripts/synthesis/design_1.tcl) を参照してください．[VCS のタイミング検証](jp-synth-simulation) の `POST_IMPLEMENTATION_CLOCK_NS` は別の設定です．
+
 ## Digilent Zedboard 
 
 Zedboardに限らず，ZYNQボードではPL部のクロックはPS部から供給されます．

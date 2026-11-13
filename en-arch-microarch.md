@@ -1,81 +1,49 @@
 # Microarchitecture
 
-## Overall
+RSD is a 32-bit RISC-V out-of-order superscalar processor. This page describes the default configuration. For design background, see the [FPT 2019 paper](https://www.rsg.ci.i.u-tokyo.ac.jp/members/shioya/pdfs/Mashimo-FPT%2719.pdf) and the [earlier RSD design thesis (Japanese)](https://repository.dl.itc.u-tokyo.ac.jp/?action=repository_action_common_download&item_id=5849&item_no=1&attribute_id=14&file_no=1).
 
-Please refer to the following link.
+## Configuration
 
-* [An Open Source FPGA-Optimized Out-of-Order RISC-V Soft Processor](https://www.rsg.ci.i.u-tokyo.ac.jp/members/shioya/pdfs/Mashimo-FPT%2719.pdf)
-* [面積効率を指向するプロセッサ「雷上動」の設計と実装 (Japanese)](https://repository.dl.itc.u-tokyo.ac.jp/?action=repository_action_common_download&item_id=5849&item_no=1&attribute_id=14&file_no=1)
+Numeric parameters and CPU macro defaults come from [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MicroArch.toml). Generated `Config/MicroArchConf.sv` supplies numeric definitions, `Makefiles/MicroArch.inc.mk` supplies simulation defaults, and `Config/MicroArchMacros.svh` supplies synthesis macros. Derived parameters are in `Config/MicroArchConf.template.sv`; tool/board settings are in `Config/SynthesisMacros.sv`.
 
+| Parameter | Default |
+| --- | --- |
+| Fetch / commit width | 2 instructions each |
+| Issue width | 2 integer, 1 complex integer, 2 memory, 1 FP: 6 total |
+| ActiveList (ROB) | 64 entries |
+| Physical registers | 64 integer and 64 FP |
+| IssueQueue / ReplayQueue | 16 / 20 entries |
+| LoadQueue / StoreQueue | 16 entries each |
+| I-cache / D-cache | 4 KiB each, 2 ways, 8-byte lines |
+| D-cache MSHRs | 2 entries |
 
-## About the zero register
+The parameters have configuration constraints. See [Compiler directives](en-devel-directive) for integer issue width, unified load/store or multiply/divide/memory pipelines, and optional FP. Rebuild both the simulator and test programs with the same configuration after a change.
 
-The zero register is implemented as follows.
+## ISA implementation and verification
 
-* An instruction that writes to the zero register is cleared the register write flag
-    * Determine whether it is zero register when writing to opInfo.writeReg of Decoder.sv
-* Register file is initialized by reset circuit so that all zeros are written
-    * This process is written in RegisterFile.sv
-* In RMT (Register Map Table), the zero register is assigned to physical register's entry 0 when initialized and this entry is not released
+The RTL implements integer I/M/A, CSR and FENCE.I operations. `RSD_MARCH_FP_PIPE` controls the FP pipeline. FP, `RSD_ENABLE_ZBA`, `RSD_ENABLE_ZICOND`, and `RSD_ENABLE_ZICFILP` are enabled by default. See [Decoder.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Decoder/Decoder.sv) for instruction decoding. Instruction alignment is 32 bits (IALIGN=32).
 
-Reading the zero register is actually performed from the physical register, but value 0 is always read due to the above conditions
+ACT4 selects 90 integer/privileged cases and 281 F cases in the default configuration. F is included when FP is enabled. Coverage includes I/M/A, Zba, Zicond, CSR, FENCE.I, exceptions, and interrupts from M/S/U mode, including delegation and external interrupts through the PLIC. FP tests check all five rounding modes and exception flags; basic CSR tests separately cover FS/SD, FP access control and dirty tracking. S mode is Bare-only; paging and full S-mode compliance are outside this subset.
 
-## Handling exceptions
+See the [test program reference](en-test-program#riscv-arch-test-act4) for commands and coverage. Simulations were not rerun for this Wiki update.
 
-### Related signals
+## Zero register
 
-* Mainly related units
-    * Privileged/CSR\_Unit.sv
-    * Privileged/CSR\_UnitIF.sv
-    * Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv
-        * This module judges whether an exception occurred
+The decoder suppresses writes to integer x0 through `opInfo.writeReg`. [RegisterFile.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/RegisterFile/RegisterFile.sv) initializes the physical registers to zero during reset. FP register f0 remains writable.
 
-* csrUnitIF.triggerInterrupt
-    * Interrupt: triggered by external factors, such as timers, independent of instruction execution
+The initial integer mapping in [RMT.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/RenameLogic/RMT.sv) is the logical register number plus `SCALAR_FREE_LIST_ENTRY_NUM`. With the default configuration this offset is `64 - 32 = 32`, so x0 reads physical register 32. No destination remapping is performed for x0, preserving that register's zero value. The initialization expression supersedes the older source comment that names physical register 0.
 
-* csrUnitIF.triggerExcpt
-    * Exception: triggered as the instruction executes
-    * Exception is further divided into fault and trap
-        * fault: address biolation, etc.
-        * trap: system call, etc.
-    * Determine the type of exception with csrUnitIF.excptCause.
-        * If csrUnitIF.excptCause is EXEC\_STATE\_TRAP\_ECALL, trigger trap
-        * If csrUnitIF.excptCause is EXEC\_STATE\_FAULT\_LOAD\_MISALIGNED, trigger fault, and so on.
+## Exceptions and interrupts
 
-### Flow when a fault occurs
+Exceptions detected during decoding, integer execution, or memory execution travel with `execState` and the relevant PC/address. Address checks include LR/SC and AMO paths as well as normal loads/stores; see [MemoryTagAccessStage.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv).
 
-* Address check is performed in Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv
-    * Fault is registered in ExecState at this time
+A fault follows this general sequence:
 
-    ```
-    // If the execution is completed correctly, check whether the fault occurred
-    if (nextStage[i].execState == EXEC_STATE_SUCCESS) begin
-        if (isLoad[i]) begin
-            if (pipeReg[i].memMapType == MMT_ILLEGAL)
-                nextStage[i].execState = EXEC_STATE_FAULT_LOAD_VIOLATION;
-            else if (IsMisalignedAddress(pipeReg[i].addrOut, iqData[i].memOpInfo.memAccessMode.size))
-                nextStage[i].execState = EXEC_STATE_FAULT_LOAD_MISALIGNED;
-        end
-        else if (isStore[i]) begin
-            if (pipeReg[i].memMapType == MMT_ILLEGAL)
-                nextStage[i].execState = EXEC_STATE_FAULT_STORE_VIOLATION;
-            else if (IsMisalignedAddress(pipeReg[i].addrOut, iqData[i].memOpInfo.memAccessMode.size))
-                nextStage[i].execState = EXEC_STATE_FAULT_STORE_MISALIGNED;
-        end
-    end
-    ```
-* ExecState is written to the ActiveList in write back stage
-* Wait until the faulting instruction is at the top of the ActiveList
-    * Faults are not subject to runtime recovery
-* Detecting faulted instruction in the commit stage
-* Send a recovery request to the RecoveryManager
-    * In recovery, the instruction caused the fault is flushed as well
-* Send a trigger request of fault to the CSR\_Unit from the RecoveryManager
-* Update the csr and PC according to the fault that generated CSR\_Unit
-    ```
-    @ CSR_Unit.sv
-    csrNext.mepc = port.excptCauseAddr; // Write the PC where the exception occurred
-    csrNext.mtval = port.excptCauseDataAddr;// PC for ECALL / EBREAK?
-    csrNext.mcause.isInterrupt = FALSE;
-    csrNext.mcause.code.trapCode = ToTrapCodeFromExecState(port.excptCause);
-    ```
+1. The execution result records its exception state in the ActiveList.
+2. Commit detects the faulting instruction at the head.
+3. RecoveryManager flushes that instruction and younger instructions, then signals `triggerExcpt` to the CSR unit.
+4. The CSR unit updates the appropriate CSRs according to privilege and delegation state and returns the handler address.
+
+[CSR_Unit.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Privileged/CSR_Unit.sv) reports `mtval = 0` for illegal instructions; the pipeline does not retain their encodings for trap values. With IALIGN=32, reads of `mepc` and MRET's implicit read mask the low two bits.
+
+Interrupts use `triggerInterrupt`. Timer/software interrupts use CLINT, and external interrupts use PLIC. See [Memory map](en-arch-mem-map) for their addresses and the generated memory-map configuration.

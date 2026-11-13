@@ -1,102 +1,61 @@
-# Development Environment
+# Development environment
 
-* This page describes the development environment required for RSD.  
-    * The environment depends on what you want to do.  
-* This page considers the following four purposes.
-    * Functional simulation
-    * Boot on Xilinx Zynq FPGA boards
-    * Post-Synthesis Simulation For FPGA
-    * Synthesis for ASIC (experimental)
-* Please read this page carefully and setup required OS, tools, and packages.  
-* The version of each software that we tested is also listed, but RSD could work with other versions.  
+The simulation environment is defined in the RSD source repository's [Dockerfile](https://github.com/rsd-devel/rsd/blob/master/.devcontainer/Dockerfile) and [container configuration](https://github.com/rsd-devel/rsd/blob/master/.devcontainer/devcontainer.json). Source links point to the latest files on `master`.
 
+## Dev Container
 
-## Operating System
+The [source README](https://github.com/rsd-devel/rsd/blob/master/README.md) provides this host setup for a fresh Ubuntu 24.04 installation. Skip Docker installation and group setup if already configured:
 
-* Linux or Cygwin on Windows can be used, depending on your purpose.  
-* Only x86-64 machines are tested.
-
-|                                       | OS    | Tested version            |
-| ----                                  | ----  | ----                      |
-| Functional simulation                 | Linux | Debian 8<br>Ubuntu 20.04  | 
-| Boot on Xilinx Zynq FPGA boards       | Linux | Debian 8<br>Ubuntu 20.04  | 
-| Post-Synthesis Simulation For FPGA    | Linux | Debian 8<br>Ubuntu 20.04  | 
-| Synthesis for ASIC                    | Linux | Debian 8<br>Ubuntu 20.04  | 
-
-
-## Necessary Dependencies
-
-* The followings are required for all the four purposes on both Windows and Linux.
-
-|                           |  Tested version   |
-| ----                      | ----              |
-| Git                       |                   |
-| Python 3                  | 3.4.2             |
-| RISC-V GCC cross compiler | 8.1.0             |
-
-
-### For Functional Simulation
-
-* One of the followings is also required to simulate RSD on software simulators.
-
-|                                   |  Tested version   |
-| ----                              | ----              |
-| Mentor QuestaSim                  | 2019.4.2          |
-| Verilator                         | 4.026<br>3.922    |
-| Xilinx Vitis (including Vivado)   | 2019.2.1          |
-
-
-### For Boot on Xilinx Zynq FPGA Boards / Post-synthesis Simulation For FPGA
-
-* The followings are also required to boot RSD on Xilinx Zynq FPGA boards or run post-synthesis simulation for FPGA.  
-
-|                                   |  Tested version   |
-| ----                              | ----              |
-| Xilinx Vitis (including Vivado)   | 2019.2.1          |
-
-* In addition, run the following commands to install necessary packages via apt-get.
-
-```
-alias gmake=make  # If you use Ubuntu    
-sudo apt-get install u-boot-tools ntp device-tree-compiler flex openssl   
-sudo apt-get install libtinfo5
+```bash
+sudo apt update
+sudo apt install -y docker.io docker-buildx python3 build-essential nodejs npm
+sudo systemctl enable --now docker
+sudo usermod -aG docker "$USER"
+sudo npm install -g @devcontainers/cli@0.83.3
 ```
 
-### Synplify (Optional, but recommended)
-* RSD can be synthesized using Synopsys Synplify.  
-    * **In our evaluation, Synplify+Vivado provided better operating frequency than Vivado-only**.  
-* We therefore recommend to use Synplify if you have its license.  
-* The following is required for running the Synplify+Vivado design on Xilinx Zynq FPGA boards.
+Log out and log back in to apply Docker group membership. From the RSD repository root, run:
 
-|                   |  Tested version   |
-| ----              | ----              |
-| Synopsys Synplify | M-2017.03-SP1     |
+```bash
+./RunContainer.sh
+```
 
-* In addition, the following is required for post-synthesis simulation for the Synplify+Vivado design. 
+The host setup above and the container's OS are separate: the container uses Ubuntu 26.04. Its configuration includes:
 
-|                   |  Tested version   |
-| ----              | ----              |
-| Mentor QuestaSim  | 2019.4.2          |
+| Component | Configuration |
+| --- | --- |
+| Verilator | 5.054, built from the pinned release with timing support |
+| RISC-V compiler | Ubuntu `gcc-riscv64-unknown-elf` and binutils packages; the test Makefiles select RV32 and `ilp32` |
+| C library support | `picolibc-riscv64-unknown-elf` |
+| Python | Python 3.11+ standard-library tomllib; suite-specific dependencies use their setup targets |
+| Zephyr build tools | CMake, Ninja, gperf, device-tree compiler |
+| ACT4 build tools | Ruby and LLVM/Clang/LLD 22; suite-specific dependencies are installed by its setup target |
 
+Follow [Getting started](en-devel-getting-started) to build the simulator and run tests. Benchmark and extended-test sources require their own fetch/setup commands; see the [test program reference](en-test-program).
 
-## For Synthesis for ASIC (experimental)
+## Manual installation
 
-* The following is also required to synthesize RSD for ASIC.
+Use the Dockerfile's OS, package list, and pinned tool build steps as the reference. Use Python 3.11 or later, and set the variables in [Environment variables](en-devel-environment-variables), adjusting paths to your host.
 
-|                           |  Tested version   |
-| ----                      | ----              |
-| Synopsys Design Compiler  | O-2018.06-SP4     |
+The current Verilator flow uses the shared SystemVerilog `TestMain` with `--main` and `--timing`. Use the pinned tool version when reproducing it.
 
+## Separately installed CAD tools
 
-## Recommended Tools
+The Dev Container does not install the licensed simulators or synthesis tools. Configure them and their licenses separately:
 
-* Pipeline viewer [Konata](https://github.com/shioyadan/Konata)
-    * Download and extract the pre-built binary archive.
-* [Visual Studio Code](https://code.visualstudio.com/)
-    * Please install SystemVerilog extension after introduction.
-    * We strongly recommend to use [svls-vscode](https://github.com/dalance/svls-vscode).
+| Purpose | Tools / entry point |
+| --- | --- |
+| RTL simulation and RTL unit tests | ModelSim/QuestaSim; `make SIM=modelsim` / `make SIM=modelsim test/unit/run` |
+| RTL simulation with XSim | Vivado; `make SIM=xsim` |
+| Zedboard implementation | Vivado/Vitis; optionally Synplify for synthesis |
+| Functional post-synthesis tests | Vivado + XSim, or Synplify + XSim |
+| Routed timing tests | Vivado + VCS; `make sim/vcs/post-implementation/test` |
+| Experimental ASIC synthesis | Design Compiler; `Processor/Project/DesignCompiler` |
 
-## Related documents
+The older setup examples use QuestaSim 2019.4.2, Vivado/Vitis 2019.2, Synplify M-2017.03-SP1, and Design Compiler O-2018.06-SP4. These are historical reference versions, not a new compatibility test. The board scripts still reference Xilinx 2019.2 sources; this Wiki update does not establish support for newer CAD releases.
 
-* You must also setup some environment variables after setting up the development environment.  
-* Please see [this wiki page](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) for the details.
+For FPGA setup, see [Zynq board instructions](en-fpga-zynq-synth-for-linux) and [post-synthesis simulation](en-fpga-post-synth-simulation). Older board instructions may require additional host packages that are separate from the simulation container.
+
+## Viewing results
+
+[Konata](https://github.com/shioyadan/Konata/releases) opens `Kanata.log`. Verilator's `sim/dump` target also generates `simx.vcd`, which can be opened with a VCD viewer such as GTKWave. See [Verilator simulation](en-test-verilator).

@@ -1,46 +1,47 @@
-# Verilatorで機能シミュレーション
-まだ殴り書き状態だけど，これから整理します．
+# Verilator による機能シミュレーション
 
-## 最初に
-
-SetEnv 中の velirator のパスを適宜設定
-
+RSD では Verilator 5.054 と，共通の SystemVerilog テストベンチ `Verification/TestMain.sv` を使用します．環境構築は [はじめよう](jp-devel-getting-started) を参照してください．手動導入では `RSD_VERILATOR_BIN` に Verilator 実行ファイルを設定します．
 
 ## ビルドと実行
 
-* Processor/Src を vscode で開いて，F1 キー から >runtask とか打って，タスクの実行を選択
-    * vscode の上でビルドすると，エディタ内でエラーの箇所を出してくれるようにしておいた
+`Processor/Src` で実行します．
 
-* run, make, clean, dump ってのが出てくるので，それぞれ選ぶ
-    * あるいは，以下のコマンドを直にうつ
-    make -f Makefile.verilator.mk run 
+```bash
+make -j"$(nproc)"
+make test/level-1/run
+make sim/run TEST_CODE=Verification/TestCode/C/Fibonacci
+```
 
+`test/level-1/run` は基本プログラムをビルドして期待値を検証します．`sim/run` はビルド済みのプログラムを実行します．個別のテストや設定は [機能シミュレーション](jp-test-simulation) を参照してください．
 
-## メモ
-* Makefile.verilator.mk の -CFLAGS "-O0 -g" \ の -O0 を -O2 にすると数倍速くなるけど，コンパイルがかなり遅くなる
+## パイプラインと波形の出力
 
-* VS Code について以下の拡張が結構いいので，入れてみるとよい．
-    SystemVerilog - Language Support
-    eirikpre.systemverilog
-    Eirik Prestegårdshus8,226リポジトリ
+基本テストのビルド後，次を実行します．
 
+```bash
+make sim/kanata TEST_CODE=Verification/TestCode/C/Fibonacci
+make sim/dump TEST_CODE=Verification/TestCode/C/Fibonacci
+```
 
-## 波形の見方
+| 出力 | 用途 |
+| --- | --- |
+| `Kanata.log` | Konata でパイプラインを表示 |
+| `RSD.log` | Kanata 形式への変換前のログ |
+| `Register.csv` | コミット時のレジスタ値 |
+| `simx.vcd` | `sim/dump` の波形．GTKWave などで表示 |
 
-Makefile.verilator.mk 内で，
-* 以下の行の -D RSD_VERILATOR_TRACE を有効に
-	CXXFLAGS="-D RSD_FUNCTIONAL_SIMULATION_VERILATOR -D RSD_FUNCTIONAL_SIMULATION -D RSD_VERILATOR_TRACE -Wno-attributes" \
+出力先は `Processor/Src` です．現在の Makefile は `--trace` を有効にしており，`sim/dump` が `+WAVE_LOG_FILE=simx.vcd` を渡します．
 
-* VERILATOR_OPTION に --trace のオプションをつける
+`sim/run`・`sim/kanata`・`sim/dump` の実行上限は `MAX_TEST_INSTRUCTIONS`，`MAX_NO_COMMIT_CYCLES`，`MAX_TEST_CYCLES` で指定します．`cfg.xml` を変更してもこれらのターゲットの上限は変わりません．
 
+## 実装を調べる場合
 
-* make したあと，make dump
-    * simx.vcd と言うファイルが生成される
+[Makefiles/VerilatorCore.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/VerilatorCore.inc.mk) は `TestMain` をトップとして `--main`・`--timing` で実行ループを生成します．生成モデルは `Processor/Project/Verilator/obj_dir/VTestMain` です．モデルを直接実行する場合の引数は `+TEST_CODE=...` のような plusarg 形式です．通常は make または TestDriver 経由で実行します．
 
-* gtkwave と言うソフトで開く
-    * https://sourceforge.net/projects/gtkwave/files/
+FP などの構成を変えるときは，シミュレータとテストをクリーンしてからビルドします．
 
-* 構造体がまとめてしか表示されないので，場合によっては，個別の信号を定義して代入しておく
-* 波形のリストに出てこない場合，以下のようなプラグマをつけると見れる
-    logic s /*verilator public*/;
-
+```bash
+make clean test/level-1/clean
+make -j"$(nproc)"
+make test/level-1/run
+```

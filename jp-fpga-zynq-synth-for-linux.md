@@ -1,16 +1,18 @@
 # ZYNQ むけ Linux 経由の RSD 構築方法 簡易版
 
+以下は Zedboard と Vivado/Vitis 2019.2 を使う既存の実機手順です．本体の Makefile に合わせて名称・参照を修正していますが，SD カード作成から実機起動までを再検証したものではありません．Dev Container はシミュレーション用で，CAD ツールやボード用 Linux の準備は別途必要です．
+
 ## 0. 環境構築
 
-1. [ここ](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment) を参照して，必要なツールをインストールしてください
-    * "Boot on Xilinx Zynq FPGA boards" のパートが必須です
+1. [ここ](jp-devel-environment) を参照して，必要なツールをインストールしてください
+    * FPGA 用の CAD ツールと設定を別途準備します
     * Vitis 2019.2 のインストールなどを含みます
-2. [ここ](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) を参照して，環境変数を設定してください
-    * "Boot on Xilinx Zynq FPGA boards" のパートが必須です
+2. [ここ](jp-devel-environment-variables) を参照して，環境変数を設定してください
+    * FPGA 用の CAD ツールと設定を別途準備します
     * 特に，RSD_VIVADO_BIN/RSD_ARM_LINUX 環境変数を設定しておくこと
 3. （オプションですが推奨）Synopsys Synplifyをインストール
     * Synplify のネットリストを使用した合成と Vivado のみを使用した合成のどちらかを選択できます
-    * Synplify+Vivado の方が Vivado のみの場合よりも動作周波数は大きく向上します（典型的には倍程度）
+    * 過去の評価では Synplify+Vivado の方が高い動作周波数を得られました．現行 RTL・ツールでの比較結果を示すものではありません
 
 
 ## 1. Vitis と Vivado の環境変数の設定
@@ -21,7 +23,7 @@ source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh
 ## 2. ターゲットボードの設定
 
 * Processor/Src/Makefiles/Vivado.inc.mk をエディタで開き，TARGET_BOARD 変数を設定する．
-* **注：以降の説明は，TARGET_BOARD に ZedBoard が設定されているものとして行う．**
+* **注：以降の説明は，TARGET_BOARD に Zedboard が設定されているものとして行う．**
 
 
 ## 3. (オプション) Synplify を使用して RSD のネットリスト・ファイル (rsd.vm) を生成
@@ -29,8 +31,8 @@ source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh
 VivadoのみでRSDを合成する場合は，この手順は不要です
 
 1.  Synplify で Processor/Project/Synplify/ver2017-03.prj を開く．
-2.  プロジェクト内で "ZedBoard" を選択し，"Run" をクリック.  
-3.  合成がうまくいくと, Project/Synplify/ZedBoard/ に rsd.vm が生成される． 
+2.  プロジェクト内で "Zedboard" を選択し，"Run" をクリック.\
+3.  合成がうまくいくと, Project/Synplify/Zedboard/ に rsd.vm が生成される．
 
 
 ## 4. 必要なものをすべてbuild
@@ -38,16 +40,16 @@ VivadoのみでRSDを合成する場合は，この手順は不要です
 * $(RSD_ROOT)/Processor/Src に移動し、以下のいずれかのコマンドを実行してください。
     * Vivado のみで合成する場合
         ```bash
-        Make -f Makefile.vivado.mk xilinx-arm-linux
+        make platform/zynq/build
         ```
     * Synplifyで生成したネットリストを用いて合成を行う場合
         ```bash
-        make -f Makefile.synplify.mk xilinx-arm-linux
+        make -f Makefiles/Synplify.mk xilinx-arm-linux
         ```
     * *一度 Vivado/Synplify で合成を行った後に合成系を切り替える場合は必ず vivado-clean を実行すること *
         ```bash
-        make -f Makefile.vivado.mk vivado-clean
-        make -f Makefile.synplify.mk vivado-clean
+        make synth/vivado/clean
+        make synth/synplify/clean
         ```
 * これらのコマンドにより、$(RSD_ARM_LINUX)/boot に以下のファイルが生成されます
     * Zynq PS 用の ARM Linux カーネル (uImage) 
@@ -57,7 +59,7 @@ VivadoのみでRSDを合成する場合は，この手順は不要です
 * 備考
     * このステップはマシンやネットワークの速度によって，数分から数時間かかる場合があります
     * 一部の Xilinx ツールは GUI 環境がある場合のみ起動出来ます．うまく行かない場合は GUI から上記の Make を実行してください．
-* **新しいソースファイルをVivadoプロジェクトに追加する場合は，[ここ](en-fpga-post-synth-simulation) の "Add New Files into Project" を参照してください**
+* **新しいソースファイルをVivadoプロジェクトに追加する場合は，[ここ](en-fpga-post-synth-simulation) の "Adding RTL sources" を参照してください**
 
 
 ## 5. Debianの解凍        
@@ -127,7 +129,7 @@ dns-nameservers 192.168.1.2
     sudo umount ROOTFS_MNT
     ```
 
-## 8. ZedBoard に SD を入れて起動        
+## 8. Zedboard に SD を入れて起動
 * 設定した IP アドレスに ssh アクセスして root でログインして作業       
     * ユーザー名: root        
     * パスワード: rsd    
@@ -138,14 +140,14 @@ dns-nameservers 192.168.1.2
 
 ## 9. プログラムローダーを scp で転送・コンパイル       
 
-1. $(RSD_ROOT)/Processor/Project/Vivado/ARM_Linux/ProgramLoader/loader.c を scp 等で ZedBoard 上の Debian に転送     
+1. $(RSD_ROOT)/Processor/Project/Vivado/ARM_Linux/ProgramLoader/loader.c を scp 等で Zedboard 上の Debian に転送\
 2. loader.cをコンパイル     
 
 
 ## 10. 実行するバイナリの転送と実行
-1. 実行したいプログラムの code.hex を scp で ZedBoard 上の Debian に転送     
+1. 実行したいプログラムの code.hex を scp で Zedboard 上の Debian に転送\
     * 自身で書いたプログラムを走らせる場合は [ここ](https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program) を参考に
-2. ZedBoard 上の Debian で以下を実行
+2. Zedboard 上の Debian で以下を実行
     ```bash
     # "byte size of code.hex" はバイナリ時のサイズであり，code.bin のサイズに一致
     # 現在は 98304
@@ -156,7 +158,7 @@ dns-nameservers 192.168.1.2
 
 1. ローカルで RSD ビットストリームファイルを含むブートイメージ（boot.bin）を再生成
     ```bash
-    make -f Makefile.(synplify|vivado).mk xilinx-arm-linux
+    make platform/zynq/build
     ```
 2. Zynq 側で BOOT パーティションをマウント
     ```bash
@@ -177,4 +179,3 @@ dns-nameservers 192.168.1.2
 * [Zynq 上の RSD のシステムアーキテクチャ](https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-arch)
 * [Zynq 上のクロック周波数の変更方法](https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-clock)
 * [Zynq 上の RSD のメモリインターフェース](https://github.com/rsd-devel/rsd/wiki/jp-fpga-zynq-mem-controller)
- 

@@ -1,45 +1,59 @@
 # はじめよう
 
-* ここではソースコードをコンパイルしてとりあえず論理検証を行うまでの手順を説明します．
+RSD のシミュレータをビルドし，基本テストとパイプラインの可視化を行う手順です．コマンドは Wiki リポジトリではなく，RSD 本体のチェックアウトで実行します．本体の [README](https://github.com/rsd-devel/rsd/blob/master/README.md) にも対応する手順があります．
 
-## 1. 環境構築
+## 1. 開発環境の準備
 
-* [ここ](en-devel-environment) 
-（[日本語版](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment)）を参照して，必要なツールをインストールしてください
+[環境構築](jp-devel-environment) のホスト側の手順に従って Docker と Dev Container CLI をインストールします．RSD 本体のルートで次のコマンドを実行すると，コンテナ内のシェルが開きます．
 
+```bash
+./RunContainer.sh
+```
 
-## 2. 環境変数の設定
+初回は開発環境をビルドします．次回以降は環境を再利用し，設定に変更があれば再ビルドします．ホスト側で `./RunContainer.sh --help` を実行すると，コマンド実行や再ビルドのオプションを確認できます．VS Code の Dev Containers 拡張から **Reopen in Container** を選ぶ方法もあります．
 
-* [ここ](en-devel-environment-variables)（[日本語版](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables)） を参照して，環境変数を設定してください
+コンテナ内のツールのパスと環境変数は設定済みです．手動で環境を構築する場合は，[環境構築](jp-devel-environment) と [環境変数](jp-devel-environment-variables) を参照してください．
 
+## 2. Verilator でビルド・テスト
 
-## 3. シミュレーション
+コンテナ内で，RSD 本体のルートから次を実行します．
 
-* Processor/Src にて，make を行ってください
-    * Modelsim/QuestaSim の場合
-        ```
-        make
-        make run        # run simulation
-        make kanata     # run simulation & outputs a konata log file
-        ```
-    * Verilator の場合は，```make -f Makefile.verilator``` のように，Makefile.verilator を指定してください
-    * Vivado の場合は，```make -f Makefile.vivado``` のように，Makefile.vivado を指定してください
-    * 上記のサブコマンドは "konata" ではなく  "kanata" です
-* 備考
-    * くわしくは[機能シミュレーション](jp-test-simulation)を参照してください
-    * 自分で作ったプログラムを RSD 上で実行するための方法は [こちら](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program) を参照してください．
-* シミュレーション結果の可視化
-    * シミュレーションが成功した場合，"kanata.log" が Processor/Src 内に生成されます
-    * [Konata](https://github.com/shioyadan/Konata/releases) を使用することで，ログの可視化ができます
+```bash
+cd Processor/Src
+make -j"$(nproc)"
+make test/level-1/run
+```
 
-## 4. 合成
+`test/level-1/run` はアセンブリ・C テストの HEX ファイルも必要に応じてビルドします．成功時には `Test Successful (test/level-1/run)` と表示されます．シミュレータ自体は先にビルドしてください．
 
-* [合成の手順](jp-synth-howto) を参照してください
+CoreMark・Dhrystone・Zephyr・ACT4 や FP 無効構成については，[テスト・プログラム](jp-test-program) を参照してください．
 
-## 5. コードをいじる前に 
-下記に目を通しておいてください
-* [コーディング規約](jp-devel-coding-convention)
-* [リポジトリの更新方法](jp-devel-repository-convention)
+## 3. パイプラインの可視化
 
+`test/level-1/run` の実行後，同じ `Processor/Src` で次を実行します．
 
+```bash
+make sim/kanata TEST_CODE=Verification/TestCode/C/Fibonacci
+```
 
+生成された `Processor/Src/Kanata.log` を [Konata](https://github.com/shioyadan/Konata/releases) で開きます．make のターゲット名は `sim/kanata`，ログの先頭文字は大文字の `K` です．
+
+[機能シミュレーション](jp-test-simulation)，[Verilator の波形出力](jp-test-verilator)，[自作プログラムの実行](jp-test-how-to-compile-and-run-your-program) も参照してください．
+
+## 4. 他のシミュレータ
+
+ModelSim/QuestaSim と Vivado XSim は別途インストールし，[環境変数](jp-devel-environment-variables) を設定します．以下は `Processor/Src` で実行します．
+
+| シミュレータ | ビルド | 基本テスト |
+| --- | --- | --- |
+| ModelSim/QuestaSim | `make SIM=modelsim` | `make SIM=modelsim test/level-1/run` |
+| Vivado XSim | `make SIM=xsim` | `make SIM=xsim test/level-1/run` |
+
+## 5. 合成・開発
+
+- [合成手順](jp-synth-howto)
+- [合成後のシミュレーション](jp-synth-simulation)
+- [コーディング規約](jp-devel-coding-convention)
+- [リポジトリの更新規約](jp-devel-repository-convention)
+
+[ビルドの入口と Makefile の構成](jp-devel-build) に，ターゲットの階層・設定生成・共通ファイルの役割をまとめています．

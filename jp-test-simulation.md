@@ -1,103 +1,70 @@
 # 機能シミュレーション
 
-## 機能シミュレーション 
+RSD の RTL をシミュレーションし，終了条件・論理レジスタ・UART 出力を検証します．以下は `Processor/Src` で実行します．環境構築は [はじめよう](jp-devel-getting-started) を参照してください．
 
-QuestaSim や Verilator，Vivado を使うと，RSD プロセッサ上でテスト・プログラムを実行する様子をシミュレーションできます．
+## シミュレータのビルド
 
-テスト・プログラムの実行結果を検証することで、
-プロセッサが正しく動くかテストすることができます。
-結果が正しくなかった場合は、
-Kanata や QuestaSim の波形ビューアを使ってデバッグを行います。
+| シミュレータ | ビルド | 基本テスト |
+| --- | --- | --- |
+| Verilator | `make -j4` | `make test/level-1/run` |
+| ModelSim/QuestaSim | `make SIM=modelsim` | `make SIM=modelsim test/level-1/run` |
+| Vivado XSim | `make SIM=xsim` | `make SIM=xsim test/level-1/run` |
 
-## 使用するシミュレータ
+いずれも `Verification/TestMain.sv` を使用します．RTL やテストベンチを変更した後はシミュレータを再ビルドします．`test/level-1/run` などの登録済みプログラムテストは必要な HEX をビルドしますが，シミュレータ自体はビルドしません．テストの区分と外部ソースの準備は [テスト・プログラム](jp-test-program) を参照してください．
 
-* 下記では基本的には QuestaSim を仮定していますが，Verilator や Vivado の場合でも基本的には操作は同じです．
-* Verilator の場合は，```make -f Makefile.verilator.mk``` のように，Makefile.verilator を指定してください
-* Vivado の場合は，```make -f Makefile.vivado.mk``` のように，Makefile.vivado を指定してください
+## 一つのプログラムを検証する
 
+たとえば HelloWorld をビルド・検証する場合は，次を実行します．
 
-### HDL コードのコンパイル 
-テストを実行する前に、HDL コードをコンパイルする必要があります。
+```bash
+make test/C/HelloWorld/run
+```
 
-RSD/Processor/Src で以下のコマンドを実行すると、コンパイルが実行されます。
+任意のテストディレクトリを指定する場合は，先にそのプログラムをビルドしてから次を実行します．`RunTest.py`は指定プログラムをビルドしません．
 
-    make rtl
+```bash
+python3 ../Tools/TestDriver/RunTest.py --simulator=verilator Verification/TestCode/C/HelloWorld
+```
 
-コンパイルエラーが出たら、HDL コードを修正しましょう。
+TestDriver は指定ディレクトリの小文字の `cfg.xml` を読み，正常に実行が終了した後，`RegisterValues` と `serial.ref.txt` の期待値を検証します．UART 出力は `serial.out.txt` に保存されます．
 
+```xml
+<Config>
+  <MaxTestInstructions>10000</MaxTestInstructions>
+  <MaxNoCommitCycles>500</MaxNoCommitCycles>
+  <RegisterValues>
+    <R10>0</R10>
+  </RegisterValues>
+</Config>
+```
 
-### テストの実行 
+| 項目 | 意味 |
+| --- | --- |
+| `MaxTestInstructions` | スタートアップを含むコミット済み RISC-V 命令数の上限．投機実行・リプレイは消費しない |
+| `MaxNoCommitCycles` | マイクロ命令のコミットがない連続サイクル数の上限．既定値は 500，超過は失敗 |
+| `EnablePC_Goal` | 既定値は `1`．命令数上限までに終了 PC へ到達する必要がある．`0` は指定命令数まで実行する継続型テスト用 |
+| `MaxTestCycles` | 追加のサイクル数上限．省略または `0` で無効．命令数上限を使うテストで先に達すると失敗 |
 
-テストを行うには、RSD/Processor/Src で下表のコマンドを実行します。
+`RegisterValues` は UART のみを検証する場合などには空にできます．既存のサイクル数のみの設定も受け付けますが，新しいテストでは上記の命令数・無コミット期間を設定します．キャッシュフラッシュなど待ち時間の長いケースでは，無コミット期間をケースに応じて設定します．
 
-|コマンド名|動作|備考|
-|----------|----|----|
-|make test|1つのテスト・プログラムを実行します|実行するテスト・プログラムは RSD/Processor/Src/Makefile 内の TEST_CODE 定数で指定します|
-|make test-1|短時間で終了するテスト・プログラム群を実行します||
-|make test-2|実行に時間がかかるテスト・プログラム群を実行します||
-|make test-all|test-1 と test-2 の両方を実行します||
+ログには終了理由，コミット命令数・マイクロ命令数，サイクル数，最大無コミット期間，IPC が出力されます．IPC は参考値で，合否条件ではありません．境界条件などの詳細は [TestDriver reference](jp-test-driver) を参照してください．
 
-コンパイルが通ったら、まず
+## デバッグ用の実行
 
-    make test-1
+`sim/run`・`sim/kanata`・`sim/dump` は `cfg.xml` ではなく make 変数を使います．これらは期待値の比較も行わないため，結果の検証には `RunTest.py` または登録済みの `test/.../run` を使います．デバッグ時はプログラムを先にビルドしてください．
 
-を実行してバグをチェックするのがおススメです。
-コミット前には、すべてのテストが通るか確認しましょう。
-詳しくは Makefile の中身を読んでください。
+```bash
+make test/level-1/build
+make sim/run TEST_CODE=Verification/TestCode/C/Fibonacci
+make sim/kanata TEST_CODE=Verification/TestCode/C/Fibonacci
+```
 
+`sim/kanata` が生成する `Kanata.log` を [Konata](https://github.com/shioyadan/Konata/releases) で開き，リプレイやコミット停止などを調べます．このターゲットでは `Register.csv` も出力されます．上限を変える例は次のとおりです．
 
-### テストの検証内容 
+```bash
+make sim/kanata \
+    TEST_CODE=Verification/TestCode/C/Fibonacci \
+    MAX_TEST_INSTRUCTIONS=200000 MAX_NO_COMMIT_CYCLES=1000
+```
 
-テスト・プログラムを実行した後は、以下の内容を検証します。
-
-* プログラム実行終了時の論理レジスタの値
-    * 各テスト・プログラムのディレクトリの Cfg.xml に正しい値を記述しておくと、実行結果との比較が行われます。
-
-* シリアル通信の出力
-    * 各テスト・プログラムのディレクトリの serial.ref.txt に正しい出力を記述しておくと、実行結果との比較が行われます。
-
-アーキテクチャステートの遷移も検証した方がデバッグに役立つと思いますが、未実装です。
-
-
-### デバッグ 
-デバッグは以下の手順で行います。
-
-* Kanata でテストが通らなかった原因にあたりをつける
-    * 代表的な原因としては以下があげられる
-        * 特定の命令の結果がおかしい
-        * 何らかの無限ループに陥り、命令がコミットできなくなっている
-        * シミュレーションサイクル数が不足して、最後までシミュレーションできていない（この場合は Cfg.xml または Makefile の設定を変更するだけで良い）
-
-* QuestaSim の波形ビューアで各信号線の値を調べ、バグの原因を特定
-* HDL コードを修正
-
-
-#### Kanata 
-RSD/Processor/Src において以下のコマンドを実行すると、Kanata.log というログファイルが生成されます。
-
-    make kanata
-
-このファイルを Kanata に入力すると、命令の実行状態を可視化することができます。
-実行するテスト・プログラムは RSD/Processor/Src/Makefile の TEST_CODE 定数で指定することができます。
-
-#### レジスタファイルとPCの値の遷移
-RSD/Processor/Src において以下のコマンドを実行すると、Register.csv というログファイルが生成されます。
-
-    make dump
-
-このファイルによって各命令実行後の、レジスタファイルおよびPCの値を調べることができます。
-実行するテスト・プログラムは RSD/Processor/Src/Makefile の TEST_CODE 定数で指定することができます。
-
-
-
-#### QuestaSim の波形ビューア 
-RSD/Processor/Src において以下のコマンドを実行すると、QuestaSim の GUI が起動します。
-
-    make run-gui
-
-ここでシミュレーションを進めると、雷上動プロセッサがテスト・プログラムを実行している時の信号線の変化を調べることができます。
-実行するテスト・プログラムは RSD/Processor/Src/Makefile の TEST_CODE 定数で指定することができます。
-
-
-### テストを行うためのスクリプト 
-RSD/Processor/Tools/TestDriver が、テストを実行するための python スクリプトになります。
+Verilator の `sim/dump` は `Register.csv`，`RSD.log`，`Kanata.log`，`simx.vcd` を生成します．[Verilator の説明](jp-test-verilator) を参照してください．ModelSim/QuestaSim は `make SIM=modelsim sim/gui TEST_CODE=...`，Vivado は `make SIM=xsim sim/gui TEST_CODE=...` で GUI を起動できます．

@@ -1,29 +1,61 @@
-# How to compile and run your program on RSD on Verilator.
+# Compile and run your program on RSD with Verilator
 
-### 0. Build RSD using Verilator.
-1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for ```Software simulation```.
-2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for ```Software simulation```.
-3. Go to $RSD_ROOT/Processor/Src.
-4. Make sure RSD is correctly compiled by ```make -f Makefile.verilator.mk```.
+Set up the [development environment](en-devel-getting-started). Run the commands below from `Processor/Src` in the RSD checkout. The shared [test compiler configuration](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Makefile.inc) selects RV32, the `ilp32` ABI, and picolibc search paths.
 
-### 1. Copy Verification/TestCode/C/HelloWorld to Verification/TestCode/C/YourTest.
-* Note that the YourTest directory must be in Verification/TestCode/C.
-### 2. Overwrite Verification/TestCode/C/YourTest/code.c with your test code.
-* Note that RSD does not support printf at this time.
-* See Verification/TestCode/C/HelloWorld/code.c to learn how RSD currently outputs characters.
-### 3. Modify Verification/TestCode/C/YourTest/serial.ref.txt so that this file has the expected output of your test code.
-### 4. If you add any source code file except for code.c, add them in the SRCS variable in Verification/TestCode/C/YourTest/Makefile.
-### 5. Go to Verification/TestCode/C/YourTest and make your test code by the following command.
+## 1. Build the simulator and shared startup code
+
+```bash
+make -j"$(nproc)"
+make test/crt/build
 ```
-cd Verification/TestCode/C/YourTest
-make
+
+## 2. Create a program from HelloWorld
+
+Create a new directory under `Verification/TestCode/C` and copy only the inputs:
+
+```bash
+mkdir Verification/TestCode/C/YourTest
+cp Verification/TestCode/C/HelloWorld/{Makefile,code.c,cfg.xml,serial.ref.txt} \
+    Verification/TestCode/C/YourTest/
 ```
-* This command will compile YourTest and generate code.hex in Verification/TestCode/C/YourTest.
-### 6. Go to $RSD_ROOT/Processor/Src, open Makefile.verilator.mk, and modify the TEST_CODE variable as below.
+
+Edit `YourTest/code.c`. The template writes bytes to `RSD_SERIAL_OUTPUT` from generated `rsd-memory-map.h` (default `0x40002000`); `Verification/TestCode/C/lib.c` also provides serial-output helpers. The basic C template does not link a general `printf` implementation. The dedicated benchmark ports provide their own output functions.
+
+Update `serial.ref.txt` to the exact expected UART output, including newlines, and `cfg.xml` to the expected registers and execution limits. For a program whose `main` returns zero, this configuration checks the return value in `a0`:
+
+```xml
+<Config>
+  <MaxTestInstructions>10000</MaxTestInstructions>
+  <MaxNoCommitCycles>500</MaxNoCommitCycles>
+  <RegisterValues>
+    <R10>0</R10>
+  </RegisterValues>
+</Config>
 ```
-TEST_CODE = Verification/TestCode/C/YourTest
+
+`EnablePC_Goal` defaults to `1`, requiring the program to reach the termination loop before its instruction budget expires. Set a budget appropriate to your program. See the [TestDriver documentation](en-test-driver) for continuous tests and additional limits.
+
+Add any additional C files to `SRCS` in `YourTest/Makefile`.
+
+## 3. Build and verify
+
+```bash
+make -C Verification/TestCode/C/YourTest
+python3 ../Tools/TestDriver/RunTest.py --simulator=verilator Verification/TestCode/C/YourTest
 ```
-### 7. Run simulation with your test code by the following command.
+
+The program build generates `code.elf`, `code.bin`, and `code.hex`. The `RunTest.py` command reads `cfg.xml` and compares register and serial expectations; it does not build an arbitrary `TEST_CODE` directory. Rebuild after editing the program. Keep the RTL and program configuration consistent, and clean both when changing FP configuration.
+
+## 4. Inspect execution
+
+```bash
+make sim/run TEST_CODE=Verification/TestCode/C/YourTest
+make sim/kanata TEST_CODE=Verification/TestCode/C/YourTest
+make sim/dump TEST_CODE=Verification/TestCode/C/YourTest
 ```
-make -f Makefile.verilator.mk run
-```
+
+Open `Kanata.log` with Konata and `simx.vcd` with a VCD viewer. These debug targets use make variables instead of `cfg.xml` and do not compare expected output. Pass, for example, `MAX_TEST_INSTRUCTIONS=200000 MAX_NO_COMMIT_CYCLES=1000` when the debug run needs different limits. There is no need to edit `TEST_CODE` in the simulator Makefile.
+
+## 5. Add the program to a test suite
+
+For repeated regression testing, add the directory to `Verification/TestCode/C/Makefile` and register its build dependency and execution target in `Makefiles/TestCommands.inc.mk`. See the [test program reference](en-test-program) for the existing suites.

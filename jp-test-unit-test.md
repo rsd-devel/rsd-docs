@@ -1,25 +1,41 @@
 # 単体テスト
 
-## 単体テスト 
+RTL のモジュールごとにテストベンチを実行します．既定では Dev Container 内の Verilator を使用します．ModelSim/QuestaSim を使う場合は別途インストールし，`RSD_QUESTASIM_PATH` を設定して `SIM=modelsim` を指定します．
 
-各モジュールの入出力を、 SystemVerilog Assertion を使って検証します。
+## 実行
 
+`Processor/Src` で実行します．
 
-### テストの実行方法 
+```bash
+make -j4 test/unit/run
+make test/unit/Divider/run
+make SIM=modelsim test/unit/run
+```
 
-Src/Verification/UnitTest に、各単体テストのディレクトリが存在します。
+`test/unit/run` はFP 有効時は以下の 15 テストを実行します．共有の生成 RTL を準備してから，各テストベンチをビルド・実行します．コア全体のシミュレータを先にビルドする必要はありません．
 
-各テストにはMakefileが存在し、以下のようにコマンドを実行できます。
+- `InitializedBlockRAM`
+- `BlockDualPortRAM`
+- `DistributedDualPortRAM`
+- `DistributedMultiPortRAM`
+- `MultiBankRAM`
+- `MultiWidthQueuePointer`
+- `MultiWidthFreeList`
+- `Divider`
+- `MulDivUnit`
+- `Memory`
+- `ICache`
+- `DCache`
+- `DecodeStage`
+- `InterruptController`
+- `FPDivSqrtUnit`（FP 有効時のみ）
 
-|コマンド名|動作|備考|
-|---------|---|----|
-|make rtl / make rtl-run|ISEの合成結果を使わず、Modelsimのみでテスト対象のモジュールをコンパイル/実行します||
-|make translate / make translate-run|Post Translate Simulation Model を使ってテストをコンパイル/実行します|あらかじめ [Post Translate Simulation Modelを作成](jp-synth-howto) しておく必要があります|
-|make map / make map-run|Post Map Simulation Model を使ってテストをコンパイル/実行します|あらかじめ [Post Map Simulation Modelを作成](jp-synth-howto) しておく必要があります|
-|make par / make par-run|Post Place-and-Route Simulation Model を使ってテストをコンパイル/実行します。回路遅延を反映したテストを行うことができます|あらかじめ [Post Place-and-Route Simulation Modelを作成](jp-synth-howto) しておく必要があります|
+個別指定は `test/unit/<名前>/run` です．定義は本体の [Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefile)，テストベンチは [Verification/UnitTest](https://github.com/rsd-devel/rsd/tree/master/Processor/Src/Verification/UnitTest) にあります．
 
+## 他のテストとの関係
 
-### 注意点 
+`test/all/run` はプログラムテストの集約で，単体テストを含みません．設定生成・TestDriver・RunContainer ランチャを検証する `test/tools/run` も別のターゲットです．[テスト・プログラム](jp-test-program) を参照してください．
 
-* Assertionは、プロセッサのパラメータがある特定の値であることを前提に記述してます。
-パラメータが変わったら、Assertionも書き直す必要があります。
+合成したコアの検証は [合成後シミュレーション](jp-synth-simulation) を参照してください．
+
+プロセッサのパラメータを変更した場合は，各テストの入力・期待値・assertion の前提も確認してください．

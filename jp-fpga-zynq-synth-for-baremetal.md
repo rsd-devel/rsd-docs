@@ -1,5 +1,7 @@
 # 基本的な合成手順
 
+以下には Vivado/Vitis 2019.2 の GUI 操作が含まれます．現在のボード用 Makefile は Zedboard を対象としており，このページの実機操作は今回再検証していません．現在のビルド設定は [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.inc.mk) を参照してください．
+
 * ZYNQ 上の ARM でベアメタルの RSD 起動用プログラムを起動し，そこから RSD を起動する方法を説明する
 
 
@@ -12,7 +14,7 @@
         sudo apt install minicom
         # dialout へユーザーを登録する必要がある
         # 追加後はログインし直すこと
-        sudo <user name> dialout
+        sudo usermod -aG dialout "$USER"
         ```
     * ケーブルのドライバを下記からインストールしておく
         ```
@@ -20,15 +22,13 @@
         ```
 * 備考：
     * Vitis (Vivado) のバージョンを環境開発のページで指定されているものに正確にあわせることが重要！
-    * 以下では 2019.02 を前提として説明する
+    * 以下では 2019.2 を前提として説明する
 
 
 ## 2. ターゲットボードの設定
 
 * "$(RSD\_ROOT)/Processor/Src/Makefiles/Vivado.inc.mk の TARGET\_BOARD" に対象のボード名を設定する  
-* (09.05.2022 現在の対応ボード)
-    * ZedBoard（デフォルト）
-    * ZC706 (09.05.2022 現在メンテナンスされていない)
+* 現在の Makefile の既定値は `TARGET_BOARD=Zedboard`（大文字・小文字を区別）です
 
 
 ## 3. 回路の合成
@@ -52,9 +52,9 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
     # パスは Vitis なので注意
     source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh
     # Synplify で合成を行ったあとは必ず一度 clean しておく
-    make -f Makefile.vivado.mk vivado-clean
+    make synth/vivado/clean
     # 合成
-    make -f Makefile.vivado.mk vivado-synthesis
+    make synth/vivado/build
     ```
 * 下記のファイルが生成されていれば成功
     ```
@@ -91,9 +91,8 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
 2. $(RSD\_ROOT)/Processor/Src へ移動し，下記コマンドで Vivado プロジェクトを生成し開く
     ```bash
     # Vivado のみで合成をしていた場合は必ず vivado-clean を一度実行する
-    make -f Makefile.synplify.mk vivado-clean
-    # Makefile.vivado.mk ではないので注意！
-    make -f Makefile.synplify.mk vivado
+    make synth/synplify/clean
+    make synth/synplify/open
     ```
 3. 左部[Flow Navigator]→[Program and Debug]→[Generate Bitstream]をクリックしてbitstreamファイル(*.bit)を作成
 
@@ -133,7 +132,7 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
     * デバイスのテンプレートで zed を選択
     * [Available Templates] で [Hello World] を選択して [Finish] をクリック
 7. ソフトウェア書き換え
-    * 完成したプロジェクトの "src" 内にある "helloworld.c" の中身を "$(RSD\_ROOT)/Processor/Project/Vivado/ZedBoard/project\_src/run_simple.c" の中身に書きかえる
+    * 完成したプロジェクトの "src" 内にある "helloworld.c" の中身を "$(RSD\_ROOT)/Processor/Project/Vivado/TargetBoards/Zedboard/project\_src/run_simple.c" の中身に書きかえる
     * run_simple.c では programinit() 関数内に設定したプログラムを RSD に送信して実行し，結果を UART ポートに出力する
 8. ビルド
     * 作成したプロジェクト上で右クリック->[Build Project]をクリック
@@ -147,51 +146,3 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
 * 備考
     * ２回目以降は 8-10 だけを実行すれば良い
     * うまく行かない場合，programinit 関数内の文字列の末尾に元の文字列の倍程度の長さの文字列を追加するとなぜか動くようになることがある
-
-
-### ZedBoard (古い方法)
-
-1. ZedBoard の "PROG" ポートと "UART" ポート(どちらもmicroUSBポート)と PC を microUSB-USB ケーブル2本で接続して電源を入れる  
-    * ※ドライバはVivadoをインストールしていれば自動で入るはず
-2. インストールされた UART ポートに対応する COM ポートからの入力を表示できるソフトを起動して設定しておく
-    * Tera Term や minicom など
-    * Baud rate は 115200
-3. Vivadoのプロジェクトを開き，[メニューバー]->[File]->[Export]->[Export Hardware]をクリック
-4. [Include bitstream]にチェックを入れて[OK]
-5. Vivado上で[メニューバー]->[File]->[Launch SDK]をクリックしてSDKを起動
-6. Xilinx SDK上で[メニューバー]->[Xilinx Tools]->[Program FPGA]をクリック
-7. [Program]をクリックしてbitstreamファイルをFPGAに焼く
-8. [メニューバー]->[File]->[New]->[Application Project]をクリック
-9. [Project name]を適当に設定して[Next]をクリック
-10. [Available Templates]で[Hello World]を選択して[Finish]をクリック
-11. 完成したプロジェクトの"src"内にある"helloworld.c"を削除し，代わりに"$(RSD\_ROOT)/Processor/Project/Vivado/ZedBoard/project\_src/$(適当なプログラム).c"をコピー  
-※プロジェクトは"(設定した名前)"と"(設定した名前)\_bsp"の2つが出来るが，"(設定した名前)"の方  
-(06.12.2017現在の対応プログラム)
-    * run_simple  
-        * ソースコードの programinit() 関数内に設定したプログラムをRSDに送信して実行し，結果をUARTポートに出力する
-12. 作成したプロジェクト上で右クリック->[Run As]->[1 Launch on Hardware (System Debugger)]をクリック
-13. UARTからプログラムの出力が表示されるはず
-
-### ZC706  
-
-* ZC706のPCIeプラケットにある "USB-to-JTAG" ポート(microUSBポート)と"USB-to-UART"ポート(miniUSBポート)とPCをminiUSB-USBケーブルとmicroUSB-USBケーブルで接続して電源を入れる  
-    * **TODO**  
-    * ※ドライバは自動で入らない可能性があるので，調べてインストールしてここと[FPGAの型番情報](jp-fpga-board)を編集してください．
-* インストールされたUARTポートに対応するCOMポートからの入力を表示できるソフトを起動して設定しておく
-    * Tera Term や minicom など
-    * Baud rateは115200
-* Vivadoのプロジェクトを開き，[メニューバー]->[File]->[Export]->[Export Hardware]をクリック
-* [Include bitstream]にチェックを入れて[OK]
-* Vivado上で[メニューバー]->[File]->[Launch SDK]をクリックしてSDKを起動
-* Xilinx SDK上で[メニューバー]->[Xilinx Tools]->[Program FPGA]をクリック
-* [Program]をクリックしてbitstreamファイルをFPGAに焼く
-* [メニューバー]->[File]->[New]->[Application Project]をクリック
-* [Project name]を適当に設定して[Next]をクリック
-* [Available Templates]で[Hello World]を選択して[Finish]をクリック
-* 完成したプロジェクトの"src"内にある"helloworld.c"を削除し，代わりに"$(RSD\_ROOT)/Processor/Project/Vivado/ZC706/project\_src/$(適当なプログラム).c"をコピー  
-    * ※プロジェクトは"(設定した名前)"と"(設定した名前)\_bsp"の2つが出来るが，"(設定した名前)"の方  
-    * (06.12.2017現在の対応プログラム)
-        * run_simple  
-            * ソースコードの programinit() 関数内に設定したプログラムをRSDに送信して実行し，結果をUARTポートに出力する
-* 作成したプロジェクト上で右クリック->[Run As]->[1 Launch on Hardware (System Debugger)]をクリック
-* UARTからプログラムの出力が表示されるはず

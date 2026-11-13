@@ -1,6 +1,6 @@
 # リポジトリの更新規約
 
-現在，一部テスト関係のコードが機能していないため，make test 系が失敗する可能性があります（2020/01/18）．近日中にテスト用ベンチマークを統合して修正する予定です．
+テスト手順は本体の構成に合わせています．テスト群の範囲と外部ソースの準備は [テスト・プログラム](jp-test-program)，既知の ACT4 の制約は [マイクロアーキテクチャ](jp-arch-microarch) を参照してください．
 
 ## 基本
 
@@ -33,29 +33,32 @@
 * 以下では RSD/master にプルリクエストを送ってマージするまでにチェックすべき項目について記します.
 * 別途, 下記を参照してください.
     * [機能シミュレーション](jp-test-simulation)
-    * [QuestaSim で合成結果をシミュレーション](jp-synth-simulation)
+    * [合成後・タイミング付きシミュレーション](jp-synth-simulation)
     * [Coremark について](jp-test-coremark)
 
 
 ### マージ時のチェックリスト
 
 * modelsimでのコンパイルが通る
-    * 対応するコマンド: `make` または `make rtl`
+    * 対応するコマンド: `Processor/Src` で `make SIM=modelsim`（ModelSim/QuestaSim を別途設定）
 
 * 簡単な機能シミュレーションテストが正しく実行される
-    * 対応するコマンド: `make test-build` の後に `make test-1`
-    * テストプログラムのビルド方法や内容は [テスト・プログラム](jp/開発手順/テストとデバッグ/テスト・プログラム) 参照
+    * 対応するコマンド: シミュレータをビルドした後に `make test/level-1/run`（ModelSim/QuestaSim は `SIM=modelsim` も指定）．これらは基本テストの HEX もビルドする
+    * テストプログラムのビルド方法や内容は [テスト・プログラム](jp-test-program) 参照
 
 * Coremark の機能シミュレーションテストが正しく実行される
-    * 対応するコマンド: `make test-Coremark`
-    * RSD レポジトリには Coremark のテストコードは含まれていないので, RSD_ENV を設定して RSD-env レポジトリからコピーする必要あり(Src/Verification/TestCode/C/Makefile.inc 参照)
+    * 対応するコマンド: `make test/External/Coremark/run`（ModelSim/QuestaSim では `SIM=modelsim` を指定）
+    * 初回は `make test/External/Coremark/fetch` で公開ソースを取得する
 
 * Coremark の post-synthesis シミュレーションが正しく実行される
-    * 実行方法は [QuestaSim で合成結果をシミュレーション](jp-synth-simulation) 参照
-    * 実行結果の確認は Src/Verification/TestCode/C/Coremark/serial.out.txt が 同フォルダserial.ref.txt と一致しているかで行う
+    * 実行方法は [合成後・タイミング付きシミュレーション](jp-synth-simulation) 参照
+    * 機能テスト用 CoreMark をビルドした後，たとえば `make synth/vivado/post-synthesis/test TEST_CODE=Verification/TestCode/Coremark/Coremark` で実行する．TestDriver が合成後テストの作業ディレクトリで UART 出力を検証する
 
+
+### 追加のテスト範囲
+
+`test/all/run` は基本テストと CoreMark・Dhrystone を実行します．ACT4・Zephyr は `test/ex/run`，RTL 単体テストは `test/unit/run`，テスト基盤は `test/tools/run` で個別に実行します．変更対象に応じた検証を行い，実行したツール・構成・対象を記録してください．FP の有無や拡張選択も検証記録に含めます．
 
 ### プルリクエスト
 
 前節のチェックリストをクリアしたのち, github のプルリクエストを介して master にマージするようにしましょう.
-

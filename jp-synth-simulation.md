@@ -1,91 +1,71 @@
-# QuestaSim で合成結果をシミュレーション (Vivado編)
+# FPGA の合成後・タイミング付きシミュレーション
 
-Vivadoで合成した結果をもとに、QuestaSimでシミュレーションを行うことができます。
-機能シミュレーションよりも実際の振る舞いに近いシミュレーションを行うことができるので、
-機能シミュレーションと実機の動作が食い違う場合のデバッグに利用できます。
+現在のテストターゲットは，プログラムを内部メモリの初期値として組み込んだ Zedboard 用コアを合成し，UART 出力を検証します．RTL のプログラムテストや実機用ブートイメージ生成とは別の手順です．以下は本体の Makefile に基づきます．今回の Wiki 更新で CAD ツールや実機を再検証したものではありません．
 
 ## 準備
- [Vivado の初期設定](jp-devel-vivado)を元に初期設定を行っておく
 
-## 大まかな流れ
+Dev Container とは別に CAD ツールとライセンスを設定します．`RSD_VIVADO_BIN` に Vivado の `bin` ディレクトリを指定してください．Synplify は `synplify_premier_dp`，VCS は `vcs` を `PATH` に置くか，make に `SYNPLIFY=/path/to/executable` または `VCS=/path/to/vcs` を渡します．
 
-* 作成した.svソースコード群をSynplifyで合成してネットリスト(.vm)を作成する
-* ネットリストをVivadoで合成してPost-synthesisシミュレーションモデル(.v)を作成する
-* シミュレーションモデルをQuestaSimでシミュレーションする
+RISC-V コンパイラと [環境変数](jp-devel-environment-variables) を準備し，`Processor/Src` でプログラムを先にビルドします．
 
-これをバグが直るまで繰り返す
+```bash
+make test/level-1/build
+```
 
-## 合成後モデルの種類 
+このコマンドはプログラムをビルドするもので，Verilator のシミュレータモデルは不要です．以下のターゲットの既定プログラムは `Verification/TestCode/C/HelloWorld` です．別のプログラムを選ぶ場合も `code.hex`・`cfg.xml`・空でない `serial.ref.txt` が必要です．
 
-Vivadoの合成では、以下の2つのステップを順に行います。
+## 合成後の機能検証
 
-* Synthesis
-* Implementation (Place and Route)
+合成ツールに応じて，いずれかを実行します．
 
-どのステップまで終了したかに応じて、以下の2種類のモデルが存在します。
+```bash
+make synth/vivado/post-synthesis/test
+make synth/synplify/post-synthesis/test
+```
 
-* Post Synthesis Simulation Model
-* Post Timing Simulation Model
+両方ともシミュレーションには XSim，結果検証には TestDriver を使用します．Synplify のターゲットもバッチ合成を実行するため，ボード用 `ver2017-03.prj` の手動合成とは手順が異なります．
 
-Post Timing Simulation Model は回路遅延を反映したモデルになっています。  
-これを使用すれば、タイミング付き検証を行うことができますが，まだやったことはありません。  
-(TODO: Post Timing Simulation Modelを使ったシミュレーション方法の追記)
+対象プログラムはコマンドラインで指定できます．
 
+```bash
+make synth/vivado/post-synthesis/test \
+    TEST_CODE=Verification/TestCode/C/HelloWorld
+```
 
-## Synplifyを用いたネットリストの作成 
+作業ディレクトリはそれぞれ `Processor/Project/PostSynthesis/vivado/<プログラム名>` と `Processor/Project/PostSynthesis/synplify/<プログラム名>` です．ここへ入力ファイルがコピーされ，`cfg.xml` の実行上限と UART の期待値を使います．詳細は [TestDriver reference](jp-test-driver) を参照してください．
 
-Getting started か Built from scratch のどちらか1つだけで十分です
+公開ターゲットは `make synth/vivado/post-synthesis/test` と `make synth/synplify/post-synthesis/test` です．本体ルートと `Processor/Src` のどちらからも実行できます．
 
-### Getting started  
+## VCS による配置配線後のタイミング検証
 
-* "$(RSD\_ROOT)/Processor/Project/Synplify/"内にシミュレーションに使いたいプログラムのcode.hexを置く．
+```bash
+make sim/vcs/post-implementation/test
+```
 
-* Synplifyで"$(RSD\_ROOT)/Processor/Project/Synplify/proj\_1.prj"を開く
+Vivado が合成・配置配線・ネットリストと SDF の出力を行い，VCS が遅延付きシミュレーションを実行し，TestDriver が結果を検証します．生成先は `Processor/Project/PostSynthesis/vivado-timing/<プログラム名>` です．
 
-* [Project Files]内の"$(TARGET\_BOARD)\_post\_synthesis"を選択して[Run]でコンパイル/合成
+既定値は `POST_IMPLEMENTATION_CLOCK_NS=32`，`VCS_CORNER=slow`，`VCS_DELAY=max` です．コーナーには `slow` / `fast`，遅延値には `min` / `max` を指定できます．既存ネットリストを再利用する場合は，ビルド時と同じ `TEST_CODE`・クロック設定で次を実行します．
 
-### Build from scratch  
+```bash
+make sim/vcs/post-implementation/run
+```
 
-* "$(RSD\_ROOT)/Processor/Project/Synplify/"内にシミュレーションに使いたいプログラムのcode.hexを置く．
+HEX と合成時にコピーした内容が一致することが検査されます．HEX または RTL を変更した場合は `sim/vcs/post-implementation/test` で再合成してください．`cfg.xml` や参照出力だけを変更しても，ネットリスト内のプログラムは変わりません．
 
-* プロジェクトを作成し、ソースファイルを追加
-    * .svファイルを追加(Src/Verification/以下は除く)
-    * 先ほど設置した code.hex を追加
+## その他のターゲットとソース追加
 
-* [Add Implementation]をクリックして Implementation Options を設定
-    * [FPGAの型番情報](jp-fpga-board)を指定
-    * トップモジュールにMainを指定。モジュール・パラメータも適宜指定
-    * Implementation Results タブでImplementation Nameに"$(TARGET\_BOARD)\_post\_synthesis"と設定
-    * Implementation Results タブでResult Base Nameに"rsd"と設定
+Vivado のプロジェクトを使う `synth/vivado/post-synthesis/timing/test`・`synth/vivado/post-implementation/test`・`synth/vivado/post-implementation/timing/test` と GUI・Kanata 用ターゲットも残っています．上記のバッチテストとは出力先やオプションが異なるため，[Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.mk) を参照してください．他のフローは [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Synplify.mk) と [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/VCS.mk) にあります．
 
-* 画面下部のTCLコンソールで"set\_option -hdl\_define -set RSD\_POST\_SYNTHESIS"を入力する
+RTL の追加時は [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/CoreSources.inc.mk) の一覧を更新します．
 
-* [Project Files]内の"$(TARGET\_BOARD)\_post\_synthesis"を選択して[Run]でコンパイル/合成
+| 種類 | 変数 |
+| --- | --- |
+| パッケージ・型定義 | `TYPES`（依存順に配置） |
+| コアのモジュール・インターフェース | `CORE_MODULES` |
+| ボード用ラッパなど | `MODULES` |
+| シミュレーション専用テストベンチ | `TEST_MODULES` |
+| IP パッケージ用ヘッダ | `HEADERS` |
 
-## Vivadoを用いた Post-Synthesis シミュレーションモデルの作成
+別途 Synplify のボード用プロジェクトを使用する場合は，そのプロジェクトも更新します．
 
-* "$(RSD\_ROOT)/Processor/Project/Synplify/$(TARGET\_BOARD)\_post\_synthesis/"内に、RSDのネットリスト (rsd.vm) ができていることを確認する．
-
-* Cygwin上で"$(RSD\_ROOT)/Processor/Src"にcdして"make post-synthesis"でPost-synthesisシミュレーションモデルの作成
-
-* Post-synthesisシミュレーションモデル "$(RSD\_ROOT)/Processor/Project/Vivado/$(TARGET_BOARD)/Main\_post\_synthesis.v"が作成されていることを確認する
-
-## QuestaSim でのシミュレーション 
-Vivado が生成した Verilog ファイルの中には、合成済のトップモジュールが定義されています。
-この Verilog ファイルは、FPGA の各資源（LUTなど）に相当するモジュールをインスタンシエートしてそれらを接続するという形で記述されており、
-算術演算子や論理演算子は一切使われていません。
-
-この合成済のトップモジュールをインスタンシエートするテストベンチを書けば、通常通りQuestaSimでシミュレーションを行うことができます。
-FPGA の資源というレベルで動作をシミュレーションするため、
-機能シミュレーションよりも実際の振る舞いに近いシミュレーションを行うことができます。
-
-
-## Makefileのコマンド 
-
-$(RSD\_ROOT)/Processor/Src/Makefileには、合成結果をシミュレーションするためのコマンドが存在します。
-
-|コマンド名|動作|備考|
-|---------|----|----|
-|post-synthesis|Post Synthesis Simulation Model を使ってテストをコンパイルします|あらかじめ上記の手順でPost Synthesis Simulation Modelを作成しておく必要があります|
-|post-synthesis-run|Post Synthesis Simulation Model を使ってテストを実行します|あらかじめPost Synthesis Simulation Modelをコンパイルしておく必要があります|
-|post-synthesis-kanata|Post Synthesis Simulation Model を使ってテストを実行し、Kanata形式のログを出力します|あらかじめPost Synthesis Simulation Modelをコンパイルしておく必要があります|
+CPU 構成は `Processor/Config/MicroArch.toml` の `overrides.synthesis` を含む合成設定から生成します．合成後テストベンチも `RSD_SYNTHESIS_SRC_CFG` を使います．`RSD_SRC_CFG` のコマンドライン指定だけでは合成設定を変更できません．

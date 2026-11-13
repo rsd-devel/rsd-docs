@@ -1,5 +1,7 @@
 # ZYNQ の PS 向けの Linux  
 
+このページは Zynq の ARM（PS）側 Linux の構成と従来の運用方法を説明します．既存のカーネル設定を前提とするため，構築の入口は [Linux 経由の RSD 構築](jp-fpga-zynq-synth-for-linux) を参照してください．今回の更新では実機起動を再検証していません．
+
 * ZYNQ とは
     * おおまかに，ZYNQ は ARM ハードプロセッサを中心に構成される非リコンフィギャラブルな PS (Processing System) 部と，FPGA を中心に構成されるリコンフィギャラブルな PL (Programmagle Logic) 部で構成されています． 
     * このページでは，ZYNQ についての基本的な知識は省略しています．  
@@ -16,7 +18,7 @@ PS 部で Linux を動作させるためには，主に以下の要素が必要�
   * 電源が起動して最初に PS 部が読み込む standalone プログラム (fsbl.elf)
   * PC における BIOS の役割を果たす U-Boot (u-boot.elf)
   * Linux カーネル
-  * Device-tree (devicetree.btb)
+  * Device-tree (devicetree.dtb)
   * U-Boot と bitstream，fsbl をパックしたバイナリファイル (boot.bin)
 
 各要素の役割についての詳細は [Xilinx の公式ドキュメント](https://japan.xilinx.com/support/documentation/user_guides/j_ug585-Zynq-7000-TRM.pdf) を読んでください．  
@@ -28,23 +30,19 @@ PS 部で Linux を動作させるためには，主に以下の要素が必要�
 
 ## ターゲットボードの設定
 
-"$(RSD\_ROOT)/Processor/Src/MakefileのTARGET\_BOARD" に対象のボード名を設定  
-(07.04.2017現在の対応ボード)
+"$(RSD\_ROOT)/Processor/Src/Makefiles/Vivado.inc.mk の TARGET\_BOARD" に対象のボード名を設定\
+（現在の Makefile が案内する対応ボード）
 
 * Zedboard
 
 
 ## ビルド
 
-Getting started か Built from scratch のどちらか1つだけで十分です
+本体の Makefile を使う場合は Getting started を参照してください．
 
 ### Getting started  
 
-* [この](jp-fpga-zynq-build-linux-simple) の手順通りに作業する
-
-### Build from scratch  
-
-* [この](jp-fpga-zynq-build-linux-detail) 手順通りに作業する
+* [この](jp-fpga-zynq-synth-for-linux) の手順通りに作業する
 
 ## 実機上で RSD へのプログラムのロードと動作確認方法
 
@@ -68,15 +66,8 @@ Zedboardでは以下のようにメモリ空間を分割しています．
 
 |アドレス|内容|
 |-------|----|
-|0x00000000~0x10000000|Linux用領域|
+|0x00000000~0x0FFFFFFF|Linux用領域|
 |0x10000000~0x1FFFFFFF|RSD用領域|
-
-ZC706では以下のようにメモリ空間を分割しています．
-
-|アドレス|内容|
-|-------|----|
-|0x00000000~0x30000000|Linux用領域|
-|0x30000000~0x3FFFFFFF|RSD用領域|
 
 このため，Linux から RSD 用のメモリ空間には UIO (Userspace I/O) ドライバでインストールされた /dev/uio* デバイスファイルをopen，mmap することでアクセスします．  
 **/dev/uio0 が RSD 用のメモリ空間です．**
@@ -95,7 +86,7 @@ ZC706では以下のようにメモリ空間を分割しています．
 
 ## Linux 上での PL 部のリコンフィギュレーション方法
 
-- ホスト PC にて「 make arm-linux 」で新しい boot.bit を $(RSD\_ARM\_LINUX)/boot に作成
+- ホスト PC にて「 make platform/zynq/build 」で新しい boot.bit を $(RSD\_ARM\_LINUX)/boot に作成
 - 作成した boot.bit を scp 等で PS の Linux にコピー
 - PS の Linux 上で「 cat boot.bit > /dev/xdevcfg 」を実行する
 

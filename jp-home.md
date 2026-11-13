@@ -1,5 +1,7 @@
 # RSD Wiki Home (日本語)
 
+ビルド・テストの詳細はこの Wiki で管理します．本体ソースへのリンクは master の最新版を参照します．実機・CAD ツールの操作は，各ページに記載した環境を前提とします．
+
 ここは RSD の開発に関わる情報を集めた Wiki です．
 
 ## ページを編集するときの注意（必ず読んでね！）
@@ -18,21 +20,23 @@
 
 ### 開発
 * [はじめてみよう](jp-devel-getting-started)
+* [ビルドの入口と Makefile の構成](jp-devel-build)
 * [ディレクティブ一覧](jp-devel-directive)
 * [コーディング規約](jp-devel-coding-convention)
 * [リポジトリ更新規約](jp-devel-repository-convention)
-* [環境構築](https://translate.google.com/translate?hl=ja&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-devel-environment)
-* [ツール導入手順](jp-devel-tools)
+* [環境構築](jp-devel-environment)
+* [環境変数（英語）](jp-devel-environment-variables)
+* [旧ツールの導入記録](jp-devel-tools)
 
 ### テスト・デバッグ
 * [テスト・プログラム](jp-test-program)
+* [TestDriver の実行上限と結果検証](jp-test-driver)
 * [トラブルシューティング](jp-test-trouble-shooting)
 * [機能シミュレーション](jp-test-simulation)
 * [単体テスト](jp-test-unit-test)
-* [Coremark について](jp-test-coremark)
+* [CoreMark・Dhrystone の検証と計測](jp-test-coremark)
 * [Verilator による機能シミュレーション](jp-test-verilator)
-* [QEMU との実行結果の比較](jp-test-qemu)
-* [自分のプログラムをコンパイルして実行する方法（自動翻訳）](https://translate.google.com/translate?hl=jp&sl=en&tl=ja&u=https://github.com/rsd-devel/rsd/wiki/en-test-how-to-compile-and-run-your-program)
+* [自分のプログラムをコンパイルして実行する方法](jp-test-how-to-compile-and-run-your-program)
 
 ### アーキテクチャ
 * [メモリ・マップ](jp-arch-mem-map)
@@ -50,7 +54,5 @@
 * [メモリ・コントローラ](jp-fpga-zynq-mem-controller)
 * [システム・アーキテクチャ](jp-fpga-zynq-arch)
 * [PS 部の Linux](jp-fpga-zynq-linux)                
-* [PS 部用 Linux の構築方法](jp-fpga-zynq-build-linux)
 * [ZYNQ において Linux を介して起動する場合の合成方法](jp-fpga-zynq-synth-for-linux)
 * [ZYNQ において直接起動する場合の合成方法](jp-fpga-zynq-synth-for-baremetal)
-

@@ -1,65 +1,39 @@
-# Environment Variables
+# Environment variables
 
-* This page describes the environment variables that must be set to use RSD.  
-    * The required environment variables depend on what you want to do.  
-* This page considers the following four purposes.
-    * Software simulation
-    * Boot on Xilinx Zynq FPGA boards
-    * Post-synthesis Simulation For FPGA
-    * Synthesis for ASIC (experimental)
-* How to:
-    * All the environment variables of RSD are written in SetEnv.* file in [Processor/Tools/SetEnv](https://github.com/rsd-devel/rsd/tree/master/Processor/Tools/SetEnv).
-        * SetEnv.bat : for Windows
-        * SetEnv.sh  : for Linux  
-    * Please copy the SetEnv.* to MySetEnv.* to create your own SetEnv file. (MySetEnv.* is gitignored.)
-    * Note that you must setup the [development environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) first.
+The Dev Container supplies the variables below through [devcontainer.json](https://github.com/rsd-devel/rsd/blob/master/.devcontainer/devcontainer.json). Manual installations should set them to match the host. `RSD_ROOT` is the RSD source checkout, not this Wiki checkout.
 
-## Necessary Environment Variables
+## Simulation and test builds
 
-The followings are necessary for all the four purposes.
+| Variable | Meaning | Container value |
+| --- | --- | --- |
+| `RSD_ROOT` | Source root inferred and exported by make; no manual setting needed | Current checkout |
+| `RSD_GCC_PATH` | Directory containing the RISC-V GCC binaries | `/usr/bin` |
+| `RSD_GCC_PREFIX` | Compiler filename prefix, including the final hyphen | `riscv64-unknown-elf-` |
+| `RSD_VERILATOR_BIN` | Verilator executable | `/usr/local/bin/verilator` |
 
-| Variable Name | Detail |
-| ---- | ---- |
-| RSD_ROOT | Specify the root directory where you checked out RSD. |
-| RSD_GCC_PATH | Specify the directory that contains a RISC-V GCC binary. |
-| RSD_GCC_PREFIX | Specify the prefix of the RISC-V GCC binary.<br>Example: riscv32-unknown-elf- |
+The compiler prefix may contain `riscv64` even when building RSD's RV32 programs. The [test compiler configuration](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Makefile.inc) explicitly selects the instruction set and `-mabi=ilp32`; it also requires picolibc support.
 
-### For Software Simulation
+For example, on a manually configured host with the same tool locations, run from the RSD root:
 
-Some environment variables below are also required to simulate RSD on software simulators, depending on the simulator you use.
+```bash
+export RSD_GCC_PATH=/usr/bin
+export RSD_GCC_PREFIX=riscv64-unknown-elf-
+export RSD_VERILATOR_BIN=/usr/local/bin/verilator
+```
 
-* Mentor QuestaSim, Mentor ModelSim
+If `RSD_VERILATOR_BIN` is unset, the Verilator Makefile searches for `verilator` on `PATH`. The current flow uses the pinned Verilator 5 release described in [Development environment](en-devel-environment).
 
-    | Variable Name | Detail |
-    | ---- | ---- |
-    | RSD_QUESTASIM_PATH | Specify the ```bin``` directory of Modelsim or QuestaSim. |
+Fetch external sources with the suite's `test/External/<suite>/fetch` target and install dependencies with `test/External/<suite>/setup` where provided.
 
-* Verilator
+## Other simulators and synthesis tools
 
-    | Variable Name | Detail |
-    | ---- | ---- |
-    | RSD_VERILATOR_BIN | Specify the path of a ```verilator``` binary. |
+| Variable | Used for | Setting |
+| --- | --- | --- |
+| `RSD_QUESTASIM_PATH` | ModelSim/QuestaSim RTL simulation and unit tests | Directory containing `vlog`, `vsim`, etc. |
+| `RSD_VIVADO_BIN` | Vivado/XSim simulation and FPGA builds | Vivado `bin` directory |
+| `RSD_ARM_LINUX` | Building Linux and boot files for the Zynq PS | Work directory for downloads and builds; an external directory is convenient |
+| `RSD_DC_SHELL_BIN` | Experimental Design Compiler synthesis | Path to `dc_shell` |
 
-* Xilinx Vitis (Vivado)
+For Synplify post-synthesis tests, put `synplify_premier_dp` on `PATH` or pass `SYNPLIFY=/path/to/executable` to make. For VCS timing tests, put `vcs` on `PATH` or pass `VCS=/path/to/vcs`. These are make variables; the tools and licenses need separate setup.
 
-    | Variable Name | Detail |
-    | ---- | ---- |
-    | RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /Xilinx_tool_install_path/Vivado/2019.2/bin |   
-
-### For Boot on Xilinx Zynq FPGA Boards / Post-synthesis Simulation For FPGA
-
-The followings are also required to boot RSD on Xilinx Zynq FPGA boards or run post-synthesis simulation for FPGA.  
-
-| Variable Name | Detail |
-| ---- | ---- |
-| RSD_VIVADO_BIN | Specify the ```bin``` directory of Vivado.<br>Example: /Xilinx_tool_install_path/Vivado/2019.2/bin |
-| RSD_ARM_LINUX | Specify a directory where you want to download and build all necessary files for boot on Xilinx Zynq FPGA boards.<br>A directory outside $(RSD_ROOT) is recommended. |
-
-### For Synthesis for ASIC (experimental)
-
-The following is also required to synthesize RSD for ASIC.
-
-| Variable Name | Detail |
-| ---- | ---- |
-| RSD_DC_SHELL_BIN | Specify the ```dc_shell``` binary of Design Compiler. |
-
+[SetEnv.sh](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/SetEnv/SetEnv.sh) is the manual Bash setup template. Copy it to `Processor/Tools/SetEnv/MySetEnv.sh`, edit the paths, and run `source Processor/Tools/SetEnv/MySetEnv.sh` from the repository root. Make does not source this file automatically.

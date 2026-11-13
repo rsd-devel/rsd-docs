@@ -1,32 +1,13 @@
 # Vivado の初期設定
 
+現在の合成後テストの入口は [合成後・タイミング付きシミュレーション](jp-synth-simulation) です．XSim を使う機能検証と VCS を使うタイミング検証を使用します．
+
 ## インストール 
 
-* 08.27.2022 現在，必ず Vivado 2019.2 (Vitis に入っているもの) を使ってください！ 
-* それ以外では動作確認をしていないので，高確率で動きません
-* また，インストール時は必ずXilinx SDKも一緒に入れること
-    * インストーラーの途中でインストールする内容を設定する画面が出てくるが，SDKはデフォルトではチェックが外れていてそのままではインストールされないので注意
+* 既存のボード構築手順は Vivado/Vitis 2019.2 を前提にしています．本体のボードスクリプトにも 2019.2 系の指定が残っています．
+* 別のバージョンでの互換性は今回確認していません
 
 
 ## 環境変数の設定  
 
-* Processor/Tools/SetEnv 内を参考に，環境変数内のを元に初期設定を行っておく
-
-
-## ModelSim 用のシミュレーションライブラリのコンパイルと設定  
-
-* Vivado で合成したものを ModelSim を使って Post-synthesis simulation する場合，Xilinx のプリミティブモジュールライブラリを ModelSim 用にコンパイルして設定しておく必要がある(※ここでは Vivado 2016.4 と ModelSim 10.4c を前提にしている)．
-* 手順
-    * Vivadoを起動する．
-    * メニューバーの[Tools]->[Compile Simulation Libraries...]をクリック
-    * [Simulator]に "ModelSim" を設定
-    * [Language]に"verilog"を設定
-    * [Library]，[Family]に "All" と設定
-    * [Compiled library location]にライブラリの出力先を設定
-    * [Simulator executable path]に "${modelsim install path}/bin" を設定
-    * [Miscellaneous option]は空欄で可
-    * その他チェックボックスもチェック無しで可
-    * [Compile]でコンパイル
-    * [Compiled library location]で指定した出力先に出来た modelsim.ini のパスを環境変数 RSD\_MODELSIM\_INI に設定  
-* 例: RSD\_MODELSIM\_INI = /PATH/TO/MODELSIM.INI/modelsim.ini
-
+* [環境変数](jp-devel-environment-variables) を参照し，`RSD_VIVADO_BIN` などを設定します．`Processor/Tools/SetEnv` の例は実際のインストール先に合わせてください

@@ -1,4 +1,6 @@
 # DRAMコントローラ (ZYNQ編)
+
+現在の実装は [Axi4Memory.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Memory/Axi4Memory.sv) を参照してください．以下の図は要求・応答の概念を示します．実装上のバースト長は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．キャッシュライン幅とメモリ転送幅を同一と仮定せず，設定値を確認してください．
 ZYNQ 上のプロセッサで DRAM を読み書きするのに必要な DRAM コントローラについて説明します．  
 ここに書いてある内容は Xilinx Zynq-7000 向けです．  
 このページでは，ZYNQ についての基本的な知識は省略しています．  
@@ -26,13 +28,13 @@ AXI4 プロトコルでは，通信はマスターとスレーブの 2 者間で
 
 前述の外部メモリと通信するための PS 部の High performance port はスレーブインターフェースになっています．  
 そのため，RSD 側で必要なことは AXI4 プロトコルで策定されたマスターのインターフェースを持ち，AXI4 プロトコルでメモリアクセス要求を発行，処理できるようにすることです．  
-ソースコード中の Processor/Src/Memory/AXI4Memory.sv が，RSDからのリード/ライト要求を AXI4 プロトコルのリード/ライト要求に変換しています．  
+ソースコード中の Processor/Src/Memory/Axi4Memory.sv が，RSDからのリード/ライト要求を AXI4 プロトコルのリード/ライト要求に変換しています．\
 
 ## リードチャンネル 
 
 ![](img/axi4_read_channel.png)
 RSD からのリード要求は，memAccessRE と memAccessAddr によって発行されます．
-具体的には， リード要求のアドレスを memAccessAddr にセットして memAccsessRE が 1 にすることでリード要求が発行されたことになります．  
+具体的には， リード要求のアドレスを memAccessAddr にセットして memAccessRE を 1 にすることでリード要求が発行されたことになります．\
 そのため，axi4Memory モジュール内ではその要求を受け取り，AXI4 プロトコルに変換してメモリに送ります．  
 変換された要求が図の AXI\_ARADDR ，AXI\_ARID，AXI\_ARVALID です．  
 詳細は AXI4 のドキュメントを参照してください．  
@@ -47,15 +49,15 @@ RSD からのリード要求は，memAccessRE と memAccessAddr によって発�
 ここで注意しなければならないことは，RSD のメモリ要求におけるデータの単位であるキャッシュラインサイズより AXI4 インターフェースのデータサイズが一般的に小さい点です．  
 これは，PS 部の HP ポートや内部バス，メモリコントローラのデータ幅が制限されていることによります．  
 そのため，axi4Memory では 1 つの RSD のリード要求に対してバースト転送を行います．  
-バースト数は (キャッシュラインサイズ/AXI4 インターフェースのデータサイズ) となります．  
-memoryReadDataTable は，バースト転送で送られてきたデータをキャッシュラインサイズに結合する役割を担います．
+バースト数は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．
+memoryReadDataTable は，バースト転送で送られてきたデータを内部メモリエントリのサイズに結合する役割を担います．
 
 ## ライトチャンネル 
 
 ![](img/axi4_write_channel.png)
 
 RSD からのライト要求は，memAccessWE と memAccessWriteData， memAccessAddr によって発行されます．
-具体的には， ライト要求のアドレスを memAccessAddr に，データを memAccessWriteData にセットして memAccsessWE が 1 にすることでリード要求が発行されたことになります．  
+具体的には， ライト要求のアドレスを memAccessAddr に，データを memAccessWriteData にセットして memAccessWE を 1 にすることでライト要求が発行されたことになります．\
 そのため，axi4Memory モジュール内ではその要求を受け取り，AXI4 プロトコルに変換してメモリに送ります．  
 変換された要求が図の AXI\_AWADDR ，AXI\_AWID，AXI\_AWVALID です．  
 詳細は AXI4 のドキュメントを参照してください．  
@@ -65,7 +67,7 @@ RSD からのライト要求は，memAccessWE と memAccessWriteData， memAcces
 しかし，AXI4 プロトコルの規定により，書き込むデータの転送順番は要求を出した順番にならなければなりません．  
 また，リードチャネルと同様に RSD のメモリ要求におけるデータの単位であるキャッシュラインサイズより AXI4 インターフェースのデータサイズが一般的に小さい点に注意が必要です．  
 そのため，同様に axi4Memory では 1 つの RSD のライト要求に対してバースト転送を行います．  
-バースト数は (キャッシュラインサイズ/AXI4 インターフェースのデータサイズ) となります．  
+バースト数は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．
 memoryWriteDataQueue は，バースト転送で送るデータを一時的にバッファする役割を担います．
 
 書き込みが正常に終了すると，スレーブ側から AXI\_BID と AXI\_BVALID を介して書き込み完了応答が発行されます．
@@ -73,4 +75,4 @@ memoryWriteDataQueue は，バースト転送で送るデータを一時的に�
 本来，ここで正常に書き込みが終了しなかった場合にライト要求とデータを再送する処理が必要なのですが，現在はすべての書き込みは必ず正常に完了することを想定してこの処理は未実装です．
 
 **TODO**  
-スレーブ側で書き込みが失敗した場合に，ライト要求とデータを再送する機構の追加  
+スレーブ側で書き込みが失敗した場合に，ライト要求とデータを再送する機構の追加

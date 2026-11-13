@@ -1,86 +1,73 @@
-# Run post-synthesis (implementation) simulation for FPGA
+# Post-synthesis and timing simulation for FPGA
 
-This page describes the procedure to run post-synthesis simulation for FPGA.  
-This simulation may be helpful for debugging when RSD runs correctly on the functional simulation but an FPGA.  
+The current test targets synthesize a program into a Zedboard core's internal memory and verify its UART output. They are separate from the RTL program suites and board boot-image generation. This page follows the Makefiles in RSD; the Wiki update itself does not rerun CAD tools or validate hardware.
 
-## Setup the required development environment and environment variables.
+## Preparation
 
-1. See [Development Environment](https://github.com/rsd-devel/rsd/wiki/en-devel-environment) and setup the development environment for ```Post-synthesis Simulation For FPGA```.
-2. See [Environment Variables](https://github.com/rsd-devel/rsd/wiki/en-devel-environment-variables) and setup the environment variables for ```Post-synthesis Simulation For FPGA```.
-3. (Optional) Install Synplify.
+Install the required CAD tools and licenses separately from the Dev Container. Set `RSD_VIVADO_BIN` to the Vivado `bin` directory. For Synplify, put `synplify_premier_dp` on `PATH` or pass `SYNPLIFY=/path/to/executable`. For VCS, put `vcs` on `PATH` or pass `VCS=/path/to/vcs`.
 
-## For using Vivado only  
-### 1. Synthesize & Run Simulation
-* Open Processor/Src/Makefile.vivado.mk specify the ```TEST_CODE``` and ```MAX_TEST_CYCLES``` variables   
-    * ```TEST_CODE``` is the path of code.hex to be simulated with
-    * ```MAX_TEST_CYCLES``` is the maximum number of cycles to be simulated 
-* Go to Processor/Src and simply run below commands according to the purpose
-    ```
-    make -f Makefile.vivado.mk post-[synthesis|implementation][-timing]
-    ```
-    * For example, to run post-synthesis functional simulation,
-        ```
-        make -f Makefile.vivado.mk post-synthesis
-        ```
-    * Or to run post-implementation timing simulation,
-        ```
-        make -f Makefile.vivado.mk post-implementation-timing
-        ```
-* If simulation does not launch correctly, please remove Vivado project by below command and try again 
-    ```
-    make -f Makefile.vivado.mk post-synthesis-clean
-    ```
+Prepare the RISC-V compiler and [environment variables](en-devel-environment-variables). From `Processor/Src`, build the program HEX before synthesis:
 
-## For using synplify netlist  
-### 1. Generate the netlist file (rsd.vm) of RSD using Synplify.
-
-1. Open Processor/Project/Synplify/ver2017-03.prj on Synplify.  
-2. In Synplify, select "Zedboard_post_synthesis" in the opened project and click "Run".  
-   * If the synthesis ran successfully, rsd.vm is generated in Project/Synplify/Zedboard_post_synthesis/. 
-
-### 2. Synthesize using Vivado
-* Run below command
-```
-make post-synthesis
+```bash
+make test/level-1/build
 ```
 
-### 3. Begin post-synthesis simulation on QuestaSim
-* Run below command
-    ```
-    make post-synthesis-run
-    ```
-* If you want to launch GUI simulation, run below command
-    ```
-    make post-synthesis-run-gui
-    ```
-* You can dump Kanata log by executing below command
-    ```
-    make post-synthesis-kanata
-    ```
-* If simulation does not launch correctly, please remove Vivado project by below command and try again 
-    ```
-    make post-synthesis-clean
-    ```
+This command builds test programs and does not require building the Verilator simulator. The targets below default to `Verification/TestCode/C/HelloWorld`. A selected program needs `code.hex`, `cfg.xml`, and a nonempty `serial.ref.txt`.
 
-# Add New Files into Project
-## For using Vivado only  
-* Open Processor/Src/Makefiles/CoreSources.inc.mk and add new source file name in this file, according to the file type.
-    * if you want to add new module file, append to `TYPES` variable
-        ```
-        MODULES  = \
-            Main_Zynq_Wrapper.sv \
-            Main_Zynq.sv \
-            Core.sv \
-            ...
-        ```
-    * The below table summarizes variables for each file type
+## Functional post-synthesis tests
 
-    | File Type | Variable in CoreSources.inc.mk |
-    | ---- | ---- |
-    | Package | TYPES |
-    | Module / Interface | MODULES |
-    | Test Module | TEST_MODULES |
-    | Header File | HEADERS |
+Choose the command for the synthesis tool:
 
-## For using synplify netlist
-* Launch Synplify and add your new files into the project.
+```bash
+make synth/vivado/post-synthesis/test
+make synth/synplify/post-synthesis/test
+```
+
+Both flows use XSim for simulation and TestDriver to check results. The Synplify target runs batch synthesis itself; the board flow's manual `ver2017-03.prj` procedure is a separate workflow.
+
+To select another prepared UART-checked program, pass `TEST_CODE`:
+
+```bash
+make synth/vivado/post-synthesis/test \
+    TEST_CODE=Verification/TestCode/C/HelloWorld
+```
+
+Working directories are `Processor/Project/PostSynthesis/vivado/<program>` and `Processor/Project/PostSynthesis/synplify/<program>`. The inputs are copied there. Execution limits come from the copied `cfg.xml`; see the [TestDriver documentation](en-test-driver).
+
+Use the public targets `make synth/vivado/post-synthesis/test` and `make synth/synplify/post-synthesis/test` from either the source root or `Processor/Src`.
+
+## Routed timing simulation with VCS
+
+```bash
+make sim/vcs/post-implementation/test
+```
+
+Vivado performs synthesis, placement/routing, and netlist/SDF export. VCS simulates the routed netlist with delays, followed by TestDriver verification. Outputs are under `Processor/Project/PostSynthesis/vivado-timing/<program>`.
+
+The defaults are `POST_IMPLEMENTATION_CLOCK_NS=32`, `VCS_CORNER=slow`, and `VCS_DELAY=max`. The supported corner values are `slow`/`fast`, and delay values are `min`/`max`. A previously generated netlist can be reused with:
+
+```bash
+make sim/vcs/post-implementation/run
+```
+
+Use the same `TEST_CODE` and clock setting as the build. The target checks that the current HEX matches the synthesized copy. When the HEX or RTL changes, run `sim/vcs/post-implementation/test` to rebuild. Changing only `cfg.xml` or the expected serial output does not replace the program embedded in the netlist.
+
+## Other project-based targets
+
+`Makefiles/Vivado.mk` also retains project-based `synth/vivado/post-synthesis/timing/test`, `synth/vivado/post-implementation/test`, and `synth/vivado/post-implementation/timing/test` targets, with GUI and Kanata variants. Their paths and options differ from the batch tests above; inspect [Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.mk) when using them. [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Synplify.mk) and [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/VCS.mk) define the other flows.
+
+## Adding RTL sources
+
+Update [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/CoreSources.inc.mk):
+
+| File type | List |
+| --- | --- |
+| Package/type definitions | `TYPES`, in dependency order |
+| Core modules and interfaces | `CORE_MODULES` |
+| Board wrapper and other system modules | `MODULES` |
+| Simulation-only testbench modules | `TEST_MODULES` |
+| Header files for IP packaging | `HEADERS` |
+
+The batch tests consume these lists. If you also maintain the separate Synplify board project, update that project as required.
+
+CPU settings come from `Processor/Config/MicroArch.toml`, including `overrides.synthesis`. Netlist testbenches use `RSD_SYNTHESIS_SRC_CFG` to match synthesis. A command-line `RSD_SRC_CFG` override alone does not change synthesis settings.

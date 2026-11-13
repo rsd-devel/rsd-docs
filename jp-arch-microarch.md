@@ -1,78 +1,49 @@
 # マイクロアーキテクチャ
 
-## 全体
+RSD は 32 bit RISC-V のアウト・オブ・オーダ実行スーパースカラプロセッサです．以下は既定構成です．設計の背景は [FPT 2019 論文](https://www.rsg.ci.i.u-tokyo.ac.jp/members/shioya/pdfs/Mashimo-FPT%2719.pdf) と [雷上動の設計・実装に関する論文](https://repository.dl.itc.u-tokyo.ac.jp/?action=repository_action_common_download&item_id=5849&item_no=1&attribute_id=14&file_no=1) を参照してください．
 
-下記を参照してください．
+## 構成と設定箇所
 
-* [An Open Source FPGA-Optimized Out-of-Order RISC-V Soft Processor](https://www.rsg.ci.i.u-tokyo.ac.jp/members/shioya/pdfs/Mashimo-FPT'19.pdf)
-* [面積効率を指向するプロセッサ「雷上動」の設計と実装](https://repository.dl.itc.u-tokyo.ac.jp/?action=repository_action_common_download&item_id=5849&item_no=1&attribute_id=14&file_no=1)
+数値パラメータと CPU マクロの設定元は [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MicroArch.toml) です．生成される `Config/MicroArchConf.sv` が数値定義，`Makefiles/MicroArch.inc.mk` がシミュレーション用の既定マクロ，`Config/MicroArchMacros.svh` が合成用マクロを供給します．派生パラメータは `Config/MicroArchConf.template.sv`，ツール・ボード固有の設定は `Config/SynthesisMacros.sv` にあります．
 
+| 項目 | 既定値 |
+| --- | --- |
+| フェッチ幅 / コミット幅 | 各 2 命令 |
+| 発行幅 | 整数 2，複雑整数 1，メモリ 2，FP 1 の計 6 |
+| ActiveList（ROB） | 64 エントリ |
+| 物理レジスタ | 整数・FP 各 64 |
+| IssueQueue / ReplayQueue | 16 / 20 エントリ |
+| LoadQueue / StoreQueue | 各 16 エントリ |
+| I-cache / D-cache | 各 4 KiB，2 way，8 byte ライン |
+| D-cache MSHR | 2 エントリ |
 
-## ゼロレジスタについて
+発行幅には構成上の制約があります．整数幅の変更，ロード・ストアの統合，乗除算とメモリパイプの統合，FP の有無は [ディレクティブ](jp-devel-directive) を参照してください．構成変更時はシミュレータとテストプログラムを同じ設定で再ビルドします．
 
-以下のようにしてゼロレジスタは実装されています.
+## ISA と検証範囲
 
-* ゼロレジスタへ書き込む命令は，レジスタ書き込みフラグを落とす
-    * Decoder.svのopInfo.writeRegへの書き込みの際にゼロレジスタかどうかを判定
-* レジスタファイルはリセット回路による初期化で, すべてにゼロが書き込まれるようにする
-    * RegisterFile.sv内で記述
-* RMTは初期化によって, 物理レジスタの0番エントリにゼロレジスタが割り当てられ, 解放されることがない
-* ゼロレジスタの読み込みは実際に物理レジスタから行われるが, 上の条件により常に０が読みだされる
+整数 I/M/A，CSR，FENCE.I の処理が実装され，FP は `RSD_MARCH_FP_PIPE` で切り替えます．既定では FP，`RSD_ENABLE_ZBA`，`RSD_ENABLE_ZICOND`，`RSD_ENABLE_ZICFILP` が有効です．命令のデコードは [Decoder.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Decoder/Decoder.sv) を参照してください．命令アラインメントは 32 bit（IALIGN=32）です．
 
-## 例外の処理
+ACT4 は既定構成で整数・特権命令 90 ケースと F の 281 ケースを対象とします．F は FP 有効時に既定で含まれます．I/M/A，Zba，Zicond，CSR，FENCE.I，例外，M/S/U モードからの割り込み・委譲・PLIC 経由の外部割り込みを検証します．FP は全 5 丸めモードと例外フラグを検査し，基本 CSR テストが FS/SD・FP アクセス制御・dirty tracking を補います．S モードは Bare のみで，ページングと完全な S モード適合性は対象外です．
 
-### 直接関係する信号
+実行方法と範囲は [テスト・プログラム](jp-test-program) と本体の [ACT4 の説明](jp-test-program#riscv-arch-testact4) を参照してください．この Wiki 更新ではシミュレーションを再実行していません．
 
-* 関連するユニット
-    * Privileged/CSR\_Unit.sv
-    * Privileged/CSR\_UnitIF.sv
-    * Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv
-        * 例外判定を行っている
+## ゼロレジスタ
 
-* csrUnitIF.triggerInterrupt
-    * 割り込み: タイマーなどの，命令の実行とは独立に外部要因によってよりトリガされる
+整数の x0 への書き込みは Decoder の `opInfo.writeReg` を落として抑止します．[RegisterFile.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/RegisterFile/RegisterFile.sv) はリセット時に物理レジスタをゼロで初期化します．FP の f0 は通常の書き込み可能なレジスタです．
 
-* csrUnitIF.triggerExcpt
-    * 例外: 命令の実行に伴ってトリガされる
-    * 例外はさらに，fault と trap に別れる
-        * fault: アドレス違反等
-        * trap: システムコール呼び出し等
-    * csrUnitIF.excptCause のコードによって上記を判別する
-        * EXEC\_STATE\_TRAP\_ECALL ならトラップ，
-        * EXEC\_STATE\_FAULT\_LOAD\_MISALIGNED ならフォールトなど
+[RMT.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/RenameLogic/RMT.sv) の初期割り当ては，整数論理レジスタ番号に `SCALAR_FREE_LIST_ENTRY_NUM` を加えた物理レジスタ番号です．既定では `64 - 32 = 32` なので，x0 は物理レジスタ 32 番を読みます．書き込み先の再割り当てが行われないため，このレジスタはゼロを保持します．ソース内の古い「0 番」というコメントではなく，RMT の初期化式に従ってください．
 
-### フォールト発生時のフロー
+## 例外と割り込み
 
-* @Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv でアドレスチェックが行われ，ExecState にフォールトが登録される
-    ```
-    // 実行が正しく終了してる場合，フォールト判定を行う
-    if (nextStage[i].execState == EXEC_STATE_SUCCESS) begin
-        if (isLoad[i]) begin
-            if (pipeReg[i].memMapType == MMT_ILLEGAL)
-                nextStage[i].execState = EXEC_STATE_FAULT_LOAD_VIOLATION;
-            else if (IsMisalignedAddress(pipeReg[i].addrOut, iqData[i].memOpInfo.memAccessMode.size))
-                nextStage[i].execState = EXEC_STATE_FAULT_LOAD_MISALIGNED;
-        end
-        else if (isStore[i]) begin
-            if (pipeReg[i].memMapType == MMT_ILLEGAL)
-                nextStage[i].execState = EXEC_STATE_FAULT_STORE_VIOLATION;
-            else if (IsMisalignedAddress(pipeReg[i].addrOut, iqData[i].memOpInfo.memAccessMode.size))
-                nextStage[i].execState = EXEC_STATE_FAULT_STORE_MISALIGNED;
-        end
-    end
-    ```
-* ライトバックステージで ActiveList に execState が書き込まれる
-* フォールトを起こした命令が ActiveList の先頭に来るまで待つ
-    * フォールトは実行時リカバリの対象とはならないようにしている
-* コミットステージでフォールトを起こした命令を検出
-* RecoveryManager にリカバリ要求をだす
-    * リカバリの一種として，フォールトを起こした命令が自分ごと取り消される
-* RecoveryManager から CSR\_Unit に対してフォールトのトリガを要求
-* CSR\_Unit が発生したフォールトの種類などに応じて csr や PC を書き換える
-    ```
-    @ CSR_Unit.sv
-    csrNext.mepc = port.excptCauseAddr; // 例外の発生元 PC を書き込む
-    csrNext.mtval = port.excptCauseDataAddr;// ECALL/EBREAK の場合は PC?
-    csrNext.mcause.isInterrupt = FALSE;
-    csrNext.mcause.code.trapCode = ToTrapCodeFromExecState(port.excptCause);
-    ```
+デコード，整数実行，メモリ実行などで検出された例外は `execState` と関連する PC・アドレスで伝えられます．ロード・ストアに加え LR/SC・AMO のアドレス検査もあるため，旧来のロード・ストアだけのコード断片では全経路を説明できません．実装は [MemoryTagAccessStage.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv) などを参照してください．
+
+フォールトの基本的な流れは次のとおりです．
+
+1. 実行結果とともに例外状態を ActiveList へ記録する．
+2. コミット時に先頭の例外命令を検出する．
+3. RecoveryManager が例外命令を含む後続命令を取り消し，CSR ユニットへ `triggerExcpt` を送る．
+4. CSR ユニットが特権状態・委譲設定に応じて CSR を更新し，例外ハンドラへの遷移先を返す．
+
+[CSR_Unit.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Privileged/CSR_Unit.sv) は不正命令の `mtval` を 0 とします．命令ビット列を保持する方式ではありません．IALIGN=32 のため，`mepc` の読み取りと MRET が参照するアドレスの下位 2 bit はマスクされます．
+
+割り込みは `triggerInterrupt` を使います．タイマー・ソフトウェア割り込みの CLINT，外部割り込みの PLIC と，アドレス配置は [メモリ・マップ](jp-arch-mem-map) を参照してください．
