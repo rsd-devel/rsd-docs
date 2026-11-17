@@ -27,7 +27,7 @@ RTL のバックエンド `VerilatorCore.inc.mk`・`ModelSimCore.inc.mk`・`XSim
 
 `EDA.inc.mk` が EDA・プラットフォーム操作を個別のツール用 submake へ転送し，コマンドライン変数と並列ジョブ数を保持します．バックエンドの `Vivado.mk`・`Synplify.mk`・`VCS.mk` は `Processor/Src` から `make -f Makefiles/<tool>.mk` で直接呼ぶこともできます．読み込み専用のファイルは `.inc.mk` という名前です．
 
-`synth/vivado/build`・`synth/synplify/build` はボードの実装と bitstream 生成を含みます．後者は別途用意した Synplify のボード用ネットリストが必要です．合成後の `build`・`test` は検証用ネットリストを自動生成します．`sim/vcs/post-implementation/run` は配置配線済みネットリストを再利用し，`test` はその生成も行います．ARM Linux の操作は `platform/zynq/` にあり，必要なツールやソースは従来と同じです．
+`synth/vivado/build`・`synth/synplify/build` はボードの実装と bitstream 生成を含みます．後者は別途用意した Synplify のボード用ネットリストが必要です．合成後の `build`・`test` は検証用ネットリストを自動生成します．`sim/vcs/post-implementation/run` は配置配線済みネットリストを再利用し，`test` はその生成も行います．ARM Linux の操作は `platform/zynq/` にあります．Linux/rootfs は Dev Container 内の Buildroot，ハードウェアはホストの Vivado/Vitis で生成します．SD 書き込みもホストで行います．[ZedBoard の構築手順](jp-fpga-zynq-synth-for-linux) を参照してください．
 
 ## 共有ファイル
 

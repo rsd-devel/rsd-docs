@@ -1,95 +1,38 @@
-# ZYNQ の PS 向けの Linux  
+# Zynq の PS 向け Linux
 
-このページは Zynq の ARM（PS）側 Linux の構成と従来の運用方法を説明します．既存のカーネル設定を前提とするため，構築の入口は [Linux 経由の RSD 構築](jp-fpga-zynq-synth-for-linux) を参照してください．今回の更新では実機起動を再検証していません．
+Zynq の ARM（PS）側で Linux を動かし，FPGA（PL）側の RSD を制御します．RSD 自体で動作する Linux ではありません．[システム構成](jp-fpga-zynq-arch) と [構築・SD 書き込み・実行手順](jp-fpga-zynq-synth-for-linux) を参照してください．
 
-* ZYNQ とは
-    * おおまかに，ZYNQ は ARM ハードプロセッサを中心に構成される非リコンフィギャラブルな PS (Processing System) 部と，FPGA を中心に構成されるリコンフィギャラブルな PL (Programmagle Logic) 部で構成されています． 
-    * このページでは，ZYNQ についての基本的な知識は省略しています．  
-    * ZYNQ についての基本的な情報は[公式ドキュメント](https://japan.xilinx.com/support/documentation/user_guides/j_ug585-Zynq-7000-TRM.pdf)を参照してください．  
-* RSD の ZYNQ への実装に際し，開発における利便性やシステムコール命令のサポートのために PS 部で Linux を動作させます．
-    * このページではその Linux について説明します．  
-        * **RSD 上で動作する Linux についてではないことに注意してください．**  
-    * ここに書いてある内容は Xilinx Zynq-7000 向けです．  
-    * **また，このページの記述は [zynq向けのシステムアーキテクチャ](jp-fpga-zynq-arch) のシステムアーキテクチャを前提としたものとなっているので，先にそちらを読むことをお勧めします．**  
+## 起動構成
 
-## 概要 
-PS 部で Linux を動作させるためには，主に以下の要素が必要になります．  
-  * RSD を含めたシステムの bitstream ファイル (.bit)
-  * 電源が起動して最初に PS 部が読み込む standalone プログラム (fsbl.elf)
-  * PC における BIOS の役割を果たす U-Boot (u-boot.elf)
-  * Linux カーネル
-  * Device-tree (devicetree.dtb)
-  * U-Boot と bitstream，fsbl をパックしたバイナリファイル (boot.bin)
+Vivado/Vitis 2019.2 が RSD の bitstream と FSBL を生成します．Buildroot 2025.02.19 が ARM ツールチェーン，U-Boot，Linux，rootfs を構築します．生成物は `Processor/Project/Vivado/ARM_Linux/Build/images/` にあります．
 
-各要素の役割についての詳細は [Xilinx の公式ドキュメント](https://japan.xilinx.com/support/documentation/user_guides/j_ug585-Zynq-7000-TRM.pdf) を読んでください．  
+- `boot.bin`: FSBL・bitstream・U-Boot をまとめた起動ファイル．
+- `uImage`・`rsd-zed.dtb`・`extlinux.conf`: カーネル・デバイスツリー・起動設定．
+- `rootfs.ext4`: OpenSSH と `rsd-loader` を含む rootfs．
+- `rsd-zedboard.img`: SD カード全体に書くパーティション付きイメージ．
+- `rsd-zedboard_ed25519`・`.pub`: 既定で生成する SSH 接続用鍵．秘密鍵はイメージに含めません．
 
-## 準備
- [Vivado の初期設定](jp-devel-vivado)を元に初期設定を行っておく．  
-[環境変数](jp-devel-environment-variables) も設定します．また，必ず Linux 上で作業してください．
+ネットワークは既定で DHCP です．固定 IP・DNS などの初期設定には `RSD_ROOTFS_OVERLAY` を使います．SSH は root の公開鍵認証で，パスワード認証は無効です．詳細は構築手順を参照してください．
 
+## プログラムのロード
 
-## ターゲットボードの設定
+`code.hex` を SSH/SCP で転送し，ボード側で実行します．
 
-"$(RSD\_ROOT)/Processor/Src/Makefiles/Vivado.inc.mk の TARGET\_BOARD" に対象のボード名を設定\
-（現在の Makefile が案内する対応ボード）
+```bash
+rsd-loader /root/code.hex
+```
 
-* Zedboard
+ローダーはビルド時に導入され，HEX のサイズを検査してから RSD 用メモリへロードします．サイズの手動指定は不要です．プログラムの UART 出力を表示し，Ctrl-C でローダーを終了します．
 
+## メモリと制御
 
-## ビルド
+ARM と RSD が外部 DDR を共有するため，ZedBoard の 512 MiB を固定分割します．
 
-本体の Makefile を使う場合は Getting started を参照してください．
+| 物理アドレス（両端を含む） | 用途 |
+| --- | --- |
+| `0x00000000–0x0FFFFFFF` | PS Linux |
+| `0x10000000–0x1FFFFFFF` | RSD |
 
-### Getting started  
+ローダーは `/sys/class/uio/uio*/name` から `rsd-ram`・`rsd-pl2ps`・`rsd-ps2pl` を探し，対応する `/dev/uio*` を mmap します．UIO の番号には依存しません．RSD の内部アドレスは [DRAM コントローラ](jp-fpga-zynq-mem-controller) が ARM 側物理アドレスに変換するため，[RSD のメモリマップ](jp-arch-mem-map) とは区別してください．
 
-* [この](jp-fpga-zynq-synth-for-linux) の手順通りに作業する
-
-## 実機上で RSD へのプログラムのロードと動作確認方法
-
-- ssh ログイン後のホームディレクトリに実行したい code.hex を scp などを使ってコピーする
-- ホームディレクトリの loader がプログラムローダーなので，以下のコマンドで実行する (詳細はソースコード loader.c を参照)  
-    ```
-    # loader の第 2 引数 は読み込ませるバイナリのサイズ．メモリマップの仕様により，入力すべき値が変化するので注意．
-    ./loader code.hex 163840
-    ```
-- 正しく動作していれば，code.hex の出力が表示される
-- また，約1秒ごとに実行命令数と最後にコミットされた PC が表示される
-
-## Linux のメモリ領域について
-ARM と RSD は同じ外部メモリを共有しているため，RSD が Linux が動作する物理アドレス空間を不正に書き換えないようにする必要があります．  
-この方法には大まかに  
-* Linux が全メモリ領域を管理し，RSD は Linux が確保した CMA 領域のみにアクセスする
-* Linux と RSD でメモリを分割し，排他管理する
-の 2 種類がありますが，今回は後者を選択しました．
-
-Zedboardでは以下のようにメモリ空間を分割しています．
-
-|アドレス|内容|
-|-------|----|
-|0x00000000~0x0FFFFFFF|Linux用領域|
-|0x10000000~0x1FFFFFFF|RSD用領域|
-
-このため，Linux から RSD 用のメモリ空間には UIO (Userspace I/O) ドライバでインストールされた /dev/uio* デバイスファイルをopen，mmap することでアクセスします．  
-**/dev/uio0 が RSD 用のメモリ空間です．**
-
-また，この仕様のため RSD のメモリ空間は 0x0 以外の物理アドレスから開始することになりますが，依然として RSD は　[メモリ・マップ](jp-arch-mem-map) で述べたように 0x0 から開始するメモリ空間を扱います．  
-
-このギャップを解消するため，[Dramコントローラ_zynq編](jp-fpga-zynq-mem-controller) の axi4Memory モジュールが RSD からのメモリアクセス要求のアドレスに オフセット (例: Zedboardでは0x10000000) を加算して PS に要求を発行します．
-
-
-
-
-## Linux 上での RSD との通信方法
-[Zynq 向けのシステムアーキテクチャ](jp-fpga-zynq-arch) にある通り，RSD との通信はメモリマップドレジスタを介して行います．
-これらは RSD 用のメモリ空間と同様に UIO (Userspace I/O) ドライバでインストールされた /dev/uio* デバイスファイルをopen，mmap することでアクセスします．  
-**/dev/uio1 が Axi4LitePlToPsControlRegister，/dev/uio2 が Axi4LitePsToPlControlRegister です．**
-
-## Linux 上での PL 部のリコンフィギュレーション方法
-
-- ホスト PC にて「 make platform/zynq/build 」で新しい boot.bit を $(RSD\_ARM\_LINUX)/boot に作成
-- 作成した boot.bit を scp 等で PS の Linux にコピー
-- PS の Linux 上で「 cat boot.bit > /dev/xdevcfg 」を実行する
-
-**注意  
-PS との境界の PL も再構成されるため，動作が不安定になる場合があります．  
-そのため，万が一不安定になったら PS の Linux を一度シャットダウンし，SD カードの boot.bin を更新して再起動し直すことをお勧めします．**
+RTL を更新した場合は bitstream と boot.bin，SD イメージを再生成して再起動します．旧カーネルの `/dev/xdevcfg` への書き込み手順は現行フローでは使用しません．現行構成は生成と QEMU 上の PS Linux を検証済みですが，実機起動・RSD 実行は未検証です．

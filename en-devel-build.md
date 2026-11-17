@@ -47,8 +47,10 @@ preserving command-line variables and parallel job limits. The backend
 generation. The latter still requires a separately prepared Synplify board
 netlist. Post-synthesis `build`/`test` targets generate their verification netlists
 automatically. `sim/vcs/post-implementation/run` reuses an existing routed netlist,
-while `test` also builds it. Existing ARM Linux commands are under
-`platform/zynq/`; their tool and source requirements are unchanged.
+while `test` also builds it. ARM Linux commands are under
+`platform/zynq/`. Buildroot builds Linux/rootfs in the Dev Container; Vivado/Vitis
+builds hardware on the host. SD writes also run on the host. See the
+[ZedBoard build instructions](en-fpga-zynq-synth-for-linux).
 
 - `CoreSources.inc.mk`: the stable source/configuration manifest. **sv-tests
   parses `TYPES` and `CORE_MODULES` directly**, without evaluating Make. Preserve
