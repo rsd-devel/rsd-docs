@@ -52,15 +52,13 @@ nameserver 192.168.1.1
 ホスト側で Vivado/Vitis 2019.2 を使います．以下のパスはインストール先に置き換えてください．既定の対象ボードは Zedboard です．
 
 ```bash
-make platform/zynq/hardware/build \
-    RSD_VIVADO_BIN=/path/to/Vivado/2019.2/bin \
-    RSD_XSCT=/path/to/Vitis/2019.2/bin/xsct
-make platform/zynq/bootbin/build \
-    RSD_VIVADO_BIN=/path/to/Vivado/2019.2/bin
+make platform/zynq/boot/build \
+    RSD_VIVADO_ROOT=/path/to/Vivado/2019.2 \
+    RSD_VITIS_ROOT=/path/to/Vitis/2019.2
 ./RunContainer.sh make platform/zynq/image/build
 ```
 
-`hardware/build` は bitstream・XSA・FSBL を生成し，`bootbin/build` は FSBL・bitstream・U-Boot を `boot.bin` にまとめます．`image/build` は起動用 FAT と rootfs を含む **`Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img`** を作ります．image/build 自体は Linux/rootfs を再ビルドしません．
+`boot/build` は bitstream・XSA・FSBL の生成後，FSBL・bitstream・U-Boot を `boot.bin` にまとめます．`-j` 指定時もこの順序を守ります．個別に実行する `hardware/build` と `bootbin/build` も利用できます．`image/build` は起動用 FAT と rootfs を含む **`Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img`** を作ります．image/build 自体は Linux/rootfs を再ビルドしません．
 
 ## 3. SD カードへの書き込み
 
@@ -100,7 +98,7 @@ rsd-loader /root/hello.hex
 
 ## 更新と検証範囲
 
-RTL を変更したら `hardware/build` → `bootbin/build` → `image/build` の順で再生成し，SD を書き直して再起動します．Linux や初期設定の変更は先に `platform/zynq/build` が必要です．U-Boot を変更した場合は `bootbin/build` もやり直します．カーネル・ブートローダーのソースやパッチを変更した場合は clean 後に再ビルドしてください．
+RTL を変更したら `boot/build` → `image/build` の順で再生成し，SD を書き直して再起動します．Linux や初期設定の変更は先に `platform/zynq/build` が必要です．U-Boot を変更した場合は `bootbin/build` もやり直します．カーネル・ブートローダーのソースやパッチを変更した場合は clean 後に再ビルドしてください．
 
 2026-11-17 時点で bitstream/XSA/FSBL/SD イメージの生成，QEMU での PS Linux 起動・固定 IP/経路/DNS・SSH/SFTP を確認しています．SD 書き込みターゲットの確認・拒否処理は模擬コマンドで検証しました．実 SD への書き込み，FSBL/U-Boot 経由の実機起動，実機での RSD 実行は未検証です．
 

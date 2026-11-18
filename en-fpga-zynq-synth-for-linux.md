@@ -52,15 +52,13 @@ Without an explicit public key, the first build generates `Build/images/rsd-zedb
 Use Vivado/Vitis 2019.2 on the host. Replace these paths with your installation paths. The default target board is Zedboard.
 
 ```bash
-make platform/zynq/hardware/build \
-    RSD_VIVADO_BIN=/path/to/Vivado/2019.2/bin \
-    RSD_XSCT=/path/to/Vitis/2019.2/bin/xsct
-make platform/zynq/bootbin/build \
-    RSD_VIVADO_BIN=/path/to/Vivado/2019.2/bin
+make platform/zynq/boot/build \
+    RSD_VIVADO_ROOT=/path/to/Vivado/2019.2 \
+    RSD_VITIS_ROOT=/path/to/Vitis/2019.2
 ./RunContainer.sh make platform/zynq/image/build
 ```
 
-`hardware/build` generates the bitstream, XSA and FSBL. `bootbin/build` packages FSBL, bitstream and U-Boot into `boot.bin`. `image/build` creates **`Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img`**, including the boot FAT and rootfs partitions. image/build does not rebuild Linux or the rootfs itself.
+`boot/build` generates the bitstream, XSA and FSBL, then packages FSBL, bitstream and U-Boot into `boot.bin`. This order is preserved with `-j`. The separate `hardware/build` and `bootbin/build` targets remain available. `image/build` creates **`Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img`**, including the boot FAT and rootfs partitions. image/build does not rebuild Linux or the rootfs itself.
 
 ## 3. Write the SD card
 
@@ -100,7 +98,7 @@ The loader displays program UART output. Use Ctrl-C to exit. See also [Building 
 
 ## Updates and validation scope
 
-After RTL changes, run `hardware/build`, `bootbin/build`, and `image/build` in that order, then rewrite the SD card and reboot. Linux or initial-setting changes require `platform/zynq/build` first. U-Boot changes also require rebuilding `bootbin/build`. Kernel/bootloader source or patch changes require clean and rebuild.
+After RTL changes, run `boot/build` and `image/build` in that order, then rewrite the SD card and reboot. Linux or initial-setting changes require `platform/zynq/build` first. U-Boot changes also require rebuilding `bootbin/build`. Kernel/bootloader source or patch changes require clean and rebuild.
 
 As of 2026-11-17, bitstream/XSA/FSBL/SD-image generation and PS Linux boot with static IP/routes/DNS and SSH/SFTP in QEMU have been checked. The SD write target's confirmation and rejection paths were tested using mocked commands. Actual SD writes, board boot through FSBL/U-Boot, and RSD execution on hardware have not been validated.
 

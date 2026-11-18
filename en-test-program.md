@@ -65,7 +65,7 @@ For synthesized cores, build the test HEX first (for example, with
 `make synth/synplify/post-synthesis/test` for Synplify + XSim.
 `make sim/vcs/post-implementation/test` uses Vivado placement/routing
 and VCS with SDF delays. These require separately installed CAD tools and
-`RSD_VIVADO_BIN`; they default to HelloWorld and accept `TEST_CODE` to select a
+`RSD_VIVADO_ROOT`; they default to HelloWorld and accept `TEST_CODE` to select a
 UART-checked program. They are separate from the four groups above.
 
 TestDriver leaves each program's simulator log and UART output in its test

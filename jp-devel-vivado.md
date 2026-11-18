@@ -10,4 +10,4 @@
 
 ## 環境変数の設定  
 
-* [環境変数](jp-devel-environment-variables) を参照し，`RSD_VIVADO_BIN` などを設定します．`Processor/Tools/SetEnv` の例は実際のインストール先に合わせてください
+* [環境変数](jp-devel-environment-variables) を参照し，`RSD_VIVADO_ROOT` などを設定します．`Processor/Tools/SetEnv` の例は実際のインストール先に合わせてください

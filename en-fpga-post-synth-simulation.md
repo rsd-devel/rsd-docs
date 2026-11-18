@@ -4,7 +4,7 @@ The current test targets synthesize a program into a Zedboard core's internal me
 
 ## Preparation
 
-Install the required CAD tools and licenses separately from the Dev Container. Set `RSD_VIVADO_BIN` to the Vivado `bin` directory. For Synplify, put `synplify_premier_dp` on `PATH` or pass `SYNPLIFY=/path/to/executable`. For VCS, put `vcs` on `PATH` or pass `VCS=/path/to/vcs`.
+Install the required CAD tools and licenses separately from the Dev Container. Set `RSD_VIVADO_ROOT` to the versioned Vivado installation directory (e.g. `/opt/Xilinx/Vivado/2019.2`). For Synplify, put `synplify_premier_dp` on `PATH` or pass `SYNPLIFY=/path/to/executable`. For VCS, put `vcs` on `PATH` or pass `VCS=/path/to/vcs`.
 
 Prepare the RISC-V compiler and [environment variables](en-devel-environment-variables). From `Processor/Src`, build the program HEX before synthesis:
 

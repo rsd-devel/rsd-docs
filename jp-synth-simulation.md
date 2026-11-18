@@ -4,7 +4,7 @@
 
 ## 準備
 
-Dev Container とは別に CAD ツールとライセンスを設定します．`RSD_VIVADO_BIN` に Vivado の `bin` ディレクトリを指定してください．Synplify は `synplify_premier_dp`，VCS は `vcs` を `PATH` に置くか，make に `SYNPLIFY=/path/to/executable` または `VCS=/path/to/vcs` を渡します．
+Dev Container とは別に CAD ツールとライセンスを設定します．`RSD_VIVADO_ROOT` に Vivado のバージョンを含むインストールディレクトリ（例: `/opt/Xilinx/Vivado/2019.2`）を指定してください．Synplify は `synplify_premier_dp`，VCS は `vcs` を `PATH` に置くか，make に `SYNPLIFY=/path/to/executable` または `VCS=/path/to/vcs` を渡します．
 
 RISC-V コンパイラと [環境変数](jp-devel-environment-variables) を準備し，`Processor/Src` でプログラムを先にビルドします．
 

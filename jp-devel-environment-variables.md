@@ -26,8 +26,8 @@ export RSD_VERILATOR_BIN=/usr/local/bin/verilator
 | 変数 | 用途 | 設定値 |
 | --- | --- | --- |
 | `RSD_QUESTASIM_PATH` | ModelSim/QuestaSim の RTL・単体テスト | `vlog`・`vsim` などのディレクトリ |
-| `RSD_VIVADO_BIN` | Vivado/XSim，FPGA ビルド | Vivado の `bin` ディレクトリ |
-| `RSD_ARM_LINUX` | Zynq PS の Linux・起動ファイルの構築 | 取得・ビルド用ディレクトリ．本体の外が便利 |
+| `RSD_VIVADO_ROOT` | Vivado/XSim，FPGA ビルド | Vivado のバージョンを含むインストールディレクトリ（例: `/opt/Xilinx/Vivado/2019.2`） |
+| `RSD_VITIS_ROOT` | ZedBoard の FSBL 生成 | Vitis のバージョンを含むインストールディレクトリ（例: `/opt/Xilinx/Vitis/2019.2`） |
 | `RSD_DC_SHELL_BIN` | 実験的 Design Compiler 合成 | `dc_shell` のパス |
 
 Synplify は `synplify_premier_dp` を `PATH` に置くか，make に `SYNPLIFY=/path/to/executable` を渡します．VCS は `vcs` を `PATH` に置くか `VCS=/path/to/vcs` を渡します．ツールとライセンスの設定は別途必要です．

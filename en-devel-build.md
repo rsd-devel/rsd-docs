@@ -85,7 +85,7 @@ The dev container supplies environment settings automatically. For manual setup,
 copy and edit [SetEnv.sh](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/SetEnv/SetEnv.sh), then source `MySetEnv.sh`.
 `RSD_ROOT` always comes from the Makefile location and is exported to child
 processes; it needs no manual setting. Program builds require `RSD_GCC_PATH` and `RSD_GCC_PREFIX`. ModelSim/Questa requires `RSD_QUESTASIM_PATH`, and Vivado/XSim
-requires `RSD_VIVADO_BIN`. Verilator, Synplify and VCS can use commands from PATH.
+requires `RSD_VIVADO_ROOT`. Verilator, Synplify and VCS can use commands from PATH.
 RTL/EDA and standalone test-suite entry points include `Environment.inc.mk` first.
 Ordinary test programs initialize it in their shared `TestCode/Makefile.inc`,
 also used by `BuildC.inc.mk`, so individual program Makefiles need no setup.

@@ -45,6 +45,6 @@ RTL のバックエンド `VerilatorCore.inc.mk`・`ModelSimCore.inc.mk`・`XSim
 
 ## 環境の初期化
 
-Dev Container は環境を設定済みです．手動導入では [SetEnv.sh](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/SetEnv/SetEnv.sh) をコピー・編集し，`MySetEnv.sh` を読み込みます．`RSD_ROOT` は Makefile の位置から求めて export し，手動設定は不要です．プログラムには `RSD_GCC_PATH`・`RSD_GCC_PREFIX`，ModelSim/QuestaSim には `RSD_QUESTASIM_PATH`，Vivado/XSim には `RSD_VIVADO_BIN` が必要です．Verilator・Synplify・VCS は PATH 上のコマンドを使用できます．
+Dev Container は環境を設定済みです．手動導入では [SetEnv.sh](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/SetEnv/SetEnv.sh) をコピー・編集し，`MySetEnv.sh` を読み込みます．`RSD_ROOT` は Makefile の位置から求めて export し，手動設定は不要です．プログラムには `RSD_GCC_PATH`・`RSD_GCC_PREFIX`，ModelSim/QuestaSim には `RSD_QUESTASIM_PATH`，Vivado/XSim には `RSD_VIVADO_ROOT` が必要です．Verilator・Synplify・VCS は PATH 上のコマンドを使用できます．
 
 RTL/EDA と外部テストの入口は最初に `Environment.inc.mk` を読みます．通常のプログラムは共通の `TestCode/Makefile.inc`（`BuildC.inc.mk` も使用）で初期化するため，個別 Makefile に追加設定は不要です．構成生成規則は初期化済みの環境を使います．make の問い合わせモードでは環境検査を省略するので，未設定でも補完が動作します．

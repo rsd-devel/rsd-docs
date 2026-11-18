@@ -33,7 +33,7 @@ make -j2 test/tools/run
 
 `test/tools/run` は構成生成（`test/tools/Config/run`）を含み，ランチャと runner CLI はスタブで検査します．モデルと Fibonacci HEX がある場合は実行上限のモデル検査も行い，なければ skip と報告します．モデルのビルド・ツール取得・コンテナ起動は行いません．個別ターゲットは [TestDriver](jp-test-driver) を参照してください．
 
-合成後の検証は先に `make test/level-1/build` などで HEX をビルドします．`make synth/vivado/post-synthesis/test` は Vivado + XSim，`make synth/synplify/post-synthesis/test` は Synplify + XSim，`make sim/vcs/post-implementation/test` は Vivado の配置配線と SDF を用いた VCS 検証です．CAD ツールと `RSD_VIVADO_BIN` の設定が必要で，既定の HelloWorld 以外は `TEST_CODE` で UART 検証対象を指定できます．上記4群とは別のターゲットです．
+合成後の検証は先に `make test/level-1/build` などで HEX をビルドします．`make synth/vivado/post-synthesis/test` は Vivado + XSim，`make synth/synplify/post-synthesis/test` は Synplify + XSim，`make sim/vcs/post-implementation/test` は Vivado の配置配線と SDF を用いた VCS 検証です．CAD ツールと `RSD_VIVADO_ROOT` の設定が必要で，既定の HelloWorld 以外は `TEST_CODE` で UART 検証対象を指定できます．上記4群とは別のターゲットです．
 
 TestDriver のログと UART 出力は各テストディレクトリに残ります．ACT4 は選択ケースの集計を `riscv-arch-test/Build/summary.log` に出力します．スコアは以下の `bench/*/run` で計測します．
 

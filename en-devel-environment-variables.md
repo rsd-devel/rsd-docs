@@ -30,8 +30,8 @@ Fetch external sources with the suite's `test/External/<suite>/fetch` target and
 | Variable | Used for | Setting |
 | --- | --- | --- |
 | `RSD_QUESTASIM_PATH` | ModelSim/QuestaSim RTL simulation and unit tests | Directory containing `vlog`, `vsim`, etc. |
-| `RSD_VIVADO_BIN` | Vivado/XSim simulation and FPGA builds | Vivado `bin` directory |
-| `RSD_ARM_LINUX` | Building Linux and boot files for the Zynq PS | Work directory for downloads and builds; an external directory is convenient |
+| `RSD_VIVADO_ROOT` | Vivado/XSim simulation and FPGA builds | Versioned Vivado installation directory (e.g. `/opt/Xilinx/Vivado/2019.2`) |
+| `RSD_VITIS_ROOT` | ZedBoard FSBL generation | Versioned Vitis installation directory (e.g. `/opt/Xilinx/Vitis/2019.2`) |
 | `RSD_DC_SHELL_BIN` | Experimental Design Compiler synthesis | Path to `dc_shell` |
 
 For Synplify post-synthesis tests, put `synplify_premier_dp` on `PATH` or pass `SYNPLIFY=/path/to/executable` to make. For VCS timing tests, put `vcs` on `PATH` or pass `VCS=/path/to/vcs`. These are make variables; the tools and licenses need separate setup.
