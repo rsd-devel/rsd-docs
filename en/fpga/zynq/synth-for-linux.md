@@ -119,7 +119,7 @@ make test/C/HelloWorld/zynq/run
 | Upload another HEX without running it | `make platform/zynq/program/deploy RSD_ZYNQ_HEX=path/to/code.hex` |
 | Upload and run another HEX | `make platform/zynq/program/run RSD_ZYNQ_HEX=path/to/code.hex` |
 
-Board targets use a built HEX. A relative `RSD_ZYNQ_HEX` path starts in the directory where you invoke `make`. See [Building programs](../../testing/build-and-run.md) for the build steps.
+Use the same `hex-path`, `zynq/deploy` and `zynq/run` suffixes for any individual level-1 or level-2 program or Zephyr sample. For example, after `test/C/build`, run `make test/C/Fibonacci/zynq/run`. Fibonacci returns its result in a register and produces no UART output. Board targets use a built HEX and display UART output for manual inspection. For FP and LandingPad, select a matching build configuration and bitstream. A relative `RSD_ZYNQ_HEX` path starts in the directory where you invoke `make`. See [Building programs](../../testing/build-and-run.md) for the build steps.
 
 ## Update the FPGA after an RTL change
 

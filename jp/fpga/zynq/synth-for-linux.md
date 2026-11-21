@@ -113,7 +113,7 @@ make test/C/HelloWorld/zynq/run
 | 任意の HEX を転送だけする | `make platform/zynq/program/deploy RSD_ZYNQ_HEX=path/to/code.hex` |
 | 任意の HEX を転送して実行 | `make platform/zynq/program/run RSD_ZYNQ_HEX=path/to/code.hex` |
 
-実機実行にはビルド済みの HEX を使います．`RSD_ZYNQ_HEX` の相対パスは `make` を実行したディレクトリが基準です．[プログラムのビルド方法](../../testing/build-and-run.md) も参照してください．
+level-1・level-2 の個別プログラムと各 Zephyr サンプルには，同じ `hex-path`・`zynq/deploy`・`zynq/run` が使えます．例えば `test/C/build` の後，`make test/C/Fibonacci/zynq/run` で Fibonacci を実行できます．Fibonacci は結果をレジスタに返すので UART 出力はありません．実機ではビルド済みの HEX を使い，UART 出力を端末で確認します．FP と LandingPad は，必要な拡張を有効にしたビルド構成とビットストリームで実行してください．`RSD_ZYNQ_HEX` の相対パスは `make` を実行したディレクトリが基準です．[プログラムのビルド方法](../../testing/build-and-run.md) も参照してください．
 
 ## RTL を変更したときの FPGA 更新
 
