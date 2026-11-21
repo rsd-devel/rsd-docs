@@ -1,12 +1,12 @@
 # RSD documentation
 
-These guides cover building, testing, and running RSD. These instructions target v1.2.0. Until it is released, check out `develop` for the simulator and test tools. The ZedBoard Linux image and UART changes are being integrated from `build/zedboard-linux-image`. Hardware and CAD instructions use the tool versions listed on each page.
+These guides cover the simulator, tests, and ZedBoard Linux image for RSD v1.2.0. Hardware and CAD instructions use the tool versions listed on each page.
 
 When adding a page, place the English version under `en/` and the Japanese version at the same relative path under `jp/`. Start each page with its title and add it to the index for its language.
 
 ## Getting Started
 
-Start from [here](development/getting-started.md)
+Follow the [getting started guide](development/getting-started.md) to build the simulator and run the basic tests.
 
 ## Development
 

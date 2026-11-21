@@ -2,7 +2,7 @@
 
 Linux runs on the Zynq ARM Processing System (PS) and loads programs into RSD in the FPGA Programmable Logic (PL). For first-time setup, build the SD image below. If the board is already running, go directly to [running a program](#boot-the-board-and-run-a-program) or [updating the FPGA](#update-the-fpga-after-an-rtl-change).
 
-For v1.2.0, build the FPGA image and guest HEX files from the same checkout. Before integration into `develop`, these targets are on `build/zedboard-linux-image`.
+Build the FPGA image and guest HEX files from the same RSD checkout so the software uses the UART registers implemented in the FPGA. See [Getting started](../../development/getting-started.md) for the v1.2.0 checkout instructions.
 
 ## Build the SD image
 
