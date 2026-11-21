@@ -55,6 +55,14 @@ Generated `GetMemoryMapType` and `ToPhyAddrFromLogical` implement classification
 
 Backing memory covers the highest translated memory address, including holes. Default `MEMORY_MAP_BYTE_SIZE` is `0x60000` (384 KiB); IO regions do not contribute. Uncacheable RAM is separate storage, not an alias of normal RAM.
 
+## MMIO ordering
+
+RSD treats all regions marked `type = "io"` as strongly ordered. Ordinary loads and stores from one hart reach the devices in program order, even when they access different devices. RSD drains committed stores in order. When a load first resolves to MMIO, the core refetches it as a serialized instruction and waits for older stores to leave the store queue before reading the device. Uncacheable RAM has `type = "memory"` and follows ordinary memory ordering. An `LR.W` to MMIO raises a load access fault, and an `SC.W` or AMO raises a store/AMO access fault.
+
+For each UART byte, poll `RSD_SERIAL_STATUS` until bit 0 clears, then write `RSD_SERIAL_OUTPUT`. Reading STATUS leaves the FIFO intact. The next poll observes the preceding write, so this sequence needs no per-byte `fence`. If an interrupt handler can also write the UART, protect the poll and write together so both writers cannot claim the same free slot.
+
+The testbench stops when `PC_GOAL` retires. The common startup code executes one `fence iorw, iorw` on exit so the final UART store reaches the FIFO before the test stops. The receiver may still have bytes to read.
+
 ## Interrupt controllers
 
 | Register | Logical address |
