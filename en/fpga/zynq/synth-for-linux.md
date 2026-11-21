@@ -18,7 +18,7 @@ For v1.2.0, build the FPGA image and guest HEX files from the same checkout. Bef
 
     2. Build Linux, U-Boot, and the root filesystem.
        * By default, the board uses DHCP on `eth0` and has the hostname `rsd-zedboard`.
-       * To use a static IP address or an existing SSH key, specify the [initial settings](#initial-settings) at this step.
+       * For a static IP or an existing SSH key, specify the [initial settings](#initial-settings) at this step. You can [keep the MAC address used on first boot](#fixed-mac-address) once the board is running.
 
        ```bash
        ./RunContainer.sh make platform/zynq/build
@@ -94,6 +94,22 @@ nameserver 192.168.1.1
 In step 2, set `RSD_ROOTFS_OVERLAY` to the absolute path of your settings directory inside the container. For this example, append `RSD_ROOTFS_OVERLAY=/workspaces/rsd-open/Work/ZedBoard/settings` to the command.
 
 For a direct PC connection only, gateway and DNS can be omitted. Rebuilding applies updated files, but Buildroot retains old files when an overlay or files within it are removed. In that case, run `platform/zynq/clean` and rebuild. **clean also deletes generated SSH keys; save any keys you need first.**
+
+### Fixed MAC address
+
+U-Boot may choose a new MAC address at each boot. To keep the address already in use, boot the board once with no MAC address configured. Run this command on the board and copy the address it prints.
+
+```bash
+cat /sys/class/net/eth0/address
+```
+
+On the board, edit `/etc/network/interfaces`. Add this line under the existing `iface eth0 inet dhcp` or `iface eth0 inet static` line, replacing `<MAC>` with the address you copied.
+
+```text
+    hwaddress ether <MAC>
+```
+
+After rebooting, run the same `cat` command to confirm the address stayed the same. To keep this setting when rebuilding the SD image, copy the board's `/etc/network/interfaces` to `etc/network/interfaces` in its [settings directory](#static-ip-and-dns). Use each board's own address when preparing images for multiple boards.
 
 ### SSH keys
 

@@ -17,7 +17,7 @@ v1.2.0 向けの FPGA イメージとゲストの HEX は同じチェックア�
         ```
     2. Linux・U-Boot・rootfs をビルドする
         * 既定は `eth0` の DHCP で，ホスト名は `rsd-zedboard` です．
-        * 固定 IP や既存の SSH 鍵を使う場合は，この段階で[初期設定](#初期設定)を指定します．
+        * 固定 IP や既存の SSH 鍵を使う場合は，この段階で[初期設定](#初期設定)を指定します．MAC アドレスは[初回起動時の値を固定](#固定-mac-アドレス)できます．
         ```bash
         ./RunContainer.sh make platform/zynq/build
         ```
@@ -88,6 +88,22 @@ nameserver 192.168.1.1
 手順 2 では，選んだ設定用ディレクトリをコンテナ内の絶対パスで `RSD_ROOTFS_OVERLAY` に指定します．この例では `RSD_ROOTFS_OVERLAY=/workspaces/rsd-open/Work/ZedBoard/settings` をコマンドに追加します．
 
 PC との直結だけなら gateway と DNS は省略できます．設定の更新は再ビルドで反映されますが，overlay を外したりファイルを削除した場合は Buildroot に古い内容が残るため，`platform/zynq/clean` 後の再ビルドが必要です．**clean は生成した SSH 鍵も削除するので，必要な鍵は先に保存してください．**
+
+### 固定 MAC アドレス
+
+U-Boot は起動のたびに異なる MAC アドレスを選ぶことがあります．最初に使われた値をそのまま固定するには，まず MAC アドレスを指定せずにボードを起動します．ボード上で次のコマンドを実行し，表示されたアドレスを控えてください．
+
+```bash
+cat /sys/class/net/eth0/address
+```
+
+ボード上の `/etc/network/interfaces` を開き，既存の `iface eth0 inet dhcp` または `iface eth0 inet static` の直下に次の 1 行を追加します．`<MAC>` は先ほど控えた値に置き換えてください．
+
+```text
+    hwaddress ether <MAC>
+```
+
+再起動後，同じ `cat` コマンドでアドレスが変わっていないことを確認します．SD イメージを作り直すときもこの設定を使うには，ボードの `/etc/network/interfaces` をホストの[設定用ディレクトリ](#固定-ip-と-dns)の `etc/network/interfaces` にコピーします．複数台で使う場合は，ボードごとにそのボードで確認した値を使ってください．
 
 ### SSH の鍵
 
