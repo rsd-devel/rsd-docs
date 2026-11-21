@@ -16,13 +16,7 @@ Networking defaults to DHCP. Use `RSD_ROOTFS_OVERLAY` for initial settings such 
 
 ## Loading a program
 
-Transfer `code.hex` via SSH/SCP and run on the board:
-
-```bash
-rsd-loader /root/code.hex
-```
-
-The loader is installed during the build. It validates the HEX size before loading it into RSD memory; no manual size argument is needed. It displays program UART output. Press Ctrl-C to exit the loader.
+From the development host, `make test/C/HelloWorld/zynq/run` uploads the built HEX and starts `rsd-loader /root/rsd/program.hex` on the board. The loader validates the HEX, loads it into RSD memory and displays UART output until you press Ctrl-C. See the [board instructions](en-fpga-zynq-synth-for-linux) to select the host or run another program.
 
 ## Memory and control
 
@@ -35,4 +29,4 @@ ARM and RSD share external DDR. ZedBoard's 512 MiB is split into fixed regions:
 
 The loader finds `rsd-ram`, `rsd-pl2ps` and `rsd-ps2pl` through `/sys/class/uio/uio*/name` and maps the corresponding `/dev/uio*` nodes. It does not depend on UIO numbering. The [DRAM controller](en-fpga-zynq-mem-controller) translates RSD internal addresses to ARM physical addresses; these are distinct from the [RSD memory map](en-arch-mem-map).
 
-After RTL changes, regenerate the bitstream, boot.bin and SD image, then reboot. The old kernel's `/dev/xdevcfg` write procedure is not used in this flow. Image generation and PS Linux in QEMU have been validated; board boot and RSD execution on hardware have not.
+For RTL-only updates with a compatible PS interface, rebuild and deploy `boot.bin` and reboot the board. For PS memory or UIO mapping changes, update the device tree and SD image as well.

@@ -41,6 +41,18 @@ These short simulations from reset provide estimates, not runs meeting the minim
 
 Functional tests and benchmarks share output directories: run them sequentially. Mode changes trigger rebuilding, and `test/.../run` restores functional mode. `test/all/run` excludes `bench/*/run`.
 
-## Cleaning and hardware
+## Cleaning
 
-`test/External/Coremark/clean` and `test/External/Dhrystone/clean` remove outputs but preserve fetched sources. Clean after changing compiler or normal build flags. Hardware measurements additionally require checking clock frequency, timing code and duration.
+`test/External/Coremark/clean` and `test/External/Dhrystone/clean` remove outputs but preserve fetched sources. Clean after changing compiler or normal build flags.
+
+## Run CoreMark on ZedBoard
+
+Set `RSD_ZYNQ_HOST` on the development host as described in the [board startup instructions](en-fpga-zynq-synth-for-linux#boot-the-board-and-run-a-program). Run these commands from the repository root. Fetch the sources once.
+
+```bash
+./RunContainer.sh make test/External/Coremark/fetch
+./RunContainer.sh make test/External/Coremark/build
+make test/External/Coremark/zynq/run
+```
+
+`zynq/run` uploads the built RV32IM program and displays its UART output in the terminal. Press Ctrl-C to stop the loader. On hardware, CoreMark started, but characters were missing from subsequent UART output, so the CRC and score remain unverified. Hardware measurements also require checking the clock frequency, timing code and run duration.

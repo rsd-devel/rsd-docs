@@ -16,13 +16,7 @@ Vivado/Vitis 2019.2 が RSD の bitstream と FSBL を生成します．Buildroo
 
 ## プログラムのロード
 
-`code.hex` を SSH/SCP で転送し，ボード側で実行します．
-
-```bash
-rsd-loader /root/code.hex
-```
-
-ローダーはビルド時に導入され，HEX のサイズを検査してから RSD 用メモリへロードします．サイズの手動指定は不要です．プログラムの UART 出力を表示し，Ctrl-C でローダーを終了します．
+開発ホストで `make test/C/HelloWorld/zynq/run` を実行すると，ビルド済みの HEX を転送し，ボード側で `rsd-loader /root/rsd/program.hex` を起動します．ローダーは HEX を検査して RSD のメモリにロードし，Ctrl-C で終了するまで UART 出力を表示します．接続先の指定やプログラムの切り替えは[実行手順](jp-fpga-zynq-synth-for-linux)を参照してください．
 
 ## メモリと制御
 
@@ -35,4 +29,4 @@ ARM と RSD が外部 DDR を共有するため，ZedBoard の 512 MiB を固定
 
 ローダーは `/sys/class/uio/uio*/name` から `rsd-ram`・`rsd-pl2ps`・`rsd-ps2pl` を探し，対応する `/dev/uio*` を mmap します．UIO の番号には依存しません．RSD の内部アドレスは [DRAM コントローラ](jp-fpga-zynq-mem-controller) が ARM 側物理アドレスに変換するため，[RSD のメモリマップ](jp-arch-mem-map) とは区別してください．
 
-RTL を更新した場合は bitstream と boot.bin，SD イメージを再生成して再起動します．旧カーネルの `/dev/xdevcfg` への書き込み手順は現行フローでは使用しません．現行構成は生成と QEMU 上の PS Linux を検証済みですが，実機起動・RSD 実行は未検証です．
+PS とのインターフェースが変わらない RTL 更新は，`boot.bin` を再生成・転送してボードを再起動します．PS のメモリ割当や UIO のマッピングも変わる場合は，デバイスツリーと SD イメージも更新してください．

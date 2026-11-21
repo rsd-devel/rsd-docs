@@ -21,7 +21,7 @@ RTL のバックエンド `VerilatorCore.inc.mk`・`ModelSimCore.inc.mk`・`XSim
 
 ## 公開ターゲット
 
-公開ターゲットは `sim/`・`synth/`・`test/`・`bench/`・`platform/` に分かれます．テストは `test/level-1/build`，`test/level-1/run`，`test/External/Coremark/build` のように末尾が操作名です．`External` は Coremark・Dhrystone・Zephyr・riscv-arch-test をまとめる名前であり，ソースの保存場所は変わりません．`test/.../run` は実行と結果検証，スコア計測は `bench/Coremark/run`・`bench/Dhrystone/run` を使用します．
+公開ターゲットは `sim/`・`synth/`・`test/`・`bench/`・`platform/` に分かれます．テストは `test/level-1/build`，`test/level-1/run`，`test/External/Coremark/build` のように末尾が操作名です．`External` は Coremark・Dhrystone・Zephyr・riscv-arch-test をまとめる名前であり，ソースの保存場所は変わりません．シミュレータの `test/.../run` は結果を自動照合し，`bench/Coremark/run`・`bench/Dhrystone/run` はスコアを計測します．HelloWorld と CoreMark の `test/.../zynq/run` はビルド済みの HEX を実機で実行し，UART 出力を端末に表示します．
 
 通常の Bash 補完は `/` ごとに階層を表示し，専用補完スクリプトは不要です．`make`・`make all` は `sim/build`，`make clean` は `sim/clean` の短縮形です．`test/level-1/run`・`test/level-2/run`・`test/ex/run`・`test/all/run` は従来と同じテスト群を実行します．`test/all/run` は level-1 と level-2 だけを含みます．
 

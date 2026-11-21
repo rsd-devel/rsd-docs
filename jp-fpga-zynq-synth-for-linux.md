@@ -1,21 +1,70 @@
 # ZedBoard の PS Linux 経由で RSD を動かす
 
-Zynq の ARM（PS）側で Buildroot の Linux を動かし，PL 側の RSD へプログラムをロードします．RSD 自体で Linux を起動する手順ではありません．Vivado/Vitis 2019.2 を維持し，Linux・U-Boot・rootfs は Buildroot 2025.02.19 で生成します．従来の Debian rootfs のダウンロードや手動展開は不要です．
+Zynq の ARM（PS）側で Linux を起動し，FPGA（PL）側の RSD にプログラムをロードします．初回は以下の手順で SD カードを作ります．ボードがすでに起動している場合は，[プログラムの実行](#ボードの起動とプログラムの実行) または [RTL の更新](#rtl-を変更したときの-fpga-更新) から始めてください．
 
-以下はリポジトリのルートから実行します．Linux のビルドには Dev Container を使い，Vivado/Vitis と SD 書き込みは Linux ホストで実行します．[開発環境](jp-devel-environment) と [環境変数](jp-devel-environment-variables) も参照してください．
+## SD イメージを作る
 
-## 1. Linux の生成
+* リポジトリのルートで順に実行します．
+    * `./RunContainer.sh` の行は Dev Container 内で動作します．
+    * 手順 3 のパスはホストのインストール先に合わせてください．
+        * [開発環境](jp-devel-environment)・[環境変数](jp-devel-environment-variables)
+* 手順
+    1. ソースを取得する（初回）
+        ```bash
+        ./RunContainer.sh make platform/zynq/fetch
+        ```
+    2. Linux・U-Boot・rootfs をビルドする
+        * 既定は `eth0` の DHCP で，ホスト名は `rsd-zedboard` です．
+        * 固定 IP や既存の SSH 鍵を使う場合は，この段階で[初期設定](#初期設定)を指定します．
+        ```bash
+        ./RunContainer.sh make platform/zynq/build
+        ```
+    3. ホストでビットストリームと `boot.bin` を生成する
+        ```bash
+        make platform/zynq/boot/build RSD_VIVADO_ROOT=/path/to/Vivado/2019.2 RSD_VITIS_ROOT=/path/to/Vitis/2019.2
+        ```
+    4. SD イメージを生成する
+        ```bash
+        ./RunContainer.sh make platform/zynq/image/build
+        ```
 
-```bash
-./RunContainer.sh make platform/zynq/fetch
-./RunContainer.sh make platform/zynq/build
+* 完成したイメージは `Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img` です．
+    * 既定では接続用の SSH 秘密鍵 `rsd-zedboard_ed25519` も同じディレクトリにあります．
+
+## SD カードに書き込む
+
+* Linux ホストで `lsblk -o NAME,SIZE,MODEL,MOUNTPOINTS` を実行し，モデルと容量でカードを特定します．
+* マウント中のパーティションをアンマウントし，次の `/dev/sdX` を**カード全体**のデバイス名に置き換えてください．
+    ```bash
+    make platform/zynq/image/write RSD_SD_DEVICE=/dev/sdX
+    ```
+
+出力例（リポジトリが `/work/rsd-open`，カードが `/dev/sdX` の場合）
+
+```text
+==================== 1. Write the SD card ====================
+NAME  SIZE MODEL      TRAN
+sdX  29.1G USB Reader usb
+Check the device above, then run this command to overwrite /dev/sdX.
+sudo dd if=/work/rsd-open/Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img of=/dev/sdX bs=4M status=progress conv=fsync
+
+==================== 2. Verify the SD card ===================
+After dd succeeds, reinsert the card. Check its path with lsblk and update it in the command below if it changed.
+sudo cmp -n 303038464 -- /work/rsd-open/Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img /dev/sdX && echo "SD image verified."
+==============================================================
 ```
 
-公開ソースの取得後，ARM ツールチェーン，Linux，U-Boot，OpenSSH，`rsd-loader` をビルドします．初回は時間がかかります．成果物は `Processor/Project/Vivado/ARM_Linux/Build/images/` に生成されます．Buildroot の中間ファイルは移動できないため，同じビルド環境を継続して使用してください．
+* 表示されたモデルと容量を確認し，自分の端末に表示された `sudo dd` を手動で実行します．
+* `dd` が正常終了したらカードを挿し直し，`lsblk` でデバイス名を確認します．名前が変わっていたら，表示された `cmp` のデバイス名を直してから実行してください．`SD image verified.` と表示されたら[ボードの起動](#ボードの起動とプログラムの実行)に進みます．
 
-### 初期ネットワーク設定
 
-既定は `eth0` の DHCP，ホスト名は `rsd-zedboard` です．固定 IP を使う場合は，例えば `Work/ZedBoard/settings/etc/network/interfaces` を次の内容で用意します．アドレスは利用するネットワークに合わせてください．
+## 初期設定
+
+### 固定 IP と DNS
+
+固定 IP を使う場合は，Dev Container から参照できる任意の場所に設定用ディレクトリを用意します．以下では例として，リポジトリ内の `Work/ZedBoard/settings/` に置いたものとします．このディレクトリ内のファイルは，同じ相対パスでボードのルートファイルシステムに組み込まれます．
+
+設定用ディレクトリの下に `etc/network/interfaces` を作成し，利用するネットワークに合わせてアドレスを指定します．
 
 ```text
 auto lo
@@ -28,79 +77,59 @@ iface eth0 inet static
     gateway 192.168.1.1
 ```
 
-DNS は別ファイル `Work/ZedBoard/settings/etc/resolv.conf` に指定します．
+DNS は同じディレクトリの下の `etc/resolv.conf` に指定します．
 
 ```text
 nameserver 192.168.1.1
 ```
 
-上の `platform/zynq/build` に代えて，次のようにビルドします．
+手順 2 では，選んだ設定用ディレクトリをコンテナ内の絶対パスで `RSD_ROOTFS_OVERLAY` に指定します．この例では `RSD_ROOTFS_OVERLAY=/workspaces/rsd-open/Work/ZedBoard/settings` をコマンドに追加します．
 
-```bash
-./RunContainer.sh make platform/zynq/build \
-    RSD_ROOTFS_OVERLAY=/workspaces/rsd-open/Work/ZedBoard/settings
-```
-
-`RSD_ROOTFS_OVERLAY` はビルド環境から見える絶対ディレクトリパスです．中身が rootfs に重ねてコピーされます．PC との直結だけなら gateway と DNS は省略できます．設定の更新は再ビルドで反映されますが，overlay を外したりファイルを削除した場合は Buildroot に古い内容が残るため，`platform/zynq/clean` 後の再ビルドが必要です．**clean は生成した SSH 鍵も削除するので，必要な鍵は先に保存してください．**
+PC との直結だけなら gateway と DNS は省略できます．設定の更新は再ビルドで反映されますが，overlay を外したりファイルを削除した場合は Buildroot に古い内容が残るため，`platform/zynq/clean` 後の再ビルドが必要です．**clean は生成した SSH 鍵も削除するので，必要な鍵は先に保存してください．**
 
 ### SSH の鍵
 
-公開鍵を指定しない場合，初回ビルドで `Build/images/rsd-zedboard_ed25519` と `.pub` を生成し，以後のビルドでは再利用します．秘密鍵はパスフレーズなしで接続元に保管し，イメージには公開鍵だけを組み込みます．既存の公開鍵を使う場合は `platform/zynq/build` に `RSD_SSH_PUBLIC_KEY=/absolute/path/to/key.pub` を指定してください．このパスもコンテナ内から参照できる必要があります．SSH のパスワード認証は無効です．
+既定の秘密鍵はパスフレーズなしで生成され，再ビルド時も再利用されます．秘密鍵は接続元で保管してください．ボード側には公開鍵を組み込み，SSH は鍵認証のみを受け付けます．既存の鍵を使う場合は，手順 2 に `RSD_SSH_PUBLIC_KEY=/absolute/path/to/key.pub` を追加します．パスはコンテナ内から参照できるものを指定してください．
 
-## 2. ハードウェアと SD イメージの生成
-
-ホスト側で Vivado/Vitis 2019.2 を使います．以下のパスはインストール先に置き換えてください．既定の対象ボードは Zedboard です．
-
-```bash
-make platform/zynq/boot/build \
-    RSD_VIVADO_ROOT=/path/to/Vivado/2019.2 \
-    RSD_VITIS_ROOT=/path/to/Vitis/2019.2
-./RunContainer.sh make platform/zynq/image/build
-```
-
-`boot/build` は bitstream・XSA・FSBL の生成後，FSBL・bitstream・U-Boot を `boot.bin` にまとめます．`-j` 指定時もこの順序を守ります．個別に実行する `hardware/build` と `bootbin/build` も利用できます．`image/build` は起動用 FAT と rootfs を含む **`Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard.img`** を作ります．image/build 自体は Linux/rootfs を再ビルドしません．
-
-## 3. SD カードへの書き込み
-
-Linux ホストで SD カードのデバイスを確認し，そのパーティションがマウントされていればアンマウントします．
-
-```bash
-lsblk -o NAME,SIZE,MODEL,MOUNTPOINTS
-# /dev/sdX を実際の SD カード全体のデバイスに置き換える
-make platform/zynq/image/write RSD_SD_DEVICE=/dev/sdX
-```
-
-**指定したディスクの既存データは上書きされます．** `/dev/sdX1` のようなパーティションは指定しません．モデルと容量を確認し，表示されたデバイスパスを入力すると書き込みます．このターゲットは既存イメージを使い，自動ビルドやアンマウントは行いません．容量不足，読み取り専用，マウント中・swap 使用中のデバイスは拒否します．書き込み部分だけ `sudo dd` を使い，進捗を表示して書き込みを同期します．Dev Container 内では実行しません．
-
-## 4. 起動と RSD プログラムの実行
+## ボードの起動とプログラムの実行
 
 ZedBoard を SD 起動に設定して電源を入れます．USB-UART は 115200 baud です（Linux ホストの例: `minicom -D /dev/ttyACM0 -b 115200`．ポート名は実機に合わせます）．DHCP で取得した IP はシリアルコンソールで `ip -4 addr show eth0` として確認できます．
 
-```bash
-ssh -i Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard_ed25519 root@<board-ip>
-```
-
-HelloWorld をビルドして転送する例です．独自の公開鍵を組み込んだ場合は，対応する秘密鍵を `-i` に指定します．
+開発ホストでボードの接続先を設定すると，ビルドしたテストを名前で指定して実行できます．SSH の秘密鍵は SD イメージと同じディレクトリのものを使います．独自の公開鍵を組み込んだ場合は，対応する秘密鍵のパスを `RSD_ZYNQ_SSH_KEY` に指定してください．
 
 ```bash
+export RSD_ZYNQ_HOST=root@192.168.1.50  # ボードのアドレスに置き換える
 ./RunContainer.sh make test/C/build
-scp -i Processor/Project/Vivado/ARM_Linux/Build/images/rsd-zedboard_ed25519 \
-    Processor/Src/Verification/TestCode/C/HelloWorld/code.hex root@<board-ip>:/root/hello.hex
+make test/C/HelloWorld/zynq/run
 ```
 
-ボード側で実行します．ローダーはイメージに導入済みで，サイズの手動指定やボード上でのコンパイルは不要です．
+`zynq/run` は HEX を `/root/rsd/program.hex` に転送し，`rsd-loader` を起動します．開発ホストの端末に `Hello,World!` が表示されたら Ctrl-C でローダーを終了します．別のプログラムを試す例は [ZedBoard での CoreMark 実行](jp-test-coremark#zedboard-で-coremark-を実行する) を参照してください．
+
+| 操作 | ホストで実行するコマンド |
+| --- | --- |
+| HEX のパスを表示 | `make -s test/C/HelloWorld/hex-path` |
+| 転送だけ行う | `make test/C/HelloWorld/zynq/deploy` |
+| 前回転送したプログラムを再実行 | `make platform/zynq/program/run` |
+| 任意の HEX を転送だけする | `make platform/zynq/program/deploy RSD_ZYNQ_HEX=path/to/code.hex` |
+| 任意の HEX を転送して実行 | `make platform/zynq/program/run RSD_ZYNQ_HEX=path/to/code.hex` |
+
+実機実行にはビルド済みの HEX を使います．`RSD_ZYNQ_HEX` の相対パスは `make` を実行したディレクトリが基準です．[プログラムのビルド方法](jp-test-how-to-compile-and-run-your-program) も参照してください．
+
+## RTL を変更したときの FPGA 更新
+
+PS Linux の設定やデバイスツリーをそのまま使える場合は，SSH 経由で起動ファイルだけを更新できます．次のコマンドを順に実行します．再起動は都合のよいタイミングで行ってください．
 
 ```bash
-rsd-loader /root/hello.hex
+make platform/zynq/boot/build RSD_VIVADO_ROOT=/path/to/Vivado/2019.2 RSD_VITIS_ROOT=/path/to/Vitis/2019.2
+make platform/zynq/boot/deploy
+make platform/zynq/reboot
 ```
 
-プログラムの UART 出力を表示します．ローダーを終了するには Ctrl-C を使います．[プログラムのビルド方法](jp-test-how-to-compile-and-run-your-program) も参照してください．
+`boot/deploy` は転送した `boot.bin` の SHA-256 を照合し，SD の第 1 パーティションの起動ファイルを置き換えます．再起動すると新しいビットストリームが有効になります．`reboot` は再起動要求を送ると終了します．SSH が復帰したら，ホストで `make platform/zynq/program/run` を実行すると，SD に保存した HEX で動作を確認できます．
 
-## 更新と検証範囲
+Linux・デバイスツリー・初期設定を変更した場合は，対象を再ビルドして SD イメージを再生成し，上記の手順でカードに書き込みます．U-Boot を変更した場合は `bootbin/build` もやり直します．Buildroot の中間ファイルは元のビルド環境で再利用します．カーネルやブートローダーのソース・パッチを変更した場合は clean 後に再ビルドしてください．
 
-RTL を変更したら `boot/build` → `image/build` の順で再生成し，SD を書き直して再起動します．Linux や初期設定の変更は先に `platform/zynq/build` が必要です．U-Boot を変更した場合は `bootbin/build` もやり直します．カーネル・ブートローダーのソースやパッチを変更した場合は clean 後に再ビルドしてください．
-
-2026-11-17 時点で bitstream/XSA/FSBL/SD イメージの生成，QEMU での PS Linux 起動・固定 IP/経路/DNS・SSH/SFTP を確認しています．SD 書き込みターゲットの確認・拒否処理は模擬コマンドで検証しました．実 SD への書き込み，FSBL/U-Boot 経由の実機起動，実機での RSD 実行は未検証です．
+実機では，更新した `boot.bin` の読み戻し，再起動後の SSH 接続，HelloWorld の UART 出力を確認しています．
 
 - [Zynq 上のシステム構成](jp-fpga-zynq-arch)
 - [PS Linux の構成](jp-fpga-zynq-linux)

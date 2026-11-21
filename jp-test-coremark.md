@@ -41,8 +41,18 @@ make bench/Dhrystone/run DHRYSTONE_BUILTINS=0
 
 通常テストと計測モードは生成物のディレクトリを共用します．同時に実行せず，順に実行してください．モード変更は再ビルドに反映され，`test/.../run` は通常の検証モードに戻ります．`test/all/run` に `bench/*/run` は含まれません．
 
-## クリーンと実機用コード
+## クリーン
 
 `test/External/Coremark/clean` と `test/External/Dhrystone/clean` は生成物を削除し，取得済みソースを保持します．コンパイラや通常のビルドフラグを変える場合は先にクリーンしてください．
 
-実機での計測には，別途クロック・タイミング処理・実行時間を確認する必要があります．
+## ZedBoard で CoreMark を実行する
+
+[ZedBoard の起動手順](jp-fpga-zynq-synth-for-linux#ボードの起動とプログラムの実行) に従って開発ホストで `RSD_ZYNQ_HOST` を設定し，リポジトリのルートから実行します．最初の `fetch` は初回だけ必要です．
+
+```bash
+./RunContainer.sh make test/External/Coremark/fetch
+./RunContainer.sh make test/External/Coremark/build
+make test/External/Coremark/zynq/run
+```
+
+`zynq/run` はビルド済みの RV32IM 版をボードに転送し，UART 出力を端末に表示します．Ctrl-C でローダーを終了します．実機では CoreMark の起動を確認しましたが，その後の UART 出力に文字欠落があり，CRC とスコアは未確認です．実機でスコアを測るには，クロック周波数，計時方法，実行時間も確認してください．

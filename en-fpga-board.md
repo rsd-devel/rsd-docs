@@ -15,9 +15,9 @@ This Zynq board is the primary target for the RISC-V version of RSD.
 
 ### Software
 
-#### Xilinx SDK
+#### Vivado and Vitis
 
-The SDK programs the FPGA and the ARM processor in the PS. In the documented tool versions, select it when installing Vivado.
+For the PS Linux SD image, Vivado 2019.2 generates the bitstream and Vitis 2019.2 builds the first-stage bootloader (FSBL). Once the board boots, you can run RSD programs from the development host over SSH. See [SD setup, program execution and FPGA updates](en-fpga-zynq-synth-for-linux).
 
 #### USB-UART driver
 

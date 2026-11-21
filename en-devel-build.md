@@ -31,8 +31,9 @@ Public targets use `sim/`, `synth/`, `test/`, `bench/`, and `platform/` prefixes
 Test targets end in an operation, for example `test/level-1/build`,
 `test/level-1/run`, and `test/External/Coremark/build`. `External` groups
 Coremark, Dhrystone, Zephyr, and riscv-arch-test without moving their source
-directories. `test/.../run` targets execute and check results; score measurement uses
-`bench/Coremark/run` and `bench/Dhrystone/run`.
+directories. Simulator `test/.../run` targets check results automatically.
+`bench/Coremark/run` and `bench/Dhrystone/run` measure scores. For HelloWorld and
+CoreMark, `test/.../zynq/run` runs a built HEX on the board and displays its UART output.
 Standard Bash completion shows one slash-separated level at a time, without a
 custom completion script. `make`/`make all` and `make clean` remain shorthand for
 `sim/build` and `sim/clean`. `test/level-1/run`, `test/level-2/run`, `test/ex/run`, and
