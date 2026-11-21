@@ -10,7 +10,7 @@ Install Docker and the Dev Container CLI using the host setup in [Development en
 ./RunContainer.sh
 ```
 
-The first launch builds the environment. Later launches reuse it and rebuild when its configuration changes. Run `./RunContainer.sh --help` on the host for command execution and rebuild options. VS Code users can also use **Reopen in Container** with the Dev Containers extension.
+The first launch builds the environment. Later launches reuse it and rebuild when its configuration changes. Run `./RunContainer.sh --help` on the host for command execution and rebuild options. VS Code users can also use Reopen in Container with the Dev Containers extension.
 
 The container configures the tool paths and environment variables. For manual installation, follow [Development environment](en-devel-environment) and [Environment variables](en-devel-environment-variables).
 

@@ -49,14 +49,14 @@ $(RSD_ROOT)/Processor/Project/Vivado/TargetBoards/Zedboard/rsd/rsd.runs/impl_1/d
 
 Generate the Synplify netlist with either method:
 
-**A. Existing project** (documented with Synplify M-2017.03): open `Processor/Project/Synplify/ver2017-03.prj`, select `$(TARGET_BOARD)` in **Project Files**, then select **Run** to compile/synthesize. If your release cannot build it, try method B.
+A. Existing project (documented with Synplify M-2017.03): open `Processor/Project/Synplify/ver2017-03.prj`, select `$(TARGET_BOARD)` in Project Files, then select Run to compile/synthesize. If your release cannot build it, try method B.
 
-**B. Project from scratch**:
+B. Project from scratch:
 
 1. Create a project and add `.sv` sources, excluding `Src/Verification/`.
-2. In **Implementation Options**, select the [FPGA part](en-fpga-board), set `Main_Zynq_Wrapper` as the top module and configure module parameters. In **Implementation Results**, set **Implementation Name** to `$(TARGET_BOARD)` and **Result Base Name** to `rsd`.
+2. In Implementation Options, select the [FPGA part](en-fpga-board), set `Main_Zynq_Wrapper` as the top module and configure module parameters. In Implementation Results, set Implementation Name to `$(TARGET_BOARD)` and Result Base Name to `rsd`.
 3. Set HDL defines through `set_option -hdl_define -set ...` in the Tcl console. Match the current definitions in `Processor/Src/Config/SynthesisMacros.sv`, including `RSD_SYNTHESIS_ZEDBOARD` for Zedboard.
-4. Select `$(TARGET_BOARD)` in **Project Files** and select **Run**.
+4. Select `$(TARGET_BOARD)` in Project Files and select Run.
 
 Check that `rsd.vm` exists under `Processor/Project/Synplify/$(TARGET_BOARD)/`. From `Processor/Src`, clean when switching from the Vivado-only flow, then generate/open the project:
 
@@ -65,13 +65,13 @@ make synth/synplify/clean
 make synth/synplify/open
 ```
 
-Select **Flow Navigator → Program and Debug → Generate Bitstream** in Vivado. Changes to the RSD top-level I/O ports also require matching changes in Vivado's Block Design; detailed GUI instructions for that case remain undocumented.
+Select Flow Navigator → Program and Debug → Generate Bitstream in Vivado. Changes to the RSD top-level I/O ports also require matching changes in Vivado's Block Design; detailed GUI instructions for that case remain undocumented.
 
 ## 4. Program the FPGA and check execution
 
 The following Zedboard procedure was recorded on 2023-02-28:
 
-1. Connect the board's **PROG** and **UART** micro-USB ports to the host with two cables and power it on. Install the drivers from step 1 first.
+1. Connect the board's PROG and UART micro-USB ports to the host with two cables and power it on. Install the drivers from step 1 first.
 2. Open the UART serial port in a terminal. For minicom:
 
    ```bash
@@ -84,13 +84,13 @@ The following Zedboard procedure was recorded on 2023-02-28:
    <Vivado installation dir>/bin/vivado
    ```
 
-4. Open the project, select **File → Export → Export Hardware**, enable **Include bitstream**, and select **OK**.
-5. Select **Tools → Launch Vitis**.
-6. Create a bare-metal software project with **File → New → Application Project**. Choose a project name, select the **zed** device template, then **Hello World** under **Available Templates**, and finish.
+4. Open the project, select File → Export → Export Hardware, enable Include bitstream, and select OK.
+5. Select Tools → Launch Vitis.
+6. Create a bare-metal software project with File → New → Application Project. Choose a project name, select the zed device template, then Hello World under Available Templates, and finish.
 7. Replace `src/helloworld.c` with `Processor/Project/Vivado/TargetBoards/Zedboard/project_src/run_simple.c`. Its `programinit()` function supplies the program sent to RSD, and UART reports the result.
-8. Right-click the project and select **Build Project**.
-9. Select **Run As → 1 Launch on Hardware (System Debugger)** and wait for **-- Initialization started**.
-10. Select **Xilinx → Program FPGA** in Vitis. If no bitstream is selected, choose the `design_1_wrapper.bit` from step 3.1.
+8. Right-click the project and select Build Project.
+9. Select Run As → 1 Launch on Hardware (System Debugger) and wait for -- Initialization started.
+10. Select Xilinx → Program FPGA in Vitis. If no bitstream is selected, choose the `design_1_wrapper.bit` from step 3.1.
 11. Program output should appear on UART.
 
 For subsequent runs, repeat steps 8–10. The original notes also recorded an unexplained workaround: if execution fails, appending a string twice the original length to the string in `programinit()` sometimes helped. This behavior has not been revalidated.

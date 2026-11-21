@@ -52,8 +52,8 @@ while `test` also builds it. ARM Linux commands are under
 builds hardware on the host. SD writes also run on the host. See the
 [ZedBoard build instructions](en-fpga-zynq-synth-for-linux).
 
-- `CoreSources.inc.mk`: the stable source/configuration manifest. **sv-tests
-  parses `TYPES` and `CORE_MODULES` directly**, without evaluating Make. Preserve
+- `CoreSources.inc.mk`: the stable source/configuration manifest. sv-tests
+  parses `TYPES` and `CORE_MODULES` directly, without evaluating Make. Preserve
   its path, variable names, literal source paths, continuation lines, and order.
 - `GenerateConfig.inc.mk`: generates RTL and software definitions from
   `Processor/Config/MemoryMap.toml` and `Processor/Config/MicroArch.toml`. `MicroArch.inc.mk` is generated and supplies the shared

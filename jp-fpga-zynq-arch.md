@@ -18,7 +18,7 @@ axi4Memory の他に，PS 部の ARM プロセッサ上で動作するプログ�
 Axi4LitePlToPsControlRegister は基本的に ARM が RSD からの出力を取得するため，Axi4LitePsToPlControlRegister は ARM から RSD にデータを送るために使用します．\
 どちらのモジュールも，PS 部 との通信には AXI4 Lite プロトコルで規定されたインターフェースを持つメモリマップドレジスタ (mmap regs) を利用します．  
 AXI4 とは，[ARM が策定するバス用通信プロトコル](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0534b/index.html) です．   
-**各モジュールの中について，mmap regs 以外のアーキテクチャは今後大幅に変更になる可能性があるため，ここでは言及しません**
+各モジュールの中について，mmap regs 以外のアーキテクチャは今後大幅に変更になる可能性があるため，ここでは言及しません
 
 ARM 上で OS が動いていない場合は，これらのレジスタには物理アドレスを用いて直接アクセスします．  
 (例: Processor/Project/Vivado/TargetBoards/Zedboard/project\_src/run\_simple.c)\

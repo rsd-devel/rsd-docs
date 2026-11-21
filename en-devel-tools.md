@@ -62,8 +62,8 @@ To synthesize a Verilog source and inspect its result:
    ```
 
 2. If prompted for a license, double-click `synplifypremier`.
-3. Create a project with **File → New → Project File**.
-4. Right-click the project and select **Add Source File** to add Verilog files.
-5. Right-click `rev_1` and open **Implementation Options**. Select **Xilinx Zynq** in **Technology**, and set the top-level module on the **Verilog** tab if needed.
-6. Select **Run**.
-7. After synthesis, right-click `rev_1`: **RTL View** shows the logic, while **Technology View** shows its mapping to FPGA resources.
+3. Create a project with File → New → Project File.
+4. Right-click the project and select Add Source File to add Verilog files.
+5. Right-click `rev_1` and open Implementation Options. Select Xilinx Zynq in Technology, and set the top-level module on the Verilog tab if needed.
+6. Select Run.
+7. After synthesis, right-click `rev_1`: RTL View shows the logic, while Technology View shows its mapping to FPGA resources.

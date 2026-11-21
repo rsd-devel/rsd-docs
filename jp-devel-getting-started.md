@@ -10,7 +10,7 @@ RSD のシミュレータをビルドし，基本テストとパイプライン�
 ./RunContainer.sh
 ```
 
-初回は開発環境をビルドします．次回以降は環境を再利用し，設定に変更があれば再ビルドします．ホスト側で `./RunContainer.sh --help` を実行すると，コマンド実行や再ビルドのオプションを確認できます．VS Code の Dev Containers 拡張から **Reopen in Container** を選ぶ方法もあります．
+初回は開発環境をビルドします．次回以降は環境を再利用し，設定に変更があれば再ビルドします．ホスト側で `./RunContainer.sh --help` を実行すると，コマンド実行や再ビルドのオプションを確認できます．VS Code の Dev Containers 拡張から Reopen in Container を選ぶ方法もあります．
 
 コンテナ内のツールのパスと環境変数は設定済みです．手動で環境を構築する場合は，[環境構築](jp-devel-environment) と [環境変数](jp-devel-environment-variables) を参照してください．
 
