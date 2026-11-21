@@ -30,7 +30,7 @@ The linker aligns the ROM/RAM starts of `.data` and the start of `.bss` to four 
 
 ## Combined ROM/RAM images
 
-The ACT4 [Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) extracts ROM/RAM separately, concatenates padding, ROM and RAM, then generates HEX. Test code runs in RAM, whose initial contents are loaded by the testbench; it does not copy all initial data from ROM like basic C tests.
+The ACT4 [Makefile](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) extracts ROM/RAM separately, concatenates padding, ROM and RAM, then generates HEX. Test code runs in RAM, whose initial contents are loaded by the testbench; it does not copy all initial data from ROM like basic C tests.
 
 Zephyr has its own build/startup flow. Consult each suite's Makefile and linker script for placement.
 

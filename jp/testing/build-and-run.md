@@ -19,7 +19,7 @@ cp Verification/TestCode/C/HelloWorld/{Makefile,code.c,cfg.xml,serial.ref.txt} \
     Verification/TestCode/C/YourTest/
 ```
 
-`YourTest/code.c` を編集します．テンプレートは生成ヘッダ `rsd-memory-map.h` の `RSD_SERIAL_OUTPUT`（既定値 `0x40002000`）の UART へ出力します．`Verification/TestCode/C/lib.c` にもシリアル出力用の関数があります．基本 C テンプレートは汎用の `printf` 実装をリンクしません．ベンチマークの移植版は独自の出力関数を持ちます．
+`YourTest/code.c` を編集します．テンプレートは `Verification/TestCode/C/lib.c` の `serial_out_char` を使い，FIFO に空きができるのを待ってから 1 文字ずつ書き込みます．基本 C テンプレートは汎用の `printf` 実装をリンクしません．ベンチマークの移植版は独自の出力関数を持ちます．
 
 `serial.ref.txt` は改行を含む正確な期待出力に更新し，`cfg.xml` に期待するレジスタ値と実行上限を設定します．`main` が 0 を返すプログラムでは，次の設定で `a0` を検査できます．
 

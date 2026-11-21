@@ -12,7 +12,7 @@ make test/unit/Divider/run
 make SIM=modelsim test/unit/run
 ```
 
-The default FP-enabled configuration runs 15 tests. The aggregate target generates shared RTL before building and running the individual testbenches; no prior core simulator build is required.
+The default FP-enabled configuration runs 16 tests. The aggregate target generates shared RTL before building and running the individual testbenches; no prior core simulator build is required.
 
 - `InitializedBlockRAM`
 - `BlockDualPortRAM`
@@ -27,6 +27,7 @@ The default FP-enabled configuration runs 15 tests. The aggregate target generat
 - `ICache`
 - `DCache`
 - `DecodeStage`
+- `SerialOutput`
 - `InterruptController`
 - `FPDivSqrtUnit` (FP-enabled configurations only)
 

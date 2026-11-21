@@ -39,7 +39,7 @@ TestDriver のログと UART 出力は各テストディレクトリに残りま
 
 ## FP テストの選択
 
-[MicroArch.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MicroArch.toml) の `enable_fp_pipe = true` で基本テストの ASM/C の FP ケースが有効になります．`false` では FP を省き，コンパイル対象も rv32imaf から rv32ima へ変わります．FP 無効時の明示的な FP テストは失敗します．構成変更時は `make clean test/level-1/clean` でモデルとプログラムを消し，同じ構成の `RSD_SRC_CFG` で再ビルド・実行します．
+[MicroArch.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MicroArch.toml) の `enable_fp_pipe = true` で基本テストの ASM/C の FP ケースが有効になります．`false` では FP を省き，コンパイル対象も rv32imaf から rv32ima へ変わります．FP 無効時の明示的な FP テストは失敗します．構成変更時は `make clean test/level-1/clean` でモデルとプログラムを消し，同じ構成の `RSD_SRC_CFG` で再ビルド・実行します．
 
 ## CFI テストの選択
 
@@ -106,7 +106,7 @@ make test/External/Zephyr/run
 
 [Zephyr/Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Zephyr/Makefile) は公開 Zephyr 4.4.0 を `Zephyr/External/zephyr` に固定し，Python 環境と出力は `Zephyr/Build/` に保存します．HelloWorld・Philosophers・Synchronization は upstream のサンプルを変更せず，RSD の out-of-tree board/SoC，Ubuntu の RISC-V GCC，minimal libc でビルドします．west・SDK・外部モジュールは不要です．Dev Container は CMake・Ninja・gperf・device-tree compiler を含みます．fetch/setup はネットワークを使い，ビルド・テストでは取得しません．
 
-`test/External/Zephyr/run` は3本を実行し，Philosophers や Synchronization などを途中のパスで個別選択できます．TestDriver が通常の無コミット上限と命令数上限を適用します．HelloWorld は正確な挨拶，Synchronization は `--serial-prefix` で最初の A/B/A/B の4出力を要求し，それ以降や最後の不完全行は許容します．Philosophers は [CheckOutput.py](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Zephyr/CheckOutput.py) でフォークの状態と sleep/wakeup 後の各哲学者の eating/thinking 2周を検査します．mutex の優先度継承と UART の割り込み合いを許し，最後の不完全行を無視しますが，カーネルエラーは拒否します．
+`test/External/Zephyr/run` は3本を実行し，Philosophers や Synchronization などを途中のパスで個別選択できます．TestDriver が通常の無コミット上限と命令数上限を適用します．HelloWorld は正確な挨拶，Synchronization は `--serial-prefix` で最初の A/B/A/B の4出力を要求し，それ以降や最後の不完全行は許容します．Philosophers は [CheckOutput.py](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/Zephyr/CheckOutput.py) でフォークの状態と sleep/wakeup 後の各哲学者の eating/thinking 2周を検査します．mutex の優先度継承と UART の割り込み合いを許し，最後の不完全行を無視しますが，カーネルエラーは拒否します．
 
 シミュレーション用 board は仮想1 MHzクロックで待ち時間を短縮し，RTL と upstream ソースは変更しません．Philosophers は upstream の `DEBUG_PRINTF=1` でカーソル制御を無効にし，`CONFIG_PRINTK_SYNC=y` で出力呼び出しを同期します．クリーンは取得ソースと Python 環境を保持します．
 
@@ -122,7 +122,7 @@ make -j"$(nproc)"
 make -j16 test/External/riscv-arch-test/run
 ```
 
-[ACT4 Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) が upstream コミット・Bundler・Sail 版を固定します．ソースは `riscv-arch-test/External/`，Python/Ruby環境・取得キャッシュ・checksum検証済みSailは `riscv-arch-test/Build/` にあります．Ubuntu の Python・Ruby・LLVM22 を使い，コンパイラのビルドや mise/uv の導入は不要です．fetch/setup はネットワークを使い，check は取得済みツールだけを検査します．UDB の再生成データは NFS の排他 read-only lock の制約を避けるためコンテナ内の `/tmp/rsd-arch-test-<uid>/data/` を使います．
+[ACT4 Makefile](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) が upstream コミット・Bundler・Sail 版を固定します．ソースは `riscv-arch-test/External/`，Python/Ruby環境・取得キャッシュ・checksum検証済みSailは `riscv-arch-test/Build/` にあります．Ubuntu の Python・Ruby・LLVM22 を使い，コンパイラのビルドや mise/uv の導入は不要です．fetch/setup はネットワークを使い，check は取得済みツールだけを検査します．UDB の再生成データは NFS の排他 read-only lock の制約を避けるためコンテナ内の `/tmp/rsd-arch-test-<uid>/data/` を使います．
 
 整数・特権命令は90ケースです: I39，M8，Zaamo9，Zalrsc2，Zba3，Zicond2，Zicsr6，Zifencei1，生成された ExceptionsSm・ExceptionsZaamo・ExceptionsZalrsc 各1，InterruptsSm17．A は upstream で Zaamo（AMO）と Zalrsc（LR/SC）に分かれます．Zba・Zicond は対応マクロが有効な場合だけ含め，無効時の明示選択は拒否します．
 
@@ -159,6 +159,6 @@ Fは全5丸めモードで数値結果と例外フラグを除算・平方根も
 
 ## メモリマップ
 
-[MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MemoryMap.toml) がRTLとソフトウェアの共通アドレスを定義します．[構成ジェネレータ](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/ConfigGenerator/ConfigGenerator.py) が，本体ルートを基準に `Processor/Src/Config/MemoryMapTypes.sv` と `Processor/Src/Verification/TestCode/` 内の `rsd-memory-map.h`・`.ld`・`.mk` を生成します．make は `Processor/Src/Makefiles/GenerateConfig.inc.mk` 経由でこれらを再生成します．外部RTL利用者が生成器なしでビルドできるよう，生成物はGitに含めます．ENDは最後の有効アドレスを含み，物理0から始まるイメージサイズはPHYSICAL_END+1，objcopyのpad-toは論理END+1です．
+[MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MemoryMap.toml) がRTLとソフトウェアの共通アドレスを定義します．[構成ジェネレータ](https://github.com/rsd-devel/rsd/blob/develop/Processor/Tools/ConfigGenerator/ConfigGenerator.py) が，本体ルートを基準に `Processor/Src/Config/MemoryMapTypes.sv` と `Processor/Src/Verification/TestCode/` 内の `rsd-memory-map.h`・`.ld`・`.mk` を生成します．make は `Processor/Src/Makefiles/GenerateConfig.inc.mk` 経由でこれらを再生成します．外部RTL利用者が生成器なしでビルドできるよう，生成物はGitに含めます．ENDは最後の有効アドレスを含み，物理0から始まるイメージサイズはPHYSICAL_END+1，objcopyのpad-toは論理END+1です．
 
 共通の起動コード・UART関数・リンカ・ACT4・Zephyrはこれらを使いますが，リンカ固有のセクション配置・容量制限，直接アドレス指定のASMと期待値，ACT4 Sailモデル固有のデバイスアドレスは別途確認が必要です．マップ変更だけで自動移動はしません．

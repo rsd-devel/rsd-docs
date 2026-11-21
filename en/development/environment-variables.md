@@ -1,6 +1,6 @@
 # Environment variables
 
-The Dev Container supplies the variables below through [devcontainer.json](https://github.com/rsd-devel/rsd/blob/master/.devcontainer/devcontainer.json). Manual installations should set them to match the host. `RSD_ROOT` points to the root of the RSD source checkout.
+The Dev Container supplies the variables below through [devcontainer.json](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/devcontainer.json). Manual installations should set them to match the host. `RSD_ROOT` points to the root of the RSD source checkout.
 
 ## Simulation and test builds
 

@@ -74,7 +74,7 @@ builds hardware on the host. SD writes also run on the host. See the
 - `ModelSim.inc.mk`: compiler/runtime recipes shared by the core and unit tests.
 - `PostSynthesis.inc.mk`: XSim functional verification shared by Vivado and
   Synplify, with each backend supplying its netlist and required defines.
-- `Vivado.inc.mk`: shared board implementation and existing PS Linux build rules.
+- `Vivado.inc.mk`: shared board implementation rules for the bitstream, XSA and FSBL. `EDA.inc.mk` forwards Linux and SD image targets to `Processor/Project/Vivado/ARM_Linux/Makefile`.
 
 Tool-specific options and output directories stay in their backends. Test
 programs and individual unit tests retain local Makefiles. Build products stay

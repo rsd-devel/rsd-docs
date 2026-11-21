@@ -1,10 +1,10 @@
 # メモリ・マップ
 
-以下は RSD の既定構成です．32 bit の論理アドレスを固定のルールで内部物理アドレスへ変換します．メモリマップの設定元は [MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MemoryMap.toml) です．
+以下は RSD の既定構成です．32 bit の論理アドレスを固定のルールで内部物理アドレスへ変換します．メモリマップの設定元は [MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MemoryMap.toml) です．
 
 ## 設定と生成
 
-`Processor/Config/MemoryMap.toml` の設定を [ConfigGenerator.py](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/ConfigGenerator/ConfigGenerator.py) が読み，次の共通定義を生成します．
+`Processor/Config/MemoryMap.toml` の設定を [ConfigGenerator.py](https://github.com/rsd-devel/rsd/blob/develop/Processor/Tools/ConfigGenerator/ConfigGenerator.py) が読み，次の共通定義を生成します．
 
 - RTL: `Processor/Src/Config/MemoryMapTypes.sv`（テンプレートは同じディレクトリの `MemoryMapTypes.template.sv`）
 - C・アセンブリ: `Processor/Src/Verification/TestCode/rsd-memory-map.h`
@@ -45,11 +45,14 @@ typedef struct packed {
 | `0x00001000–0x0000FFFF` | `0x001000–0x00FFFF` | 0 | 0 | ROM（60 KiB） |
 | `0x80000000–0x8003FFFF` | `0x010000–0x04FFFF` | 0 | 0 | キャッシュ可能 RAM（256 KiB） |
 | `0x80040000–0x8004FFFF` | `0x050000–0x05FFFF` | 1 | 0 | キャッシュ不可 RAM（64 KiB） |
-| `0x40002000` | `0x002000` | 1 | 1 | UART 出力 |
+| `0x40002000` | `0x002000` | 1 | 1 | UART DATA（書き込み，下位 8 bit） |
+| `0x40002004` | `0x002004` | 1 | 1 | UART STATUS（読み取り，bit 0 = TX_FULL） |
 | `0x40010000–0x40017FFF` | `0x000000–0x007FFF` | 1 | 1 | CLINT |
 | `0xC0000000–0xC0201FFF` | `0x010000–0x211FFF` | 1 | 1 | PLIC |
 
 24 bit の packed 値として見る場合，`isUncachable` は bit 23，`isIO` は bit 22 です．たとえば UART は `0xC02000`，キャッシュ不可 RAM の先頭は `0x850000` となります．同じ `addr` の値でも属性によって異なる領域を表します．
+
+シリアル領域は `0x40002000–0x40002007` です．
 
 領域判定と変換は生成される `GetMemoryMapType` と `ToPhyAddrFromLogical` を参照してください．未定義の論理アドレスは `MMT_ILLEGAL` となり，パイプラインでアクセス例外として処理されます．
 
@@ -76,7 +79,7 @@ UART では，1 文字ごとに `RSD_SERIAL_STATUS` の bit 0 が 0 になるの
 | PLIC priority threshold base | `0xC0200000` |
 | PLIC claim/complete base | `0xC0200004` |
 
-PLIC の各欄はレジスタ群の基準アドレスです．領域内のすべてのアドレスが個別の有効なレジスタになるわけではありません．実装は [IO_Unit.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/IO/IO_Unit.sv) と [PLIC_Unit.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/IO/PLIC_Unit.sv) にあります．
+PLIC の各欄はレジスタ群の基準アドレスです．領域内のすべてのアドレスが個別の有効なレジスタになるわけではありません．実装は [IO_Unit.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/IO/IO_Unit.sv) と [PLIC_Unit.sv](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/IO/PLIC_Unit.sv) にあります．
 
 ## ソフトウェアの配置
 
@@ -84,6 +87,6 @@ PLIC の各欄はレジスタ群の基準アドレスです．領域内のすべ
 
 基本 C テストの [rsd-ld.script](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/rsd-ld.script) は生成されたベースアドレスを使い，ROM/RAM の各容量を `MIN(領域サイズ, 32 KiB)` に制限します．既定では ROM は `0x00001000`，RAM は `0x80000000` から各 32 KiB です．[rsd-crt.s](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/rsd-crt.s) はスタックポインタを `RSD_RAM_BASE + 0x20000`（既定で `0x80020000`）に設定し，`rsd-loader.c` によるデータコピーと BSS 初期化を行ってから `main` を呼びます．
 
-Zephyr は独自の board/SoC 定義を使用し，ACT4 は [link.ld](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/riscv-arch-test/link.ld) でテスト本体を `RSD_RAM_BASE + 0x10000`（既定で `0x80010000`）以降の RAM に配置します．すべてのプログラムの `.text` が ROM 上で動くとは限りません．HEX の配置と起動処理は [バイナリ](binary.md) を参照してください．
+Zephyr は独自の board/SoC 定義を使用し，ACT4 は [link.ld](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/riscv-arch-test/link.ld) でテスト本体を `RSD_RAM_BASE + 0x10000`（既定で `0x80010000`）以降の RAM に配置します．すべてのプログラムの `.text` が ROM 上で動くとは限りません．HEX の配置と起動処理は [バイナリ](binary.md) を参照してください．
 
 起動コード・UART 関数・リンカ・ACT4・Zephyr は共通定数を利用します．ただし，各リンカのセクション配置やプログラム容量制限，アセンブリの直接指定アドレス・期待値，ACT4 の Sail 用デバイス設定まで自動的に移動するわけではありません．マップ変更時はそれらも確認してください．

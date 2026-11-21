@@ -1,6 +1,8 @@
 # はじめよう
 
-RSD のシミュレータをビルドし，基本テストとパイプラインの可視化を行う手順です．コマンドは RSD 本体のチェックアウトで実行します．本体の [README](https://github.com/rsd-devel/rsd/blob/master/README.md) にも対応する手順があります．
+RSD のシミュレータをビルドし，基本テストとパイプラインの可視化を行う手順です．コマンドは RSD 本体のチェックアウトで実行します．本体の [README](https://github.com/rsd-devel/rsd/blob/develop/README.md) にも対応する手順があります．
+
+v1.2.0 リリースまでは，最初に本体のチェックアウトで `git switch develop` を実行してください．
 
 ## 1. 開発環境の準備
 

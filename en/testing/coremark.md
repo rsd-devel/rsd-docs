@@ -55,4 +55,4 @@ Set `RSD_ZYNQ_HOST` on the development host as described in the [board startup i
 make test/External/Coremark/zynq/run
 ```
 
-`zynq/run` uploads the built RV32IM program and displays its UART output in the terminal. Press Ctrl-C to stop the loader. On hardware, CoreMark started, but characters were missing from subsequent UART output, so the CRC and score remain unverified. Hardware measurements also require checking the clock frequency, timing code and run duration.
+`zynq/run` uploads the built RV32IM program and displays its UART output in the terminal. Press Ctrl-C to stop the loader. Rebuild the FPGA bitstream and guest HEX together for FIFO-aware output. In earlier builds, characters could be lost while the ARM reader was busy. On ZedBoard the one-iteration RV32IM test produced all 429 expected UART bytes, including the final CRC `0xe714`. Hardware measurements also require checking the clock frequency, timing code and run duration.

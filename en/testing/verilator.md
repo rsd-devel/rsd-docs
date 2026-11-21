@@ -36,7 +36,7 @@ The Makefile enables `--trace`; `sim/dump` passes `+WAVE_LOG_FILE=simx.vcd`. Lim
 
 ## Implementation
 
-[VerilatorCore.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/VerilatorCore.inc.mk) and the shared [Verilator options](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Verilator.inc.mk) select `TestMain` and generate the execution loop with `--main`/`--timing`. The model is `Processor/Project/Verilator/obj_dir/VTestMain`. Direct execution accepts plusargs such as `+TEST_CODE=...`; normally use make or TestDriver.
+[VerilatorCore.inc.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/VerilatorCore.inc.mk) and the shared [Verilator options](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/Verilator.inc.mk) select `TestMain` and generate the execution loop with `--main`/`--timing`. The model is `Processor/Project/Verilator/obj_dir/VTestMain`. Direct execution accepts plusargs such as `+TEST_CODE=...`; normally use make or TestDriver.
 
 Clean and rebuild the simulator and programs after configuration changes such as enabling or disabling FP:
 

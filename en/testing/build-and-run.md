@@ -19,7 +19,7 @@ cp Verification/TestCode/C/HelloWorld/{Makefile,code.c,cfg.xml,serial.ref.txt} \
     Verification/TestCode/C/YourTest/
 ```
 
-Edit `YourTest/code.c`. The template writes bytes to `RSD_SERIAL_OUTPUT` from generated `rsd-memory-map.h` (default `0x40002000`); `Verification/TestCode/C/lib.c` also provides serial-output helpers. The basic C template does not link a general `printf` implementation. The dedicated benchmark ports provide their own output functions.
+Edit `YourTest/code.c`. The template uses `serial_out_char` from `Verification/TestCode/C/lib.c`. It waits for space in the FIFO before writing each byte. The basic C template does not link a general `printf` implementation. The dedicated benchmark ports provide their own output functions.
 
 Update `serial.ref.txt` to the exact expected UART output, including newlines, and `cfg.xml` to the expected registers and execution limits. For a program whose `main` returns zero, this configuration checks the return value in `a0`:
 

@@ -12,7 +12,7 @@ make test/unit/Divider/run
 make SIM=modelsim test/unit/run
 ```
 
-`test/unit/run` はFP 有効時は以下の 15 テストを実行します．共有の生成 RTL を準備してから，各テストベンチをビルド・実行します．コア全体のシミュレータを先にビルドする必要はありません．
+`test/unit/run` はFP 有効時は以下の 16 テストを実行します．共有の生成 RTL を準備してから，各テストベンチをビルド・実行します．コア全体のシミュレータを先にビルドする必要はありません．
 
 - `InitializedBlockRAM`
 - `BlockDualPortRAM`
@@ -27,6 +27,7 @@ make SIM=modelsim test/unit/run
 - `ICache`
 - `DCache`
 - `DecodeStage`
+- `SerialOutput`
 - `InterruptController`
 - `FPDivSqrtUnit`（FP 有効時のみ）
 

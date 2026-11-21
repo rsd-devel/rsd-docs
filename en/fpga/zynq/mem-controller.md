@@ -1,6 +1,6 @@
 # DRAM controller on Zynq
 
-See [Axi4Memory.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Memory/Axi4Memory.sv) for the current implementation. The diagrams illustrate request/response concepts. Burst length is `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM`; check configuration rather than assuming that memory-transfer width equals cache-line width.
+See [Axi4Memory.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Memory/Axi4Memory.sv) for the current implementation. The diagrams illustrate request/response concepts. Burst length is `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM`; the default memory entry and AXI data bus are both 64 bits, so each read or write transfers one beat.
 
 This page concerns Xilinx Zynq-7000. Read [System architecture](arch.md) first; the [Zynq reference manual](https://japan.xilinx.com/support/documentation/user_guides/j_ug585-Zynq-7000-TRM.pdf) supplies background.
 
@@ -19,7 +19,7 @@ RSD occupies the PL, while external memory normally connects to the ARM-based PS
 
 RSD issues a read by setting `memAccessAddr` and asserting `memAccessRE`. The controller converts it to AXI address/ID/valid signals, illustrated as `AXI_ARADDR`, `AXI_ARID` and `AXI_ARVALID`.
 
-AXI permits multiple outstanding reads identified by distinct IDs. `memoryReadReqIDFreeList` allocates IDs, while `memoryReadReqQueue` buffers requests before issue. Returned data reaches RSD through `memoryReadDataReady`, `memReadData` and `memReadSerial`.
+AXI permits multiple outstanding reads identified by distinct IDs. `memoryReadReqIDFreeList` allocates IDs, while `memoryReadReqQueue` buffers requests before issue. Returned data reaches RSD through `memReadDataReady`, `memReadData` and `memReadSerial`.
 
 An internal memory entry can span multiple AXI data beats. Burst transfers carry these beats, and `memoryReadDataTable` assembles them into the internal entry. Use the configured memory-entry/AXI-width ratio above for the burst count.
 

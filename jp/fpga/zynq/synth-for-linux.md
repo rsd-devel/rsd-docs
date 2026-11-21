@@ -2,6 +2,8 @@
 
 Zynq の ARM（PS）側で Linux を起動し，FPGA（PL）側の RSD にプログラムをロードします．初回は以下の手順で SD カードを作ります．ボードがすでに起動している場合は，[プログラムの実行](#ボードの起動とプログラムの実行) または [RTL の更新](#rtl-を変更したときの-fpga-更新) から始めてください．
 
+v1.2.0 向けの FPGA イメージとゲストの HEX は同じチェックアウトからビルドします．`develop` への統合前は `build/zedboard-linux-image` 上のターゲットを使用してください．
+
 ## SD イメージを作る
 
 * リポジトリのルートで順に実行します．
@@ -129,7 +131,7 @@ make platform/zynq/reboot
 
 Linux・デバイスツリー・初期設定を変更した場合は，対象を再ビルドして SD イメージを再生成し，上記の手順でカードに書き込みます．U-Boot を変更した場合は `bootbin/build` もやり直します．Buildroot の中間ファイルは元のビルド環境で再利用します．カーネルやブートローダーのソース・パッチを変更した場合は clean 後に再ビルドしてください．
 
-実機では，更新した `boot.bin` の読み戻し，再起動後の SSH 接続，HelloWorld の UART 出力を確認しています．
+ZedBoard 実機で更新した `boot.bin` を SD から読み戻して照合しました．電源再投入後に SSH で Linux に接続し，HelloWorld と CoreMark の全出力が期待値と一致することを確認しました．
 
 - [Zynq 上のシステム構成](arch.md)
 - [PS Linux の構成](linux.md)

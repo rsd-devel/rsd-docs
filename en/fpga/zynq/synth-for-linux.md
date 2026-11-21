@@ -2,6 +2,8 @@
 
 Linux runs on the Zynq ARM Processing System (PS) and loads programs into RSD in the FPGA Programmable Logic (PL). For first-time setup, build the SD image below. If the board is already running, go directly to [running a program](#boot-the-board-and-run-a-program) or [updating the FPGA](#update-the-fpga-after-an-rtl-change).
 
+For v1.2.0, build the FPGA image and guest HEX files from the same checkout. Before integration into `develop`, these targets are on `build/zedboard-linux-image`.
+
 ## Build the SD image
 
 * Run the commands in order from the repository root.
@@ -135,7 +137,7 @@ Deployment verifies the uploaded `boot.bin` against its SHA-256 and replaces it 
 
 For changes to Linux, the device tree or initial settings, rebuild the affected components, regenerate the full SD image and follow the card-writing instructions above. Rebuild `bootbin/build` after changing U-Boot. Buildroot intermediates require the original build environment. Clean and rebuild after modifying kernel or bootloader sources or patches.
 
-On a ZedBoard, we read back the updated `boot.bin`, reconnected over SSH after reboot, and verified the HelloWorld UART output.
+After updating the ZedBoard boot partition, we verified the new `boot.bin` by reading it back. Following a power cycle, Linux was reachable over SSH, and the complete HelloWorld and CoreMark outputs matched their references.
 
 - [Zynq system architecture](arch.md)
 - [PS Linux configuration](linux.md)

@@ -4,7 +4,7 @@ RSD は 32 bit RISC-V のアウト・オブ・オーダ実行スーパースカ�
 
 ## 構成と設定箇所
 
-数値パラメータと CPU マクロの設定元は [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MicroArch.toml) です．生成される `Config/MicroArchConf.sv` が数値定義，`Makefiles/MicroArch.inc.mk` がシミュレーション用の既定マクロ，`Config/MicroArchMacros.svh` が合成用マクロを供給します．派生パラメータは `Config/MicroArchConf.template.sv`，ツール・ボード固有の設定は `Config/SynthesisMacros.sv` にあります．
+数値パラメータと CPU マクロの設定元は [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MicroArch.toml) です．生成される `Config/MicroArchConf.sv` が数値定義，`Makefiles/MicroArch.inc.mk` がシミュレーション用の既定マクロ，`Config/MicroArchMacros.svh` が合成用マクロを供給します．派生パラメータは `Config/MicroArchConf.template.sv`，ツール・ボード固有の設定は `Config/SynthesisMacros.sv` にあります．
 
 | 項目 | 既定値 |
 | --- | --- |

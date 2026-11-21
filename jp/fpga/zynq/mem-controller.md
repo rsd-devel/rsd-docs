@@ -1,6 +1,6 @@
 # DRAMコントローラ (ZYNQ編)
 
-現在の実装は [Axi4Memory.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Memory/Axi4Memory.sv) を参照してください．以下の図は要求・応答の概念を示します．実装上のバースト長は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．キャッシュライン幅とメモリ転送幅を同一と仮定せず，設定値を確認してください．
+現在の実装は [Axi4Memory.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Memory/Axi4Memory.sv) を参照してください．以下の図は要求・応答の概念を示します．実装上のバースト長は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．既定ではメモリエントリ幅と AXI のデータ幅はともに 64 bit で，1 回の要求につき読み書きともに 1 beat を転送します．
 ZYNQ 上のプロセッサで DRAM を読み書きするのに必要な DRAM コントローラについて説明します．  
 ここに書いてある内容は Xilinx Zynq-7000 向けです．  
 このページでは，ZYNQ についての基本的な知識は省略しています．  
@@ -45,12 +45,8 @@ RSD からのリード要求は，memAccessRE と memAccessAddr によって発�
 こうした並行処理を可能にするため， axi4Memory モジュールにはそれぞれのリード要求に対して固有の ID を発行する memoryReadReqIDFreeList と，要求を発行するまで一時的にバッファする memoryReadReqQueue があります．  
 
 
-メモリからデータが到着すると，そのデータを memoryReadDataReady ，memReadData，memReadSerial を介して RSD に受け渡します．  
-ここで注意しなければならないことは，RSD のメモリ要求におけるデータの単位であるキャッシュラインサイズより AXI4 インターフェースのデータサイズが一般的に小さい点です．  
-これは，PS 部の HP ポートや内部バス，メモリコントローラのデータ幅が制限されていることによります．  
-そのため，axi4Memory では 1 つの RSD のリード要求に対してバースト転送を行います．  
-バースト数は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．
-memoryReadDataTable は，バースト転送で送られてきたデータを内部メモリエントリのサイズに結合する役割を担います．
+メモリからデータが到着すると，そのデータを memReadDataReady ，memReadData，memReadSerial を介して RSD に受け渡します．
+メモリエントリが AXI のデータ幅より大きい構成では，`memoryReadDataTable` が複数 beat の応答を 1 エントリに組み立てます．
 
 ## ライトチャンネル 
 
@@ -65,10 +61,7 @@ RSD からのライト要求は，memAccessWE と memAccessWriteData， memAcces
 
 リードチャネルと同様に，ライトチャネルでは 1 つのライト要求を処理中に別のライト要求を発行可能です．  
 しかし，AXI4 プロトコルの規定により，書き込むデータの転送順番は要求を出した順番にならなければなりません．  
-また，リードチャネルと同様に RSD のメモリ要求におけるデータの単位であるキャッシュラインサイズより AXI4 インターフェースのデータサイズが一般的に小さい点に注意が必要です．  
-そのため，同様に axi4Memory では 1 つの RSD のライト要求に対してバースト転送を行います．  
-バースト数は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．
-memoryWriteDataQueue は，バースト転送で送るデータを一時的にバッファする役割を担います．
+`memoryWriteDataQueue` は未送信の書き込みデータを保持します．メモリエントリが AXI のデータ幅より大きい構成では，1 エントリを複数 beat に分けて送ります．
 
 書き込みが正常に終了すると，スレーブ側から AXI\_BID と AXI\_BVALID を介して書き込み完了応答が発行されます．
 この完了応答をもってライト要求は完了し，memoryWriteDataQueue からデータが削除されます．

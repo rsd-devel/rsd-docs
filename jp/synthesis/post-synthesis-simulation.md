@@ -54,7 +54,7 @@ HEX と合成時にコピーした内容が一致することが検査されま�
 
 ## その他のターゲットとソース追加
 
-Vivado のプロジェクトを使う `synth/vivado/post-synthesis/timing/test`・`synth/vivado/post-implementation/test`・`synth/vivado/post-implementation/timing/test` と GUI・Kanata 用ターゲットも残っています．上記のバッチテストとは出力先やオプションが異なるため，[Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.mk) を参照してください．他のフローは [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Synplify.mk) と [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/VCS.mk) にあります．
+Vivado のプロジェクトを使う `synth/vivado/post-synthesis/timing/test`・`synth/vivado/post-implementation/test`・`synth/vivado/post-implementation/timing/test` と GUI・Kanata 用ターゲットも残っています．上記のバッチテストとは出力先やオプションが異なるため，[Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/Vivado.mk) を参照してください．他のフローは [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/Synplify.mk) と [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/VCS.mk) にあります．
 
 RTL の追加時は [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/CoreSources.inc.mk) の一覧を更新します．
 

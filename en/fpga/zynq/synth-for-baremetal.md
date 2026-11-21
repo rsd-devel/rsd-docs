@@ -34,12 +34,12 @@ The Vivado-only flow synthesizes RTL and generates a `.bit` file. The combined f
 From `Processor/Src`:
 
 ```bash
-source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh
+export RSD_VIVADO_ROOT=/path/to/Xilinx/Vivado/2019.2
 make synth/vivado/clean
 make synth/vivado/build
 ```
 
-Use the Vitis settings path shown above. Clean when switching from Synplify. A successful build produces:
+Set `RSD_VIVADO_ROOT` for either synthesis flow. Clean when switching from Synplify. A successful build produces:
 
 ```text
 $(RSD_ROOT)/Processor/Project/Vivado/TargetBoards/Zedboard/rsd/rsd.runs/impl_1/design_1_wrapper.bit

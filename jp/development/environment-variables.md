@@ -1,6 +1,6 @@
 # 環境変数
 
-Dev Container は [devcontainer.json](https://github.com/rsd-devel/rsd/blob/master/.devcontainer/devcontainer.json) に従って設定します．手動導入ではホストの配置に合わせます．`RSD_ROOT` は RSD 本体ソースのルートです．
+Dev Container は [devcontainer.json](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/devcontainer.json) に従って設定します．手動導入ではホストの配置に合わせます．`RSD_ROOT` は RSD 本体ソースのルートです．
 
 ## シミュレーションとテストのビルド
 

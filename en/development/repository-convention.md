@@ -4,11 +4,11 @@ See [Test programs](../testing/program.md) for test groups and external inputs, 
 
 ## Workflow
 
-Use [GitHub Flow](https://gist.github.com/Gab-km/3705015): create a descriptively named branch from master, make changes there, open a pull request against master, and merge after review. Avoid working directly on master; normally delete the branch after merging. A graphical Git client can help unfamiliar users understand the branch structure.
+Create a descriptively named branch from `develop` and open a pull request against `develop`. After review and testing, merge the branch and normally delete it. For a release, validate the integrated `develop` and merge it into `master`. A graphical Git client can help unfamiliar users understand the branch structure.
 
 Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages. Some historical commits predate this convention.
 
-## Checks before merging into master
+## Checks before merging
 
 Run these commands from `Processor/Src` after configuring the tools:
 
@@ -25,4 +25,4 @@ TestDriver checks UART output in the post-synthesis work directory. See [Functio
 
 ## Additional coverage
 
-`test/all/run` covers basic tests and CoreMark/Dhrystone. Run ACT4/Zephyr with `test/ex/run`, RTL units with `test/unit/run`, and test infrastructure with `test/tools/run`. Select validation appropriate to the change and record tools, configuration, targets, FP settings and extension selection. After completing the applicable checks, submit the change through a GitHub pull request to master.
+`test/all/run` covers basic tests and CoreMark/Dhrystone. Run ACT4/Zephyr with `test/ex/run`, RTL units with `test/unit/run`, and test infrastructure with `test/tools/run`. Select validation appropriate to the change and record tools, configuration, targets, FP settings and extension selection. After completing the applicable checks, submit the change through a GitHub pull request to `develop`.

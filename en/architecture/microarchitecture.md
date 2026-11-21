@@ -4,7 +4,7 @@ RSD is a 32-bit RISC-V out-of-order superscalar processor. This page describes t
 
 ## Configuration
 
-Numeric parameters and CPU macro defaults come from [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/master/Processor/Config/MicroArch.toml). Generated `Config/MicroArchConf.sv` supplies numeric definitions, `Makefiles/MicroArch.inc.mk` supplies simulation defaults, and `Config/MicroArchMacros.svh` supplies synthesis macros. Derived parameters are in `Config/MicroArchConf.template.sv`; tool/board settings are in `Config/SynthesisMacros.sv`.
+Numeric parameters and CPU macro defaults come from [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MicroArch.toml). Generated `Config/MicroArchConf.sv` supplies numeric definitions, `Makefiles/MicroArch.inc.mk` supplies simulation defaults, and `Config/MicroArchMacros.svh` supplies synthesis macros. Derived parameters are in `Config/MicroArchConf.template.sv`; tool/board settings are in `Config/SynthesisMacros.sv`.
 
 | Parameter | Default |
 | --- | --- |

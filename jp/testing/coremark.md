@@ -55,4 +55,4 @@ make bench/Dhrystone/run DHRYSTONE_BUILTINS=0
 make test/External/Coremark/zynq/run
 ```
 
-`zynq/run` はビルド済みの RV32IM 版をボードに転送し，UART 出力を端末に表示します．Ctrl-C でローダーを終了します．実機では CoreMark の起動を確認しましたが，その後の UART 出力に文字欠落があり，CRC とスコアは未確認です．実機でスコアを測るには，クロック周波数，計時方法，実行時間も確認してください．
+`zynq/run` はビルド済みの RV32IM 版をボードに転送し，UART 出力を端末に表示します．Ctrl-C でローダーを終了します．FIFO の空きを待つ方式で出力するには，FPGA のビットストリームとゲストの HEX を両方更新してください．旧版では ARM が読み出せない間に文字が欠落することがありました．ZedBoard 実機では，RV32IM 版の 1 iteration テストで，最終 CRC `0xe714` を含む UART 出力全 429 バイトが期待値と一致しました．実機でスコアを測るには，クロック周波数，計時方法，実行時間も確認してください．

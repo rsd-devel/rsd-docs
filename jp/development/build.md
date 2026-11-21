@@ -39,7 +39,7 @@ RTL のバックエンド `VerilatorCore.inc.mk`・`ModelSimCore.inc.mk`・`XSim
 - `UnitTest.inc.mk`: 単体テストのシミュレータ選択・ビルド・実行です．
 - `Verilator.inc.mk`・`ModelSim.inc.mk`: コアと単体テストで共有するツール設定です．
 - `PostSynthesis.inc.mk`: Vivado/Synplify の XSim 機能検証です．各バックエンドがネットリストと定義を渡します．
-- `Vivado.inc.mk`: ボード実装と PS Linux ビルドの共通規則です．
+- `Vivado.inc.mk`: ビットストリーム・XSA・FSBL を生成する共通規則です．Linux と SD イメージのターゲットは `EDA.inc.mk` から `Processor/Project/Vivado/ARM_Linux/Makefile` に転送します．
 
 ツール固有の設定と出力先は各バックエンドにあり，プログラムと単体テストは個別の Makefile を持ちます．通常の生成物は `Processor/Project` 配下，構成の生成定義はソースの横に保存して外部利用のため Git に含めます．Verilator の単体テストは `Verilator/UnitTest/<unit>`，ModelSim は `ModelSim/<unit>` に出力します．
 

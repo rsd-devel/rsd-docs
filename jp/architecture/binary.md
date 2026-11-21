@@ -30,7 +30,7 @@ VMA は実行時に参照するアドレス，LMA はセクションの初期値
 
 ## ROM と RAM を含むイメージ
 
-ACT4 の [Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) は，ELF から ROM と RAM の内容を別々に取り出し，パディング・ROM・RAM の順に結合して HEX を生成します．テスト本体は RAM 上で実行され，RAM の初期値もテストベンチがロードします．基本 C テストのように，すべての初期値を ROM に置いてからコピーする方式ではありません．
+ACT4 の [Makefile](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) は，ELF から ROM と RAM の内容を別々に取り出し，パディング・ROM・RAM の順に結合して HEX を生成します．テスト本体は RAM 上で実行され，RAM の初期値もテストベンチがロードします．基本 C テストのように，すべての初期値を ROM に置いてからコピーする方式ではありません．
 
 Zephyr などにも専用のビルド・起動処理があります．配置の詳細は各スイートの Makefile とリンカスクリプトを参照してください．
 

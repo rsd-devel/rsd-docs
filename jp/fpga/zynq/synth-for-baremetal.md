@@ -48,9 +48,8 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
 
 * 以下のコマンドを実行
     ```bash
-    # Vitis と Vivado の環境変数の設定
-    # パスは Vitis なので注意
-    source /<path_of_Xilinx>/Vitis/2019.2/settings64.sh
+    # どちらの合成フローでも，Vivado のインストール先を指定する
+    export RSD_VIVADO_ROOT=/path/to/Xilinx/Vivado/2019.2
     # Synplify で合成を行ったあとは必ず一度 clean しておく
     make synth/vivado/clean
     # 合成
