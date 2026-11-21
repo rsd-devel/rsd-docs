@@ -56,4 +56,4 @@ make sim/dump TEST_CODE=Verification/TestCode/C/YourTest
 
 ## 5. テスト群への登録
 
-回帰テストへ追加する場合は `Verification/TestCode/C/Makefile` にディレクトリを登録し，`Makefiles/TestCommands.inc.mk` にビルド依存関係と実行ターゲットを追加します．既存の構成は [テスト・プログラム](program.md) を参照してください．
+`Verification/TestCode/C/Makefile` の `SRC_DIRS` に `YourTest` を，`Makefiles/TestCommands.inc.mk` の `LEVEL1_TESTS` に `test/C/YourTest/run` を追加します．これで `make test/C/YourTest/run` が必要に応じて C テストをビルドし，シミュレータで結果を照合します．同じ登録から，ビルド済みの HEX に対する `hex-path`・`zynq/deploy`・`zynq/run` も使えるようになります．SSH 接続と手動実行の手順は [ZedBoard の実機ガイド](../fpga/zynq/synth-for-linux.md) を参照してください．

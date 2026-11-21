@@ -58,4 +58,4 @@ Open `Kanata.log` with Konata and `simx.vcd` with a VCD viewer. These debug targ
 
 ## 5. Add the program to a test suite
 
-For repeated regression testing, add the directory to `Verification/TestCode/C/Makefile` and register its build dependency and execution target in `Makefiles/TestCommands.inc.mk`. See the [test program reference](program.md) for the existing suites.
+Add `YourTest` to `SRC_DIRS` in `Verification/TestCode/C/Makefile` and `test/C/YourTest/run` to `LEVEL1_TESTS` in `Makefiles/TestCommands.inc.mk`. Then `make test/C/YourTest/run` builds the C tests as needed and checks the result in the simulator. The same entry also provides `hex-path`, `zynq/deploy` and `zynq/run` for the built HEX. See [Running programs on ZedBoard](../fpga/zynq/synth-for-linux.md) for SSH setup and manual execution.
