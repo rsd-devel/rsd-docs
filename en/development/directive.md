@@ -1,8 +1,8 @@
 # Compiler directives
 
-Edit [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml): `parameters` holds common values, while `overrides.simulation` and `overrides.synthesis` replace selected values for each mode.
+Edit `Processor/Config/MicroArch.toml`: `parameters` holds common values, while `overrides.simulation` and `overrides.synthesis` replace selected values for each mode.
 
-Normal make invocations regenerate `Config/MicroArchConf.sv`, `Config/MicroArchMacros.svh` and `Makefiles/MicroArch.inc.mk`. These generated files are tracked in Git; edit the TOML or `Config/MicroArchConf.template.sv`, not the outputs. Tool/board settings remain in [Config/SynthesisMacros.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Config/SynthesisMacros.sv).
+Normal make invocations regenerate `Config/MicroArchConf.sv`, `Config/MicroArchMacros.svh` and `Makefiles/MicroArch.inc.mk`. These generated files are tracked in Git; edit the TOML or `Processor/Src/Config/MicroArchConf.template.sv`, not the outputs. Tool/board settings remain in `Processor/Src/Config/SynthesisMacros.sv`.
 
 `RSD_SRC_CFG` applies to simulation and software builds. Synthesis defaults are emitted as `RSD_SYNTHESIS_SRC_CFG` and the generated header; netlist testbenches also use synthesis settings. A command-line `RSD_SRC_CFG` override does not change synthesis. Disable a Boolean macro by omitting it; defining it as `0` still enables it.
 

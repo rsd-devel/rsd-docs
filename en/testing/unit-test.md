@@ -31,7 +31,7 @@ The default FP-enabled configuration runs 16 tests. The aggregate target generat
 - `InterruptController`
 - `FPDivSqrtUnit` (FP-enabled configurations only)
 
-Select a unit with `test/unit/<name>/run`. Definitions are in the [Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefile); testbenches are in [Verification/UnitTest](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Src/Verification/UnitTest).
+Select a unit with `test/unit/<name>/run`. Definitions are in the [Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefile); testbenches are in `Processor/Src/Verification/UnitTest`.
 
 ## Other test groups
 

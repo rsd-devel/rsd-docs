@@ -1,6 +1,6 @@
 # 開発環境
 
-シミュレーション環境の定義は本体の [Dockerfile](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/Dockerfile)，[コンテナ設定](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/devcontainer.json) にあります．この版のリンクは本体の v1.2.0 タグを指します．
+シミュレーション環境の定義は本体の `.devcontainer/Dockerfile`，`.devcontainer/devcontainer.json` にあります．
 
 ## Dev Container
 

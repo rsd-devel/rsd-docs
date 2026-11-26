@@ -1,6 +1,6 @@
 # Development environment
 
-The simulation environment is defined in the RSD source repository's [Dockerfile](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/Dockerfile) and [container configuration](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/devcontainer.json). Source links in this edition point to the RSD v1.2.0 tag.
+The simulation environment is defined in `.devcontainer/Dockerfile` and `.devcontainer/devcontainer.json`.
 
 ## Dev Container
 

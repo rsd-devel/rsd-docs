@@ -1,8 +1,8 @@
 # コンパイラ・ディレクティブ
 
-設定元は [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml) です．共通値を `parameters`，モード別の差分を `overrides.simulation`・`overrides.synthesis` に記述します．
+設定元は `Processor/Config/MicroArch.toml` です．共通値を `parameters`，モード別の差分を `overrides.simulation`・`overrides.synthesis` に記述します．
 
-通常の make が `Config/MicroArchConf.sv`，`Config/MicroArchMacros.svh`，`Makefiles/MicroArch.inc.mk` を再生成します．これらは Git 管理される生成物です．直接編集せず TOML または `Config/MicroArchConf.template.sv` を変更してください．ツール・ボード固有の設定は [Config/SynthesisMacros.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Config/SynthesisMacros.sv) にあります．
+通常の make が `Config/MicroArchConf.sv`，`Config/MicroArchMacros.svh`，`Makefiles/MicroArch.inc.mk` を再生成します．これらは Git 管理される生成物です．直接編集せず TOML または `Processor/Src/Config/MicroArchConf.template.sv` を変更してください．ツール・ボード固有の設定は `Processor/Src/Config/SynthesisMacros.sv` にあります．
 
 `RSD_SRC_CFG` はシミュレーションとソフトウェアビルドに適用され，合成用の既定値は `RSD_SYNTHESIS_SRC_CFG` と生成ヘッダに反映されます．合成後テストベンチも合成設定を使います．コマンドラインでの `RSD_SRC_CFG` 指定は合成設定を変更しません．ブール型マクロを無効化する場合は定義を省略します．`=0` で定義しても有効扱いです．
 

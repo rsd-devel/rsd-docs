@@ -31,7 +31,7 @@ make SIM=modelsim test/unit/run
 - `InterruptController`
 - `FPDivSqrtUnit`（FP 有効時のみ）
 
-個別指定は `test/unit/<名前>/run` です．定義は本体の [Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefile)，テストベンチは [Verification/UnitTest](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Src/Verification/UnitTest) にあります．
+個別指定は `test/unit/<名前>/run` です．定義は本体の [Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefile)，テストベンチは `Processor/Src/Verification/UnitTest` にあります．
 
 ## 他のテストとの関係
 

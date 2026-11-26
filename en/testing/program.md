@@ -74,7 +74,7 @@ cases. For benchmark scores, use the `bench/*/run` targets described below.
 
 ## FP test selection
 
-`enable_fp_pipe = true` in [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml) enables
+`enable_fp_pipe = true` in `Processor/Config/MicroArch.toml` enables
 the assembly and C FP tests in `test/level-1/run`. Setting it to `false` makes basic builds omit FP
 tests and use `rv32ima` instead of `rv32imaf`; explicitly requesting an FP
 test fails. When changing the configuration, clean and rebuild both the
@@ -83,7 +83,7 @@ then rebuild with the same `RSD_SRC_CFG` used to run the tests).
 
 ## CFI test selection
 
-`enable_zicfilp = true` in [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml)
+`enable_zicfilp = true` in `Processor/Config/MicroArch.toml`
 enables landing-pad protection and its `test/level-1/run` test. Set it to `false`
 to build without CFI; an explicit `test/Asm/LandingPad/run` request then fails.
 Clean and rebuild the simulator and basic test programs when changing this
@@ -338,7 +338,7 @@ or `test/ex/build`.
 
 ## Memory map
 
-[`Processor/Config/MemoryMap.toml`](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MemoryMap.toml) defines the RTL and shared software addresses.
+`Processor/Config/MemoryMap.toml` defines the RTL and shared software addresses.
 The [configuration generator](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/ConfigGenerator/ConfigGenerator.py)
 generates their definitions. From the repository root, the RTL output is
 `Processor/Src/Config/MemoryMapTypes.sv`; the software outputs are

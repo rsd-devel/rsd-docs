@@ -39,7 +39,7 @@ TestDriver のログと UART 出力は各テストディレクトリに残りま
 
 ## FP テストの選択
 
-[MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml) の `enable_fp_pipe = true` で基本テストの ASM/C の FP ケースが有効になります．`false` では FP を省き，コンパイル対象も rv32imaf から rv32ima へ変わります．FP 無効時の明示的な FP テストは失敗します．構成変更時は `make clean test/level-1/clean` でモデルとプログラムを消し，同じ構成の `RSD_SRC_CFG` で再ビルド・実行します．
+`Processor/Config/MicroArch.toml` の `enable_fp_pipe = true` で基本テストの ASM/C の FP ケースが有効になります．`false` では FP を省き，コンパイル対象も rv32imaf から rv32ima へ変わります．FP 無効時の明示的な FP テストは失敗します．構成変更時は `make clean test/level-1/clean` でモデルとプログラムを消し，同じ構成の `RSD_SRC_CFG` で再ビルド・実行します．
 
 ## CFI テストの選択
 
@@ -159,6 +159,6 @@ Fは全5丸めモードで数値結果と例外フラグを除算・平方根も
 
 ## メモリマップ
 
-[MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MemoryMap.toml) がRTLとソフトウェアの共通アドレスを定義します．[構成ジェネレータ](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/ConfigGenerator/ConfigGenerator.py) が，本体ルートを基準に `Processor/Src/Config/MemoryMapTypes.sv` と `Processor/Src/Verification/TestCode/` 内の `rsd-memory-map.h`・`.ld`・`.mk` を生成します．make は `Processor/Src/Makefiles/GenerateConfig.inc.mk` 経由でこれらを再生成します．外部RTL利用者が生成器なしでビルドできるよう，生成物はGitに含めます．ENDは最後の有効アドレスを含み，物理0から始まるイメージサイズはPHYSICAL_END+1，objcopyのpad-toは論理END+1です．
+`Processor/Config/MemoryMap.toml` がRTLとソフトウェアの共通アドレスを定義します．[構成ジェネレータ](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/ConfigGenerator/ConfigGenerator.py) が，本体ルートを基準に `Processor/Src/Config/MemoryMapTypes.sv` と `Processor/Src/Verification/TestCode/` 内の `rsd-memory-map.h`・`.ld`・`.mk` を生成します．make は `Processor/Src/Makefiles/GenerateConfig.inc.mk` 経由でこれらを再生成します．外部RTL利用者が生成器なしでビルドできるよう，生成物はGitに含めます．ENDは最後の有効アドレスを含み，物理0から始まるイメージサイズはPHYSICAL_END+1，objcopyのpad-toは論理END+1です．
 
 共通の起動コード・UART関数・リンカ・ACT4・Zephyrはこれらを使いますが，リンカ固有のセクション配置・容量制限，直接アドレス指定のASMと期待値，ACT4 Sailモデル固有のデバイスアドレスは別途確認が必要です．マップ変更だけで自動移動はしません．

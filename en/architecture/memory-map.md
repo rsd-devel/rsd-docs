@@ -1,6 +1,6 @@
 # Memory map
 
-The default configuration translates 32-bit logical addresses into internal physical addresses using fixed rules defined in [MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MemoryMap.toml).
+The default configuration translates 32-bit logical addresses into internal physical addresses using fixed rules defined in `Processor/Config/MemoryMap.toml`.
 
 ## Configuration and generation
 

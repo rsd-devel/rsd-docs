@@ -58,7 +58,7 @@ Use the same `TEST_CODE` and clock setting as the build. The target checks that 
 
 ## Adding RTL sources
 
-Update [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/CoreSources.inc.mk):
+Update `Processor/Src/Makefiles/CoreSources.inc.mk`:
 
 | File type | List |
 | --- | --- |

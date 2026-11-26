@@ -82,7 +82,7 @@ the sources and checked into Git for external consumers. Verilator units use `Ve
 ModelSim units use `ModelSim/<unit>`.
 
 The dev container supplies environment settings automatically. For manual setup,
-copy and edit [SetEnv.sh](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/SetEnv/SetEnv.sh), then source `MySetEnv.sh`.
+copy and edit `Processor/Tools/SetEnv/SetEnv.sh`, then source `MySetEnv.sh`.
 `RSD_ROOT` always comes from the Makefile location and is exported to child
 processes; it needs no manual setting. Program builds require `RSD_GCC_PATH` and `RSD_GCC_PREFIX`. ModelSim/Questa requires `RSD_QUESTASIM_PATH`, and Vivado/XSim
 requires `RSD_VIVADO_ROOT`. Verilator, Synplify and VCS can use commands from PATH.

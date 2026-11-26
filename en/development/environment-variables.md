@@ -1,6 +1,6 @@
 # Environment variables
 
-The Dev Container supplies the variables below through [devcontainer.json](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/devcontainer.json). Manual installations should set them to match the host. `RSD_ROOT` points to the root of the RSD source checkout.
+The Dev Container supplies the variables below through `.devcontainer/devcontainer.json`. Manual installations should set them to match the host. `RSD_ROOT` points to the root of the RSD source checkout.
 
 ## Simulation and test builds
 
@@ -36,4 +36,4 @@ Fetch external sources with the suite's `test/External/<suite>/fetch` target and
 
 For Synplify post-synthesis tests, put `synplify_premier_dp` on `PATH` or pass `SYNPLIFY=/path/to/executable` to make. For VCS timing tests, put `vcs` on `PATH` or pass `VCS=/path/to/vcs`. These are make variables; the tools and licenses need separate setup.
 
-[SetEnv.sh](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/SetEnv/SetEnv.sh) is the manual Bash setup template. Copy it to `Processor/Tools/SetEnv/MySetEnv.sh`, edit the paths, and run `source Processor/Tools/SetEnv/MySetEnv.sh` from the repository root. Make does not source this file automatically.
+`Processor/Tools/SetEnv/SetEnv.sh` is the manual Bash setup template. Copy it to `Processor/Tools/SetEnv/MySetEnv.sh`, edit the paths, and run `source Processor/Tools/SetEnv/MySetEnv.sh` from the repository root. Make does not source this file automatically.

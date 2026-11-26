@@ -12,7 +12,15 @@ Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for c
 
 The `master` branch of rsd-docs describes the `master` branch of RSD. Keep instructions for a feature on a documentation branch until the corresponding code reaches RSD `master`.
 
-For each RSD release, check the English and Japanese guides against the tagged source, including the checkout commands, build options and test defaults. Point source links in the release documentation to the RSD tag. Tag the matching rsd-docs commit with the same version (for example, `v1.2.0`) so readers can select the release in both repositories.
+Use relative links for pages and images in rsd-docs. When asking readers to edit a file or run a command in a directory, give the path from the RSD source root, such as `Processor/Config/MicroArch.toml`. Link directly to source files when readers need to inspect an implementation or example.
+
+For a release, check the English and Japanese checkout instructions, build options and test defaults against the tagged RSD source. From the rsd-docs root, run the following command with the path to your RSD clone, the new release tag and the ref used by existing source links.
+
+```bash
+python3 tools/release_links.py /path/to/rsd NEW_TAG --from-ref OLD_REF
+```
+
+The command checks every linked file and directory in the new tag before rewriting any links. Omit `--from-ref OLD_REF` to check the links without writing. Review and commit the documentation changes, then tag that commit with the same release tag as RSD.
 
 ## Checks before merging
 

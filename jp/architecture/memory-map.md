@@ -1,6 +1,6 @@
 # メモリ・マップ
 
-以下は RSD の既定構成です．32 bit の論理アドレスを固定のルールで内部物理アドレスへ変換します．メモリマップの設定元は [MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MemoryMap.toml) です．
+以下は RSD の既定構成です．32 bit の論理アドレスを固定のルールで内部物理アドレスへ変換します．メモリマップの設定元は `Processor/Config/MemoryMap.toml` です．
 
 ## 設定と生成
 
