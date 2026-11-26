@@ -23,5 +23,5 @@ AXI4 とは，[ARM が策定するバス用通信プロトコル](http://infocen
 ARM 上で OS が動いていない場合は，これらのレジスタには物理アドレスを用いて直接アクセスします．  
 (例: Processor/Project/Vivado/TargetBoards/Zedboard/project\_src/run\_simple.c)\
 一方，OS が動作している場合は物理アドレスは使えないため，UIO (Userspace I/O) ドライバでインストールされた /dev/uio* デバイスファイルをopen，mmap することでアクセスします．  
-ローダーは `/sys/class/uio/uio*/name` で `rsd-pl2ps` と `rsd-ps2pl` を探し，対応するデバイスを開きます．番号はカーネルがデバイス検出時に割り当てます．
+ローダーは `/sys/class/uio/uio*/name` から 3 つのデバイスを探し，`rsd-ram` を介してゲストのイメージを書き込みます．`rsd-ps2pl` で RSD コアのリセットを制御し，`rsd-pl2ps` で UART 出力を読みます．番号はカーネルがデバイス検出時に割り当てます．
 Linux についての詳細は [ZYNQ の PS 向けの Linux](linux.md) を参照してください．

@@ -4,7 +4,7 @@ Verify the RTL first, then select a synthesis flow for the target. CAD tools req
 
 ## Zynq FPGA
 
-The current [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.inc.mk) identifies Zedboard as its supported board.
+The current [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Vivado.inc.mk) identifies Zedboard as its supported board.
 
 | Boot method | Instructions |
 | --- | --- |
@@ -22,4 +22,4 @@ See [Post-synthesis and timing simulation](post-synthesis-simulation.md). The fu
 
 ## ASIC synthesis (experimental)
 
-[Processor/Project/DesignCompiler](https://github.com/rsd-devel/rsd/tree/master/Processor/Project/DesignCompiler) contains a Makefile and `compile.tcl`. This experimental flow requires `RSD_DC_SHELL_BIN`, a license, and suitable cell-library configuration. Inspect the script's assumptions before using it; the simulation Dev Container alone is insufficient.
+[Processor/Project/DesignCompiler](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Project/DesignCompiler) contains a Makefile and `compile.tcl`. This experimental flow requires `RSD_DC_SHELL_BIN`, a license, and suitable cell-library configuration. Inspect the script's assumptions before using it; the simulation Dev Container alone is insufficient.

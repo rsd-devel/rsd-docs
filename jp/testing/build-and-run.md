@@ -1,6 +1,6 @@
 # 自作プログラムを Verilator でコンパイル・実行する
 
-[開発環境](../development/getting-started.md) を準備し，RSD 本体の `Processor/Src` で実行します．共通の [コンパイラ設定](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Makefile.inc) は RV32，`ilp32` ABI，picolibc の検索パスを選択します．
+[開発環境](../development/getting-started.md) を準備し，RSD 本体の `Processor/Src` で実行します．共通の [コンパイラ設定](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Makefile.inc) は RV32，`ilp32` ABI，picolibc の検索パスを選択します．
 
 ## 1. シミュレータと共有起動コードのビルド
 

@@ -67,4 +67,4 @@ make sim/kanata \
     MAX_TEST_INSTRUCTIONS=200000 MAX_NO_COMMIT_CYCLES=1000
 ```
 
-Verilator の `sim/dump` は `Register.csv`，`RSD.log`，`Kanata.log`，`simx.vcd` を生成します．[Verilator の説明](verilator.md) を参照してください．ModelSim/QuestaSim は `make SIM=modelsim sim/gui TEST_CODE=...`，Vivado は `make SIM=xsim sim/gui TEST_CODE=...` で GUI を起動できます．
+Verilator の `sim/dump` は `Register.csv`，`RSD.log`，`Kanata.log`，`simx.vcd` を生成します．[Verilator の説明](verilator.md) を参照してください．Fibonacci と利用するシミュレータをビルドした後，ModelSim/QuestaSim は `make SIM=modelsim sim/gui TEST_CODE=Verification/TestCode/C/Fibonacci`，XSim は `make SIM=xsim sim/gui` で GUI を起動します．XSim の既定プログラムは Fibonacci です．

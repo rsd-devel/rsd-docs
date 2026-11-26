@@ -1,10 +1,10 @@
 # 開発環境
 
-シミュレーション環境の定義は本体の [Dockerfile](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/Dockerfile)，[コンテナ設定](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/devcontainer.json) にあります．リンクは master の最新版を指します．
+シミュレーション環境の定義は本体の [Dockerfile](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/Dockerfile)，[コンテナ設定](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/devcontainer.json) にあります．この版のリンクは本体の v1.2.0 タグを指します．
 
 ## Dev Container
 
-本体の [README](https://github.com/rsd-devel/rsd/blob/master/README.md) は新しい Ubuntu 24.04 ホスト向けに次の導入手順を示しています．Docker が設定済みなら，そのインストールとグループ設定は省略してください．
+本体の [README](https://github.com/rsd-devel/rsd/blob/v1.2.0/README.md) は新しい Ubuntu 24.04 ホスト向けに次の導入手順を示しています．Docker が設定済みなら，そのインストールとグループ設定は省略してください．
 
 ```bash
 sudo apt update

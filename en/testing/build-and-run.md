@@ -1,6 +1,6 @@
 # Compile and run your program on RSD with Verilator
 
-Set up the [development environment](../development/getting-started.md). Run the commands below from `Processor/Src` in the RSD checkout. The shared [test compiler configuration](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Makefile.inc) selects RV32, the `ilp32` ABI, and picolibc search paths.
+Set up the [development environment](../development/getting-started.md). Run the commands below from `Processor/Src` in the RSD checkout. The shared [test compiler configuration](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Makefile.inc) selects RV32, the `ilp32` ABI, and picolibc search paths.
 
 ## 1. Build the simulator and shared startup code
 

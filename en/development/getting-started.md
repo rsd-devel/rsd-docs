@@ -1,8 +1,8 @@
 # Getting started
 
-This page builds the RSD simulator, runs the basic tests, and visualizes a pipeline trace. Run the commands in your RSD source checkout. See the [source README](https://github.com/rsd-devel/rsd/blob/develop/README.md) for the corresponding quick start.
+This page builds the RSD simulator, runs the basic tests, and visualizes a pipeline trace. Run the commands in your RSD source checkout. See the [source README](https://github.com/rsd-devel/rsd/blob/v1.2.0/README.md) for the corresponding quick start.
 
-Until v1.2.0 is released, run `git switch develop` in your source checkout before starting.
+To follow this guide with RSD v1.2.0, run `git switch --detach v1.2.0` in your RSD source checkout before building. When using RSD `master`, select `master` in rsd-docs as well.
 
 ## 1. Prepare the development environment
 

@@ -1,6 +1,6 @@
 # Environment variables
 
-The Dev Container supplies the variables below through [devcontainer.json](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/devcontainer.json). Manual installations should set them to match the host. `RSD_ROOT` points to the root of the RSD source checkout.
+The Dev Container supplies the variables below through [devcontainer.json](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/devcontainer.json). Manual installations should set them to match the host. `RSD_ROOT` points to the root of the RSD source checkout.
 
 ## Simulation and test builds
 
@@ -11,7 +11,7 @@ The Dev Container supplies the variables below through [devcontainer.json](https
 | `RSD_GCC_PREFIX` | Compiler filename prefix, including the final hyphen | `riscv64-unknown-elf-` |
 | `RSD_VERILATOR_BIN` | Verilator executable | `/usr/local/bin/verilator` |
 
-The compiler prefix may contain `riscv64` even when building RSD's RV32 programs. The [test compiler configuration](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Makefile.inc) explicitly selects the instruction set and `-mabi=ilp32`; it also requires picolibc support.
+The compiler prefix may contain `riscv64` even when building RSD's RV32 programs. The [test compiler configuration](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Makefile.inc) explicitly selects the instruction set and `-mabi=ilp32`; it also requires picolibc support.
 
 For example, on a manually configured host with the same tool locations, run from the RSD root:
 
@@ -36,4 +36,4 @@ Fetch external sources with the suite's `test/External/<suite>/fetch` target and
 
 For Synplify post-synthesis tests, put `synplify_premier_dp` on `PATH` or pass `SYNPLIFY=/path/to/executable` to make. For VCS timing tests, put `vcs` on `PATH` or pass `VCS=/path/to/vcs`. These are make variables; the tools and licenses need separate setup.
 
-[SetEnv.sh](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/SetEnv/SetEnv.sh) is the manual Bash setup template. Copy it to `Processor/Tools/SetEnv/MySetEnv.sh`, edit the paths, and run `source Processor/Tools/SetEnv/MySetEnv.sh` from the repository root. Make does not source this file automatically.
+[SetEnv.sh](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/SetEnv/SetEnv.sh) is the manual Bash setup template. Copy it to `Processor/Tools/SetEnv/MySetEnv.sh`, edit the paths, and run `source Processor/Tools/SetEnv/MySetEnv.sh` from the repository root. Make does not source this file automatically.

@@ -66,7 +66,7 @@
         input 
             code,
             dataInA,
-            dataInB,
+            dataInB
         );
             
         modport Port( 
@@ -75,14 +75,14 @@
         output
             code,
             dataInA,
-            dataInB,
+            dataInB
         );
     endinterface : IntALU_IF
     
     // ALU
     module IntALU( IntALU_IF.Self self );
     ...
-    endmodule : IntAdder
+    endmodule : IntALU
 
 
 ## その他ルール 

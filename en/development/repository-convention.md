@@ -8,6 +8,12 @@ Create a descriptively named branch from `develop` and open a pull request again
 
 Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages. Some historical commits predate this convention.
 
+## Documentation versions
+
+The `master` branch of rsd-docs describes the `master` branch of RSD. Keep instructions for a feature on a documentation branch until the corresponding code reaches RSD `master`.
+
+For each RSD release, check the English and Japanese guides against the tagged source, including the checkout commands, build options and test defaults. Point source links in the release documentation to the RSD tag. Tag the matching rsd-docs commit with the same version (for example, `v1.2.0`) so readers can select the release in both repositories.
+
 ## Checks before merging
 
 Run these commands from `Processor/Src` after configuring the tools:

@@ -11,7 +11,7 @@ make test/External/Coremark/run test/External/Coremark/Coremark_for_RV32I/run
 make test/External/Dhrystone/run
 ```
 
-取得先は `Coremark/External` と `Dhrystone/External` です．テストターゲットが HEX と必要な参照出力をビルドします．ビルドだけ行う場合は `test/External/Coremark/build` または `test/External/Dhrystone/build` を指定します．
+取得先は `Verification/TestCode/Coremark/External` と `Verification/TestCode/Dhrystone/External` です．テストターゲットが HEX と必要な参照出力をビルドします．ビルドだけ行う場合は `test/External/Coremark/build` または `test/External/Dhrystone/build` を指定します．
 
 | テスト | 設定と検証 |
 | --- | --- |
@@ -35,7 +35,7 @@ make bench/Dhrystone/run DHRYSTONE_BUILTINS=0
 | CoreMark/MHz | `iterations * 1000000 / cycles` |
 | DMIPS/MHz | `iterations * 1000000 / (cycles * 1757)` |
 
-計測区間はベンチマークのループで，起動・初期化・結果検証・UART 出力を除き，CSR 読み取りのオーバーヘッドを含みます．既定値は CoreMark が 1 iteration，Dhrystone が 2000 iterations です．Dhrystone は `DHRYSTONE_BENCH_ITERATIONS` で変更でき，長い実行では `MAX_TEST_INSTRUCTIONS` も調整します．計測コードは64 bitの `mcycle` カウンタの下位32 bitだけを読むため，計測区間は `2^32` サイクル未満にします．
+計測区間はベンチマークのループで，起動・初期化・結果検証・UART 出力を除き，CSR 読み取りのオーバーヘッドを含みます．CoreMark は RV32IM 版を1周実行し，`cfg.xml` の命令数上限は65万です．Dhrystone の既定は2,000周，上限200万命令です．Dhrystone の計測ターゲットでは `DHRYSTONE_BENCH_ITERATIONS` と `MAX_TEST_INSTRUCTIONS` でそれぞれ変更できます．計測コードは64 bitの `mcycle` カウンタの下位32 bitだけを読むため，計測区間は `2^32` サイクル未満にします．
 
 これらはリセット直後からの短時間シミュレーションによる推定値で，正式なスコア公表に必要な最低実行時間を満たすものではありません．比較時にはコンパイラ版，iteration 数，ビルド設定を記録してください．Dhrystone は既定で `DHRYSTONE_BUILTINS=1` とし，GCC による libc 関数の最適化と 8 byte の関数・ループアラインメントを使用します．この設定もスコアに影響します．
 

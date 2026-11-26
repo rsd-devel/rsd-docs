@@ -1,10 +1,10 @@
 # Development environment
 
-The simulation environment is defined in the RSD source repository's [Dockerfile](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/Dockerfile) and [container configuration](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/devcontainer.json). Source links point to the latest files on `master`.
+The simulation environment is defined in the RSD source repository's [Dockerfile](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/Dockerfile) and [container configuration](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/devcontainer.json). Source links in this edition point to the RSD v1.2.0 tag.
 
 ## Dev Container
 
-The [source README](https://github.com/rsd-devel/rsd/blob/master/README.md) provides this host setup for a fresh Ubuntu 24.04 installation. Skip Docker installation and group setup if already configured:
+The [source README](https://github.com/rsd-devel/rsd/blob/v1.2.0/README.md) provides this host setup for a fresh Ubuntu 24.04 installation. Skip Docker installation and group setup if already configured:
 
 ```bash
 sudo apt update

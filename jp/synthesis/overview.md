@@ -4,7 +4,7 @@ RTL の機能検証を済ませてから，対象に応じた合成フローを�
 
 ## Zynq FPGA
 
-現在の [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.inc.mk) が対応ボードとして案内するのは Zedboard です．
+現在の [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Vivado.inc.mk) が対応ボードとして案内するのは Zedboard です．
 
 | 起動方法 | 手順 |
 | --- | --- |
@@ -22,4 +22,4 @@ RTL の機能検証を済ませてから，対象に応じた合成フローを�
 
 ## ASIC（実験的）
 
-[Processor/Project/DesignCompiler](https://github.com/rsd-devel/rsd/tree/master/Processor/Project/DesignCompiler) に Makefile と `compile.tcl` があります．`RSD_DC_SHELL_BIN`，ライセンス，対象のセルライブラリなどを設定し，スクリプトの前提を確認して使う実験的なフローです．Dev Container のシミュレーション環境だけでは実行できません．
+[Processor/Project/DesignCompiler](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Project/DesignCompiler) に Makefile と `compile.tcl` があります．`RSD_DC_SHELL_BIN`，ライセンス，対象のセルライブラリなどを設定し，スクリプトの前提を確認して使う実験的なフローです．Dev Container のシミュレーション環境だけでは実行できません．

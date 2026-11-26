@@ -1,6 +1,6 @@
 # 環境変数
 
-Dev Container は [devcontainer.json](https://github.com/rsd-devel/rsd/blob/develop/.devcontainer/devcontainer.json) に従って設定します．手動導入ではホストの配置に合わせます．`RSD_ROOT` は RSD 本体ソースのルートです．
+Dev Container は [devcontainer.json](https://github.com/rsd-devel/rsd/blob/v1.2.0/.devcontainer/devcontainer.json) に従って設定します．手動導入ではホストの配置に合わせます．`RSD_ROOT` は RSD 本体ソースのルートです．
 
 ## シミュレーションとテストのビルド
 
@@ -11,7 +11,7 @@ Dev Container は [devcontainer.json](https://github.com/rsd-devel/rsd/blob/deve
 | `RSD_GCC_PREFIX` | 末尾のハイフンを含むコンパイラ名の接頭辞 | `riscv64-unknown-elf-` |
 | `RSD_VERILATOR_BIN` | Verilator 実行ファイル | `/usr/local/bin/verilator` |
 
-接頭辞に `riscv64` が含まれていても，テストの [コンパイラ設定](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Makefile.inc) が RV32 の命令セットと `-mabi=ilp32` を指定します．picolibc も必要です．同じ配置の手動環境なら，本体ルートで次のように設定します．
+接頭辞に `riscv64` が含まれていても，テストの [コンパイラ設定](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Makefile.inc) が RV32 の命令セットと `-mabi=ilp32` を指定します．picolibc も必要です．同じ配置の手動環境なら，本体ルートで次のように設定します．
 
 ```bash
 export RSD_GCC_PATH=/usr/bin
@@ -32,4 +32,4 @@ export RSD_VERILATOR_BIN=/usr/local/bin/verilator
 
 Synplify は `synplify_premier_dp` を `PATH` に置くか，make に `SYNPLIFY=/path/to/executable` を渡します．VCS は `vcs` を `PATH` に置くか `VCS=/path/to/vcs` を渡します．ツールとライセンスの設定は別途必要です．
 
-[SetEnv.sh](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/SetEnv/SetEnv.sh) は Bash 用の手動設定テンプレートです．`Processor/Tools/SetEnv/MySetEnv.sh` にコピーして編集し，本体ルートから `source Processor/Tools/SetEnv/MySetEnv.sh` を実行します．make はこのファイルを自動では読み込みません．
+[SetEnv.sh](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/SetEnv/SetEnv.sh) は Bash 用の手動設定テンプレートです．`Processor/Tools/SetEnv/MySetEnv.sh` にコピーして編集し，本体ルートから `source Processor/Tools/SetEnv/MySetEnv.sh` を実行します．make はこのファイルを自動では読み込みません．

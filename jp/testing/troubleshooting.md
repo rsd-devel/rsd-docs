@@ -10,7 +10,7 @@ RTL・テストベンチの更新後はシミュレータを再ビルドしま�
 
 ログの終了理由，無コミット期間，`serial.out.txt` を確認します．`test/.../run` は `cfg.xml`，`sim/run`・`sim/kanata`・`sim/dump` は make 変数から上限を読みます．後者は期待値を比較しません．[機能シミュレーション](simulation.md) を参照してください．
 
-外部テストの入力や依存関係がない場合は，対応する `test/External/<suite>/fetch`・`test/External/<suite>/setup` を実行します．ACT4 の選択範囲と FP 設定は [テスト・プログラム](program.md) で確認します．失敗時は各ケースの `result.log` と UART 出力を調べてください．
+外部テストのソースは `test/External/<suite>/fetch` で取得します．Zephyr と ACT4 は，その後に `test/External/Zephyr/setup` または `test/External/riscv-arch-test/setup` で依存関係を導入します．ACT4 の選択範囲と FP 設定は [テスト・プログラム](program.md) で確認します．ACT4 が失敗した場合は，該当ケースの `result.log` と UART 出力を調べてください．
 
 ## 合成・シミュレータ間の差
 

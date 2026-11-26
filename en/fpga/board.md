@@ -1,6 +1,6 @@
 # FPGA board
 
-The supported board is Zedboard. See [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.inc.mk) for build settings.
+The supported board is Zedboard. See [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Vivado.inc.mk) for build settings.
 
 ## Digilent Zedboard
 

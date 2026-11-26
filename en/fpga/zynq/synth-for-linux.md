@@ -91,7 +91,11 @@ Create `etc/resolv.conf` under the same directory with your DNS settings.
 nameserver 192.168.1.1
 ```
 
-In step 2, set `RSD_ROOTFS_OVERLAY` to the absolute path of your settings directory inside the container. For this example, append `RSD_ROOTFS_OVERLAY=/workspaces/rsd-open/Work/ZedBoard/settings` to the command.
+In step 2, set `RSD_ROOTFS_OVERLAY` to the absolute path of your settings directory inside the container. From the RSD repository root, build with this example overlay.
+
+```bash
+./RunContainer.sh sh -c 'make platform/zynq/build RSD_ROOTFS_OVERLAY="$PWD/Work/ZedBoard/settings"'
+```
 
 For a direct PC connection only, gateway and DNS can be omitted. Rebuilding applies updated files, but Buildroot retains old files when an overlay or files within it are removed. In that case, run `platform/zynq/clean` and rebuild. **clean also deletes generated SSH keys; save any keys you need first.**
 
@@ -151,7 +155,7 @@ make platform/zynq/reboot
 
 Deployment verifies the uploaded `boot.bin` against its SHA-256 and replaces it on the first SD partition. The new bitstream takes effect on reboot. `reboot` returns once it has requested the restart. When SSH is available again, run `make platform/zynq/program/run` on the host to test the HEX saved on the SD card.
 
-For changes to Linux, the device tree or initial settings, rebuild the affected components, regenerate the full SD image and follow the card-writing instructions above. Rebuild `bootbin/build` after changing U-Boot. Buildroot intermediates require the original build environment. Clean and rebuild after modifying kernel or bootloader sources or patches.
+For changes to Linux, the device tree or initial settings, rebuild the affected components, regenerate the full SD image and follow the card-writing instructions above. After changing U-Boot, run `make platform/zynq/bootbin/build RSD_VIVADO_ROOT=/path/to/Vivado/2019.2` on the host to repackage `boot.bin`. Buildroot intermediates require the original build environment. Clean and rebuild after modifying kernel or bootloader sources or patches.
 
 After updating the ZedBoard boot partition, we verified the new `boot.bin` by reading it back. Following a power cycle, Linux was reachable over SSH, and the complete HelloWorld and CoreMark outputs matched their references.
 

@@ -4,7 +4,7 @@ Constraints describe pin assignments, clock periods and placement requirements t
 
 ## Zedboard constraints
 
-See [zedboard.xdc](https://github.com/rsd-devel/rsd/blob/master/Processor/Project/Vivado/TargetBoards/Zedboard/project_src/zedboard.xdc) for pin constraints and the [Vivado scripts](https://github.com/rsd-devel/rsd/tree/master/Processor/Project/Vivado/TargetBoards/Zedboard/scripts/synthesis) for project generation and clock configuration.
+See [zedboard.xdc](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Project/Vivado/TargetBoards/Zedboard/project_src/zedboard.xdc) for pin constraints and the [Vivado scripts](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Project/Vivado/TargetBoards/Zedboard/scripts/synthesis) for project generation and clock configuration.
 
 ## Timing checks
 

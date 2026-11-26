@@ -68,7 +68,7 @@ IntAdder.sv
         input 
             code,
             dataInA,
-            dataInB,
+            dataInB
         );
             
         modport Port( 
@@ -77,14 +77,14 @@ IntAdder.sv
         output
             code,
             dataInA,
-            dataInB,
+            dataInB
         );
     endinterface : IntALU_IF
     
     // ALU
     module IntALU( IntALU_IF.Self self );
     ...
-    endmodule : IntAdder
+    endmodule : IntALU
 ```
 
 ## Other rules

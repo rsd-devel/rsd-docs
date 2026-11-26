@@ -2,7 +2,7 @@
 
 Zynq の ARM（PS）側で Linux を起動し，FPGA（PL）側の RSD にプログラムをロードします．初回は以下の手順で SD カードを作ります．ボードがすでに起動している場合は，[プログラムの実行](#ボードの起動とプログラムの実行) または [RTL の更新](#rtl-を変更したときの-fpga-更新) から始めてください．
 
-ゲストが使用する UART レジスタを FPGA 側と一致させるため，FPGA イメージとゲストの HEX は同じ RSD のチェックアウトからビルドしてください．v1.2.0 向けのブランチは[はじめてみよう](../../development/getting-started.md)を参照してください．
+ゲストが使用する UART レジスタを FPGA 側と一致させるため，FPGA イメージとゲストの HEX は同じ RSD のチェックアウトからビルドしてください．v1.2.0 のチェックアウト手順は[はじめてみよう](../../development/getting-started.md)を参照してください．
 
 ## SD イメージを作る
 
@@ -85,7 +85,11 @@ DNS は同じディレクトリの下の `etc/resolv.conf` に指定します．
 nameserver 192.168.1.1
 ```
 
-手順 2 では，選んだ設定用ディレクトリをコンテナ内の絶対パスで `RSD_ROOTFS_OVERLAY` に指定します．この例では `RSD_ROOTFS_OVERLAY=/workspaces/rsd-open/Work/ZedBoard/settings` をコマンドに追加します．
+手順 2 では，選んだ設定用ディレクトリをコンテナ内の絶対パスで `RSD_ROOTFS_OVERLAY` に指定します．この例では RSD リポジトリのルートから次のようにビルドします．
+
+```bash
+./RunContainer.sh sh -c 'make platform/zynq/build RSD_ROOTFS_OVERLAY="$PWD/Work/ZedBoard/settings"'
+```
 
 PC との直結だけなら gateway と DNS は省略できます．設定の更新は再ビルドで反映されますが，overlay を外したりファイルを削除した場合は Buildroot に古い内容が残るため，`platform/zynq/clean` 後の再ビルドが必要です．**clean は生成した SSH 鍵も削除するので，必要な鍵は先に保存してください．**
 
@@ -145,7 +149,7 @@ make platform/zynq/reboot
 
 `boot/deploy` は転送した `boot.bin` の SHA-256 を照合し，SD の第 1 パーティションの起動ファイルを置き換えます．再起動すると新しいビットストリームが有効になります．`reboot` は再起動要求を送ると終了します．SSH が復帰したら，ホストで `make platform/zynq/program/run` を実行すると，SD に保存した HEX で動作を確認できます．
 
-Linux・デバイスツリー・初期設定を変更した場合は，対象を再ビルドして SD イメージを再生成し，上記の手順でカードに書き込みます．U-Boot を変更した場合は `bootbin/build` もやり直します．Buildroot の中間ファイルは元のビルド環境で再利用します．カーネルやブートローダーのソース・パッチを変更した場合は clean 後に再ビルドしてください．
+Linux・デバイスツリー・初期設定を変更した場合は，対象を再ビルドして SD イメージを再生成し，上記の手順でカードに書き込みます．U-Boot を変更した場合は，ホストで `make platform/zynq/bootbin/build RSD_VIVADO_ROOT=/path/to/Vivado/2019.2` を実行して `boot.bin` を再生成します．Buildroot の中間ファイルは元のビルド環境で再利用します．カーネルやブートローダーのソース・パッチを変更した場合は clean 後に再ビルドしてください．
 
 ZedBoard 実機で更新した `boot.bin` を SD から読み戻して照合しました．電源再投入後に SSH で Linux に接続し，HelloWorld と CoreMark の全出力が期待値と一致することを確認しました．
 

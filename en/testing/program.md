@@ -74,7 +74,7 @@ cases. For benchmark scores, use the `bench/*/run` targets described below.
 
 ## FP test selection
 
-`enable_fp_pipe = true` in [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MicroArch.toml) enables
+`enable_fp_pipe = true` in [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml) enables
 the assembly and C FP tests in `test/level-1/run`. Setting it to `false` makes basic builds omit FP
 tests and use `rv32ima` instead of `rv32imaf`; explicitly requesting an FP
 test fails. When changing the configuration, clean and rebuild both the
@@ -83,7 +83,7 @@ then rebuild with the same `RSD_SRC_CFG` used to run the tests).
 
 ## CFI test selection
 
-`enable_zicfilp = true` in [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MicroArch.toml)
+`enable_zicfilp = true` in [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml)
 enables landing-pad protection and its `test/level-1/run` test. Set it to `false`
 to build without CFI; an explicit `test/Asm/LandingPad/run` request then fails.
 Clean and rebuild the simulator and basic test programs when changing this
@@ -100,7 +100,7 @@ make test/External/Coremark/run test/External/Coremark/Coremark_for_RV32I/run
 ```
 
 The fetch target checks out the public `eembc/coremark` repository at the commit
-pinned in [Coremark/Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Coremark/Makefile), under its `External/`
+pinned in [Coremark/Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Coremark/Makefile), under its `External/`
 directory. Builds use this checkout without network access.
 The test targets also build their HEX and serial references as needed.
 RV32IM and RV32I builds keep separate objects, including startup code, and select
@@ -125,7 +125,7 @@ make test/External/Dhrystone/run
 
 The fetch target checks out [SiFive's Dhrystone C 2.1](https://github.com/sifive/benchmark-dhrystone)
 under `Dhrystone/External/`, at the commit pinned in
-[Dhrystone/Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Dhrystone/Makefile). Builds do not need network access. The test target also builds its HEX as needed.
+[Dhrystone/Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Dhrystone/Makefile). Builds do not need network access. The test target also builds its HEX as needed.
 
 The RSD port runs 100 iterations, as the previous test did, using the downloaded
 source without patches. Dedicated `malloc`, `time`, and `printf` functions supply
@@ -205,7 +205,7 @@ make test/External/Zephyr/setup
 make test/External/Zephyr/run
 ```
 
-The [Zephyr Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/Zephyr/Makefile) pins public Zephyr 4.4.0 under
+The [Zephyr Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Zephyr/Makefile) pins public Zephyr 4.4.0 under
 `Zephyr/External/zephyr`; its Python environment and outputs stay under
 `Zephyr/Build/`. HelloWorld, Philosophers and Synchronization use the unmodified
 upstream samples, built with RSD's out-of-tree board/SoC, Ubuntu's RISC-V GCC
@@ -217,7 +217,7 @@ and `test/External/Zephyr/Synchronization/run`. Each runs through TestDriver to 
 budget with the normal no-commit limit. HelloWorld requires the exact UART greeting.
 Synchronization uses TestDriver's `--serial-prefix` to require the first four
 A/B/A/B greetings, allowing subsequent output and an incomplete final UART line.
-Philosophers uses [CheckOutput.py](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/Zephyr/CheckOutput.py) after TestDriver to check
+Philosophers uses [CheckOutput.py](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/Zephyr/CheckOutput.py) after TestDriver to check
 fork states and two eating/thinking rounds per philosopher after sleep/wakeup,
 allowing mutex priority inheritance and interleaved UART fragments. Its check
 ignores the final incomplete UART line and rejects kernel error messages.
@@ -238,7 +238,7 @@ make -j"$(nproc)"
 make -j16 test/External/riscv-arch-test/run
 ```
 
-The [ACT4 Makefile](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) pins the upstream commit, Bundler,
+The [ACT4 Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/riscv-arch-test/Makefile) pins the upstream commit, Bundler,
 and Sail release. Sources are checked out under `riscv-arch-test/External/`;
 its Python/Ruby environments, download caches, and checksum-verified Sail binary stay
 under `riscv-arch-test/Build/`. Setup uses Ubuntu's Python, Ruby and LLVM 22
@@ -338,8 +338,8 @@ or `test/ex/build`.
 
 ## Memory map
 
-[`Processor/Config/MemoryMap.toml`](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MemoryMap.toml) defines the RTL and shared software addresses.
-The [configuration generator](https://github.com/rsd-devel/rsd/blob/develop/Processor/Tools/ConfigGenerator/ConfigGenerator.py)
+[`Processor/Config/MemoryMap.toml`](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MemoryMap.toml) defines the RTL and shared software addresses.
+The [configuration generator](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/ConfigGenerator/ConfigGenerator.py)
 generates their definitions. From the repository root, the RTL output is
 `Processor/Src/Config/MemoryMapTypes.sv`; the software outputs are
 `rsd-memory-map.h`, `rsd-memory-map.ld`, and `rsd-memory-map.mk` under

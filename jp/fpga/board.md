@@ -1,6 +1,6 @@
 # FPGAボード
 
-対応ボードは Zedboard です．ビルド設定は [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.inc.mk) を参照してください．
+対応ボードは Zedboard です．ビルド設定は [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Vivado.inc.mk) を参照してください．
 
 ## Digilent Zedboard 
 

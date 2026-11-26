@@ -4,7 +4,7 @@ RSD は 32 bit RISC-V のアウト・オブ・オーダ実行スーパースカ�
 
 ## 構成と設定箇所
 
-数値パラメータと CPU マクロの設定元は [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MicroArch.toml) です．生成される `Config/MicroArchConf.sv` が数値定義，`Makefiles/MicroArch.inc.mk` がシミュレーション用の既定マクロ，`Config/MicroArchMacros.svh` が合成用マクロを供給します．派生パラメータは `Config/MicroArchConf.template.sv`，ツール・ボード固有の設定は `Config/SynthesisMacros.sv` にあります．
+数値パラメータと CPU マクロの設定元は [MicroArch.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MicroArch.toml) です．生成される `Config/MicroArchConf.sv` が数値定義，`Makefiles/MicroArch.inc.mk` がシミュレーション用の既定マクロ，`Config/MicroArchMacros.svh` が合成用マクロを供給します．派生パラメータは `Config/MicroArchConf.template.sv`，ツール・ボード固有の設定は `Config/SynthesisMacros.sv` にあります．
 
 | 項目 | 既定値 |
 | --- | --- |
@@ -21,21 +21,21 @@ RSD は 32 bit RISC-V のアウト・オブ・オーダ実行スーパースカ�
 
 ## ISA と検証範囲
 
-整数 I/M/A，CSR，FENCE.I の処理が実装され，FP は `RSD_MARCH_FP_PIPE` で切り替えます．既定では FP，`RSD_ENABLE_ZBA`，`RSD_ENABLE_ZICOND`，`RSD_ENABLE_ZICFILP` が有効です．命令のデコードは [Decoder.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Decoder/Decoder.sv) を参照してください．命令アラインメントは 32 bit（IALIGN=32）です．
+整数 I/M/A，CSR，FENCE.I の処理が実装され，FP は `RSD_MARCH_FP_PIPE` で切り替えます．既定では FP，`RSD_ENABLE_ZBA`，`RSD_ENABLE_ZICOND`，`RSD_ENABLE_ZICFILP` が有効です．命令のデコードは [Decoder.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Decoder/Decoder.sv) を参照してください．命令アラインメントは 32 bit（IALIGN=32）です．
 
 ACT4 は既定構成で整数・特権命令 90 ケースと F の 281 ケースを対象とします．F は FP 有効時に既定で含まれます．I/M/A，Zba，Zicond，CSR，FENCE.I，例外，M/S/U モードからの割り込み・委譲・PLIC 経由の外部割り込みを検証します．FP は全 5 丸めモードと例外フラグを検査し，基本 CSR テストが FS/SD・FP アクセス制御・dirty tracking を補います．S モードは Bare のみで，ページングと完全な S モード適合性は対象外です．
 
-実行方法と範囲は [テスト・プログラム](../testing/program.md) と本体の [ACT4 の説明](../testing/program.md#riscv-arch-testact4) を参照してください．この 文書更新ではシミュレーションを再実行していません．
+実行方法と範囲は [テスト・プログラム](../testing/program.md) と[ACT4 の説明](../testing/program.md#riscv-arch-testact4) を参照してください．この文書更新ではシミュレーションを再実行していません．
 
 ## ゼロレジスタ
 
-整数の x0 への書き込みは Decoder の `opInfo.writeReg` を落として抑止します．[RegisterFile.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/RegisterFile/RegisterFile.sv) はリセット時に物理レジスタをゼロで初期化します．FP の f0 は通常の書き込み可能なレジスタです．
+整数の x0 への書き込みは Decoder の `opInfo.writeReg` を落として抑止します．[RegisterFile.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/RegisterFile/RegisterFile.sv) はリセット時に物理レジスタをゼロで初期化します．FP の f0 は通常の書き込み可能なレジスタです．
 
-[RMT.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/RenameLogic/RMT.sv) の初期割り当ては，整数論理レジスタ番号に `SCALAR_FREE_LIST_ENTRY_NUM` を加えた物理レジスタ番号です．既定では `64 - 32 = 32` なので，x0 は物理レジスタ 32 番を読みます．書き込み先の再割り当てが行われないため，このレジスタはゼロを保持します．ソース内の古い「0 番」というコメントではなく，RMT の初期化式に従ってください．
+[RMT.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/RenameLogic/RMT.sv) の初期割り当ては，整数論理レジスタ番号に `SCALAR_FREE_LIST_ENTRY_NUM` を加えた物理レジスタ番号です．既定では `64 - 32 = 32` なので，x0 は物理レジスタ 32 番を読みます．書き込み先の再割り当てが行われないため，このレジスタはゼロを保持します．ソース内の古い「0 番」というコメントではなく，RMT の初期化式に従ってください．
 
 ## 例外と割り込み
 
-デコード，整数実行，メモリ実行などで検出された例外は `execState` と関連する PC・アドレスで伝えられます．ロード・ストアに加え LR/SC・AMO のアドレス検査もあるため，旧来のロード・ストアだけのコード断片では全経路を説明できません．実装は [MemoryTagAccessStage.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv) などを参照してください．
+デコード，整数実行，メモリ実行などで検出された例外は `execState` と関連する PC・アドレスで伝えられます．ロード・ストアに加え LR/SC・AMO のアドレス検査もあるため，旧来のロード・ストアだけのコード断片では全経路を説明できません．実装は [MemoryTagAccessStage.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Pipeline/MemoryBackEnd/MemoryTagAccessStage.sv) などを参照してください．
 
 フォールトの基本的な流れは次のとおりです．
 
@@ -44,6 +44,6 @@ ACT4 は既定構成で整数・特権命令 90 ケースと F の 281 ケース
 3. RecoveryManager が例外命令を含む後続命令を取り消し，CSR ユニットへ `triggerExcpt` を送る．
 4. CSR ユニットが特権状態・委譲設定に応じて CSR を更新し，例外ハンドラへの遷移先を返す．
 
-[CSR_Unit.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Privileged/CSR_Unit.sv) は不正命令の `mtval` を 0 とします．命令ビット列を保持する方式ではありません．IALIGN=32 のため，`mepc` の読み取りと MRET が参照するアドレスの下位 2 bit はマスクされます．
+[CSR_Unit.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Privileged/CSR_Unit.sv) は不正命令の `mtval` を 0 とします．命令ビット列を保持する方式ではありません．IALIGN=32 のため，`mepc` の読み取りと MRET が参照するアドレスの下位 2 bit はマスクされます．
 
 割り込みは `triggerInterrupt` を使います．タイマー・ソフトウェア割り込みの CLINT，外部割り込みの PLIC と，アドレス配置は [メモリ・マップ](memory-map.md) を参照してください．

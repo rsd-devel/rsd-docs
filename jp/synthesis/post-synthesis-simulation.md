@@ -54,9 +54,9 @@ HEX と合成時にコピーした内容が一致することが検査されま�
 
 ## その他のターゲットとソース追加
 
-Vivado のプロジェクトを使う `synth/vivado/post-synthesis/timing/test`・`synth/vivado/post-implementation/test`・`synth/vivado/post-implementation/timing/test` と GUI・Kanata 用ターゲットも残っています．上記のバッチテストとは出力先やオプションが異なるため，[Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/Vivado.mk) を参照してください．他のフローは [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/Synplify.mk) と [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/VCS.mk) にあります．
+Vivado のプロジェクトを使う `synth/vivado/post-synthesis/timing/test`・`synth/vivado/post-implementation/test`・`synth/vivado/post-implementation/timing/test` と GUI・Kanata 用ターゲットも残っています．上記のバッチテストとは出力先やオプションが異なるため，[Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Vivado.mk) を参照してください．他のフローは [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Synplify.mk) と [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/VCS.mk) にあります．
 
-RTL の追加時は [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/CoreSources.inc.mk) の一覧を更新します．
+RTL の追加時は [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/CoreSources.inc.mk) の一覧を更新します．
 
 | 種類 | 変数 |
 | --- | --- |
@@ -66,6 +66,6 @@ RTL の追加時は [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/m
 | シミュレーション専用テストベンチ | `TEST_MODULES` |
 | IP パッケージ用ヘッダ | `HEADERS` |
 
-別途 Synplify のボード用プロジェクトを使用する場合は，そのプロジェクトも更新します．
+Vivado はこれらの一覧を使って検証用ネットリストを生成します．Synplify はボード合成と合成後テストの両方で `Processor/Project/Synplify/ver2017-03.prj` のソース一覧を読みます．合成対象のソースを追加するときは，このプロジェクトにもパッケージ，インターフェース，モジュールの順で登録します．
 
 CPU 構成は `Processor/Config/MicroArch.toml` の `overrides.synthesis` を含む合成設定から生成します．合成後テストベンチも `RSD_SYNTHESIS_SRC_CFG` を使います．`RSD_SRC_CFG` のコマンドライン指定だけでは合成設定を変更できません．

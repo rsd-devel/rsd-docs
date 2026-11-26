@@ -1,6 +1,6 @@
 # Unit tests
 
-Each RTL module has a dedicated testbench. The default simulator is Verilator in the Dev Container. For ModelSim/QuestaSim, install it separately, set `RSD_QUESTASIM_PATH`, and select `SIM=modelsim`.
+The RTL units listed below have dedicated testbenches. The default simulator is Verilator in the Dev Container. For ModelSim/QuestaSim, install it separately, set `RSD_QUESTASIM_PATH`, and select `SIM=modelsim`.
 
 ## Running tests
 
@@ -31,7 +31,7 @@ The default FP-enabled configuration runs 16 tests. The aggregate target generat
 - `InterruptController`
 - `FPDivSqrtUnit` (FP-enabled configurations only)
 
-Select a unit with `test/unit/<name>/run`. Definitions are in the [Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefile); testbenches are in [Verification/UnitTest](https://github.com/rsd-devel/rsd/tree/master/Processor/Src/Verification/UnitTest).
+Select a unit with `test/unit/<name>/run`. Definitions are in the [Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefile); testbenches are in [Verification/UnitTest](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Src/Verification/UnitTest).
 
 ## Other test groups
 

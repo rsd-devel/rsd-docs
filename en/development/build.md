@@ -77,13 +77,12 @@ builds hardware on the host. SD writes also run on the host. See the
 - `Vivado.inc.mk`: shared board implementation rules for the bitstream, XSA and FSBL. `EDA.inc.mk` forwards Linux and SD image targets to `Processor/Project/Vivado/ARM_Linux/Makefile`.
 
 Tool-specific options and output directories stay in their backends. Test
-programs and individual unit tests retain local Makefiles. Build products stay
-under `Processor/Project`; generated configuration definitions are kept beside
+programs and individual unit tests retain local Makefiles. Simulator builds go under `Processor/Project`. Test programs write their HEX images under `Processor/Src/Verification/TestCode`. Generated configuration definitions are kept beside
 the sources and checked into Git for external consumers. Verilator units use `Verilator/UnitTest/<unit>`;
 ModelSim units use `ModelSim/<unit>`.
 
 The dev container supplies environment settings automatically. For manual setup,
-copy and edit [SetEnv.sh](https://github.com/rsd-devel/rsd/blob/master/Processor/Tools/SetEnv/SetEnv.sh), then source `MySetEnv.sh`.
+copy and edit [SetEnv.sh](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/SetEnv/SetEnv.sh), then source `MySetEnv.sh`.
 `RSD_ROOT` always comes from the Makefile location and is exported to child
 processes; it needs no manual setting. Program builds require `RSD_GCC_PATH` and `RSD_GCC_PREFIX`. ModelSim/Questa requires `RSD_QUESTASIM_PATH`, and Vivado/XSim
 requires `RSD_VIVADO_ROOT`. Verilator, Synplify and VCS can use commands from PATH.

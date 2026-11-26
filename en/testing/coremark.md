@@ -11,7 +11,7 @@ make test/External/Coremark/run test/External/Coremark/Coremark_for_RV32I/run
 make test/External/Dhrystone/run
 ```
 
-Sources are stored in `Coremark/External` and `Dhrystone/External`. Test targets build HEX files and reference output as needed. Use `test/External/Coremark/build` or `test/External/Dhrystone/build` to build only.
+Sources are stored in `Verification/TestCode/Coremark/External` and `Verification/TestCode/Dhrystone/External`. Test targets build HEX files and reference output as needed. Use `test/External/Coremark/build` or `test/External/Dhrystone/build` to build only.
 
 | Test | Configuration and checks |
 | --- | --- |
@@ -35,7 +35,7 @@ make bench/Dhrystone/run DHRYSTONE_BUILTINS=0
 | CoreMark/MHz | `iterations * 1000000 / cycles` |
 | DMIPS/MHz | `iterations * 1000000 / (cycles * 1757)` |
 
-The measured interval covers the benchmark loop, excluding startup, initialization, validation and UART output, but including CSR-read overhead. Defaults are one CoreMark iteration and 2000 Dhrystone iterations. Adjust `DHRYSTONE_BENCH_ITERATIONS` and, for longer runs, `MAX_TEST_INSTRUCTIONS`. Keep the interval below `2^32` cycles because the measurement code reads only the lower 32 bits of the 64-bit `mcycle` counter.
+The measured interval covers the benchmark loop, excluding startup, initialization, validation and UART output, but including CSR-read overhead. CoreMark runs one RV32IM iteration with the 650,000-instruction limit from its `cfg.xml`. Dhrystone defaults to 2,000 iterations and a 2,000,000-instruction limit. Its benchmark target accepts `DHRYSTONE_BENCH_ITERATIONS` and `MAX_TEST_INSTRUCTIONS` to change these values. Keep the interval below `2^32` cycles because the measurement code reads only the lower 32 bits of the 64-bit `mcycle` counter.
 
 These short simulations from reset provide estimates, not runs meeting the minimum duration for official score publication. Record compiler version, iterations and build settings. Dhrystone defaults to `DHRYSTONE_BUILTINS=1`, allowing GCC libc optimizations and using 8-byte function/loop alignment; this affects scores.
 

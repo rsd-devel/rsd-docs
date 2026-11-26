@@ -1,6 +1,6 @@
 # 基本的な合成手順
 
-以下には Vivado/Vitis 2019.2 の GUI 操作が含まれます．現在のボード用 Makefile は Zedboard を対象としており，このページの実機操作は今回再検証していません．現在のビルド設定は [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/Vivado.inc.mk) を参照してください．
+以下には Vivado/Vitis 2019.2 の GUI 操作が含まれます．現在のボード用 Makefile は Zedboard を対象としており，このページの実機操作は今回再検証していません．現在のビルド設定は [Vivado.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Vivado.inc.mk) を参照してください．
 
 * ZYNQ 上の ARM でベアメタルの RSD 起動用プログラムを起動し，そこから RSD を起動する方法を説明する
 
@@ -50,15 +50,15 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
     ```bash
     # どちらの合成フローでも，Vivado のインストール先を指定する
     export RSD_VIVADO_ROOT=/path/to/Xilinx/Vivado/2019.2
-    # Synplify で合成を行ったあとは必ず一度 clean しておく
-    make synth/vivado/clean
+    # Vivado と Synplify を切り替えると，Make が IP を再登録する
     # 合成
     make synth/vivado/build
     ```
 * 下記のファイルが生成されていれば成功
     ```
-    $(RSD\_ROOT)/Processor/Project/Vivado/TargetBoards/Zedboard/rsd/rsd.runs/impl_1/design_1_wrapper.bit
+    Processor/Project/Vivado/TargetBoards/Zedboard/rsd/rsd.runs/impl_1/design_1_wrapper.bit
     ```
+* 同じビルドで `Processor/Project/Vivado/TargetBoards/Zedboard/rsd/design_1_wrapper.xsa` も生成される
 
 ### 3.2. Synplify と Vivadoを使う場合の合成方法
 
@@ -72,14 +72,13 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
     2. [Project Files]内の"$(TARGET\_BOARD)"を選択して[Run]でコンパイル/合成
 * B. Build from scratch  
     1. プロジェクトを作成し、ソースファイルを追加
-        * .svファイルを追加(Src/Verification/以下は除く)
+        * `Processor/Project/Synplify/ver2017-03.prj` と同じ合成ソースとインクルードパスを登録する．パッケージ，インターフェース，モジュールの読み込み順を保つ
     2. Implementation Options を設定
         * [FPGAの型番情報](../board.md)を指定
         * トップモジュールにMain\_Zynq\_Wrapperを指定。モジュール・パラメータも適宜指定
         * Implementation Results タブでImplementation Nameに"$(TARGET\_BOARD)"と設定
         * Implementation Results タブでResult Base Nameに"rsd"と設定
-    3. 画面下部のTCLコンソールで"set\_option -hdl\_define -set 適切な定義"を入力して適切なhdl\_defineを設定  
-        * `Processor/Src/Config/SynthesisMacros.sv` の現在の定義に合わせる．Zedboard 用には `RSD_SYNTHESIS_ZEDBOARD` を使う
+    3. ボード用の実装では Tcl コンソールで `set_option -hdl_define -set "RSD_SYNTHESIS_ZEDBOARD RSD_SYNTHESIS_SYNPLIFY"` を実行する．CPU 設定は `Processor/Config/MicroArch.toml` から生成した合成設定を使う
     4. [Project Files]内の"$(TARGET\_BOARD)"を選択して[Run]でコンパイル/合成
 
 
@@ -88,8 +87,6 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
 1. "$(RSD_ROOT)/Processor/Project/Synplify/$(TARGET\_BOARD)/"に RSD のネットリスト (rsd.vm) ができていることを確認する．
 2. $(RSD\_ROOT)/Processor/Src へ移動し，下記コマンドで Vivado プロジェクトを生成し開く
     ```bash
-    # Vivado のみで合成をしていた場合は必ず vivado-clean を一度実行する
-    make synth/synplify/clean
     make synth/synplify/open
     ```
 3. 左部[Flow Navigator]→[Program and Debug]→[Generate Bitstream]をクリックしてbitstreamファイル(*.bit)を作成
@@ -117,7 +114,7 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
     ```
     <Vivado installation dir>/bin/vivado
     ```
-4. ビットストリームをエクスポート
+4. GUI でビルドした場合はビットストリームを含む XSA をエクスポートする．3.1 のビルドでは `design_1_wrapper.xsa` を生成済み
     * プロジェクトファイルを開く
     * [メニューバー]->[File]->[Export]->[Export Hardware] をクリック
     * [Include bitstream] にチェックを入れて [OK]
@@ -127,20 +124,16 @@ Vivado のみで合成を行う方法と，Synplify を使って論理合成を�
     * ベアメタルで動かすソフトウェアの雛形を生成させる
     * [メニューバー]->[File]->[New]->[Application Project]をクリック
     * [Project name] を適当に設定して [Next] をクリック
-    * デバイスのテンプレートで zed を選択
+    * エクスポートした `design_1_wrapper.xsa` からプラットフォームを作り，`ps7_cortexa9_0` の standalone ドメインを選択
     * [Available Templates] で [Hello World] を選択して [Finish] をクリック
 7. ソフトウェア書き換え
     * 完成したプロジェクトの "src" 内にある "helloworld.c" の中身を "$(RSD\_ROOT)/Processor/Project/Vivado/TargetBoards/Zedboard/project\_src/run_simple.c" の中身に書きかえる
     * run_simple.c では programinit() 関数内に設定したプログラムを RSD に送信して実行し，結果を UART ポートに出力する
 8. ビルド
     * 作成したプロジェクト上で右クリック->[Build Project]をクリック
-9. 作成したプロジェクト上で右クリック->[Run As]->[1 Launch on Hardware (System Debugger)]をクリック
-    * "-- Initialization started" と出るのを待つ
-10. FPGA に回路を焼く
+9. FPGA に回路を焼く
     * Vitis 上で[メニューバー]->[Xilinx]->[Program FPGA]をクリック
     * ビットストリームが選択されていない場合，$(RSD\_ROOT)/Processor/Project/Vivado/TargetBoards/Zedboard/rsd/rsd.runs/impl_1/design_1_wrapper.bit を選択
-11. UARTからプログラムの出力が表示されるはず
+10. 作成したプロジェクト上で右クリック→[Run As]→[1 Launch on Hardware (System Debugger)] を選択する．UART に `-- Initialization started`，続いてプログラムの出力が表示されることを確認する
 
-* 備考
-    * ２回目以降は 8-10 だけを実行すれば良い
-    * うまく行かない場合，programinit 関数内の文字列の末尾に元の文字列の倍程度の長さの文字列を追加するとなぜか動くようになることがある
+同梱の `run_simple.c` は，`programinit()` の文字列から固定長 64 KiB（16進数 131,072 桁）のイメージを読み取ります．ゲストを変更するときは所定の長さのイメージを用意するか，HEX ファイルから長さを読み取る [PS Linux のローダー](synth-for-linux.md) を使います．

@@ -1,10 +1,10 @@
 # Memory map
 
-The default configuration translates 32-bit logical addresses into internal physical addresses using fixed rules defined in [MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/develop/Processor/Config/MemoryMap.toml).
+The default configuration translates 32-bit logical addresses into internal physical addresses using fixed rules defined in [MemoryMap.toml](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Config/MemoryMap.toml).
 
 ## Configuration and generation
 
-[ConfigGenerator.py](https://github.com/rsd-devel/rsd/blob/develop/Processor/Tools/ConfigGenerator/ConfigGenerator.py) reads `Processor/Config/MemoryMap.toml` and generates:
+[ConfigGenerator.py](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Tools/ConfigGenerator/ConfigGenerator.py) reads `Processor/Config/MemoryMap.toml` and generates:
 
 - RTL: `Processor/Src/Config/MemoryMapTypes.sv`, using `MemoryMapTypes.template.sv` in the same directory.
 - C/assembly: `Processor/Src/Verification/TestCode/rsd-memory-map.h`.
@@ -23,7 +23,7 @@ This generates both memory-map and microarchitecture definitions. Select one gro
 
 PC compression is disabled by default. `memory_map.pc.width = 19` is ignored while disabled; compressing the current map requires at least 20 bits. The generator rejects incompatible settings.
 
-Region `size` is in bytes, and all `END` constants include the last valid address. `translation: low_bits` adds low logical-address bits to `physical_base`; `relative` adds `logical_address - logical_base`. Software `RSD_*_PHYSICAL_BASE` is the translated first address, which need not equal the SV additive base `PHY_ADDR_*_BASE`.
+Region `size` is in bytes, and all `END` constants include the last valid address. `translation = "low_bits"` adds low logical-address bits to `physical_base`; `relative` adds `logical_address - logical_base`. Software `RSD_*_PHYSICAL_BASE` is the translated first address, which need not equal the SV additive base `PHY_ADDR_*_BASE`.
 
 ## Addresses and attributes
 
@@ -56,7 +56,7 @@ The serial region covers `0x40002000–0x40002007`.
 
 Generated `GetMemoryMapType` and `ToPhyAddrFromLogical` implement classification and translation. Undefined logical addresses yield `MMT_ILLEGAL` and cause access faults in the pipeline.
 
-Backing memory covers the highest translated memory address, including holes. Default `MEMORY_MAP_BYTE_SIZE` is `0x60000` (384 KiB); IO regions do not contribute. Uncacheable RAM is separate storage, not an alias of normal RAM.
+The mapped memory span, including holes, is `MEMORY_MAP_BYTE_SIZE` (default `0x60000`, or 384 KiB). IO regions are excluded. For this map the RTL simulator allocates 32 MiB, and synthesis with internal memory allocates 512 KiB. Uncacheable RAM is separate storage, not an alias of normal RAM.
 
 ## MMIO ordering
 
@@ -64,7 +64,7 @@ RSD treats all regions marked `type = "io"` as strongly ordered. Ordinary loads 
 
 For each UART byte, poll `RSD_SERIAL_STATUS` until bit 0 clears, then write `RSD_SERIAL_OUTPUT`. Reading STATUS leaves the FIFO intact. The next poll observes the preceding write, so this sequence needs no per-byte `fence`. If an interrupt handler can also write the UART, protect the poll and write together so both writers cannot claim the same free slot.
 
-The testbench stops when `PC_GOAL` retires. The common startup code executes one `fence iorw, iorw` on exit so the final UART store reaches the FIFO before the test stops. The receiver may still have bytes to read.
+With PC-based termination enabled, the testbench stops when the low 16 bits of the last committed PC match those of `PC_GOAL`. The common startup code executes one `fence iorw, iorw` on exit so the final UART store reaches the FIFO before the test stops. The receiver may still have bytes to read.
 
 ## Interrupt controllers
 
@@ -79,12 +79,12 @@ The testbench stops when `PC_GOAL` retires. The common startup code executes one
 | PLIC priority threshold base | `0xC0200000` |
 | PLIC claim/complete base | `0xC0200004` |
 
-PLIC entries are register-group base addresses, not declarations that every address in each region is valid. See [IO_Unit.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/IO/IO_Unit.sv) and [PLIC_Unit.sv](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/IO/PLIC_Unit.sv).
+PLIC entries are register-group base addresses, not declarations that every address in each region is valid. See [IO_Unit.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/IO/IO_Unit.sv) and [PLIC_Unit.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/IO/PLIC_Unit.sv).
 
 ## Software placement
 
-Hardware address ranges and program linker ranges differ. The basic C [rsd-ld.script](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/rsd-ld.script) uses generated base addresses and limits each ROM/RAM region to `MIN(region size, 32 KiB)`. Defaults remain 32 KiB ROM at `0x00001000` and 32 KiB RAM at `0x80000000`. [rsd-crt.s](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Verification/TestCode/rsd-crt.s) sets the stack to `RSD_RAM_BASE + 0x20000` (default `0x80020000`), then invokes data copying and BSS initialization in `rsd-loader.c` before `main`.
+Hardware address ranges and program linker ranges differ. The basic C [rsd-ld.script](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/rsd-ld.script) uses generated base addresses and limits each ROM/RAM region to `MIN(region size, 32 KiB)`. Defaults remain 32 KiB ROM at `0x00001000` and 32 KiB RAM at `0x80000000`. [rsd-crt.s](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/rsd-crt.s) sets the stack to `RSD_RAM_BASE + 0x20000` (default `0x80020000`), then invokes data copying and BSS initialization in `rsd-loader.c` before `main`.
 
-Zephyr uses its own board/SoC definitions. ACT4's [link.ld](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Verification/TestCode/riscv-arch-test/link.ld) places test code in RAM from `RSD_RAM_BASE + 0x10000` (default `0x80010000`); not all `.text` runs in ROM. See [Binaries](binary.md) for HEX placement and startup.
+Zephyr uses its own board/SoC definitions. ACT4's [link.ld](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Verification/TestCode/riscv-arch-test/link.ld) places test code in RAM from `RSD_RAM_BASE + 0x10000` (default `0x80010000`); not all `.text` runs in ROM. See [Binaries](binary.md) for HEX placement and startup.
 
 Startup, UART helpers, linker scripts, ACT4 and Zephyr use shared constants. This does not automatically relocate linker section layouts and program limits, directed assembly addresses/expected values or ACT4 Sail-specific device settings. Review these when changing the map.

@@ -67,4 +67,4 @@ make sim/kanata \
     MAX_TEST_INSTRUCTIONS=200000 MAX_NO_COMMIT_CYCLES=1000
 ```
 
-Verilator's `sim/dump` generates `Register.csv`, `RSD.log`, `Kanata.log` and `simx.vcd`; see [Verilator](verilator.md). Start a GUI with `make SIM=modelsim sim/gui TEST_CODE=...` or `make SIM=xsim sim/gui TEST_CODE=...`.
+Verilator's `sim/dump` generates `Register.csv`, `RSD.log`, `Kanata.log` and `simx.vcd`; see [Verilator](verilator.md). With Fibonacci built, start the ModelSim/QuestaSim GUI with `make SIM=modelsim sim/gui TEST_CODE=Verification/TestCode/C/Fibonacci`, or the XSim GUI with `make SIM=xsim sim/gui` (Fibonacci is its default). Build the selected simulator first.

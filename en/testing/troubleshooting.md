@@ -10,7 +10,7 @@ Rebuild the simulator after changing RTL or testbench code. When changing FP or 
 
 Inspect the termination reason, no-commit interval and `serial.out.txt`. The `test/.../run` targets read limits from `cfg.xml`; `sim/run`, `sim/kanata` and `sim/dump` use make variables and do not compare expected results. See [Functional simulation](simulation.md).
 
-Fetch missing external test inputs and dependencies with the corresponding `test/External/<suite>/fetch` and `test/External/<suite>/setup` targets. Check ACT4 selection and FP configuration in [Test programs](program.md). For failures, inspect each case's `result.log` and UART output.
+Fetch missing external test sources with `test/External/<suite>/fetch`. For Zephyr and ACT4, also run `test/External/Zephyr/setup` or `test/External/riscv-arch-test/setup` to install dependencies. Check ACT4 selection and FP configuration in [Test programs](program.md). For an ACT4 failure, inspect the case's `result.log` and UART output.
 
 ## Synthesis and simulator differences
 

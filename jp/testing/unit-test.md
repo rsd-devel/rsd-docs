@@ -1,6 +1,6 @@
 # 単体テスト
 
-RTL のモジュールごとにテストベンチを実行します．既定では Dev Container 内の Verilator を使用します．ModelSim/QuestaSim を使う場合は別途インストールし，`RSD_QUESTASIM_PATH` を設定して `SIM=modelsim` を指定します．
+以下の RTL モジュールを専用のテストベンチで検証します．既定では Dev Container 内の Verilator を使用します．ModelSim/QuestaSim を使う場合は別途インストールし，`RSD_QUESTASIM_PATH` を設定して `SIM=modelsim` を指定します．
 
 ## 実行
 
@@ -31,7 +31,7 @@ make SIM=modelsim test/unit/run
 - `InterruptController`
 - `FPDivSqrtUnit`（FP 有効時のみ）
 
-個別指定は `test/unit/<名前>/run` です．定義は本体の [Makefile](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefile)，テストベンチは [Verification/UnitTest](https://github.com/rsd-devel/rsd/tree/master/Processor/Src/Verification/UnitTest) にあります．
+個別指定は `test/unit/<名前>/run` です．定義は本体の [Makefile](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefile)，テストベンチは [Verification/UnitTest](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Src/Verification/UnitTest) にあります．
 
 ## 他のテストとの関係
 

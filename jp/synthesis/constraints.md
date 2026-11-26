@@ -4,7 +4,7 @@
 
 ## Zedboard の制約
 
-ピン制約は [zedboard.xdc](https://github.com/rsd-devel/rsd/blob/master/Processor/Project/Vivado/TargetBoards/Zedboard/project_src/zedboard.xdc)，プロジェクト生成とクロック設定は [Vivado スクリプト](https://github.com/rsd-devel/rsd/tree/master/Processor/Project/Vivado/TargetBoards/Zedboard/scripts/synthesis) を参照してください．
+ピン制約は [zedboard.xdc](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Project/Vivado/TargetBoards/Zedboard/project_src/zedboard.xdc)，プロジェクト生成とクロック設定は [Vivado スクリプト](https://github.com/rsd-devel/rsd/tree/v1.2.0/Processor/Project/Vivado/TargetBoards/Zedboard/scripts/synthesis) を参照してください．
 
 ## タイミングの確認
 

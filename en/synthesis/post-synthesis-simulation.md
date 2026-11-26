@@ -54,11 +54,11 @@ Use the same `TEST_CODE` and clock setting as the build. The target checks that 
 
 ## Other project-based targets
 
-`Makefiles/Vivado.mk` also retains project-based `synth/vivado/post-synthesis/timing/test`, `synth/vivado/post-implementation/test`, and `synth/vivado/post-implementation/timing/test` targets, with GUI and Kanata variants. Their paths and options differ from the batch tests above; inspect [Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/Vivado.mk) when using them. [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/Synplify.mk) and [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/develop/Processor/Src/Makefiles/VCS.mk) define the other flows.
+`Makefiles/Vivado.mk` also retains project-based `synth/vivado/post-synthesis/timing/test`, `synth/vivado/post-implementation/test`, and `synth/vivado/post-implementation/timing/test` targets, with GUI and Kanata variants. Their paths and options differ from the batch tests above; inspect [Makefiles/Vivado.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Vivado.mk) when using them. [Makefiles/Synplify.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/Synplify.mk) and [Makefiles/VCS.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/VCS.mk) define the other flows.
 
 ## Adding RTL sources
 
-Update [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Makefiles/CoreSources.inc.mk):
+Update [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Makefiles/CoreSources.inc.mk):
 
 | File type | List |
 | --- | --- |
@@ -68,6 +68,6 @@ Update [CoreSources.inc.mk](https://github.com/rsd-devel/rsd/blob/master/Process
 | Simulation-only testbench modules | `TEST_MODULES` |
 | Header files for IP packaging | `HEADERS` |
 
-The batch tests consume these lists. If you also maintain the separate Synplify board project, update that project as required.
+Vivado uses these lists to build its verification netlist. Synplify reads the source list in `Processor/Project/Synplify/ver2017-03.prj` for both the board and the post-synthesis test. Add new synthesis sources to that project as well, with packages first, then interfaces and modules.
 
 CPU settings come from `Processor/Config/MicroArch.toml`, including `overrides.synthesis`. Netlist testbenches use `RSD_SYNTHESIS_SRC_CFG` to match synthesis. A command-line `RSD_SRC_CFG` override alone does not change synthesis settings.

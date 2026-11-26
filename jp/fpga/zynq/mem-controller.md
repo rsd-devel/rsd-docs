@@ -1,6 +1,6 @@
 # DRAMコントローラ (ZYNQ編)
 
-現在の実装は [Axi4Memory.sv](https://github.com/rsd-devel/rsd/blob/master/Processor/Src/Memory/Axi4Memory.sv) を参照してください．以下の図は要求・応答の概念を示します．実装上のバースト長は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．既定ではメモリエントリ幅と AXI のデータ幅はともに 64 bit で，1 回の要求につき読み書きともに 1 beat を転送します．
+現在の実装は [Axi4Memory.sv](https://github.com/rsd-devel/rsd/blob/v1.2.0/Processor/Src/Memory/Axi4Memory.sv) を参照してください．以下の図は要求・応答の概念を示します．実装上のバースト長は `MEMORY_ENTRY_BIT_NUM / MEMORY_AXI4_DATA_BIT_NUM` で決まります．既定ではメモリエントリ幅と AXI のデータ幅はともに 64 bit で，1 回の要求につき読み書きともに 1 beat を転送します．
 ZYNQ 上のプロセッサで DRAM を読み書きするのに必要な DRAM コントローラについて説明します．  
 ここに書いてある内容は Xilinx Zynq-7000 向けです．  
 このページでは，ZYNQ についての基本的な知識は省略しています．  
@@ -16,7 +16,7 @@ RSD は PL 部に実装します．
 PL 部から PS 部にアクセスする方法は，図の AXI4 High performance port (HP0~3) か AXI4 General-purpose port (GP0~1) を利用します．  
 AXI4 とは，ARM が策定するバス用通信プロトコル([公式ドキュメント](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0534b/index.html)) です．  
 AXI4 General-purpose port は AXI4 プロトコルのほぼすべての機能が実装されているのに対し，AXI4 High performance port は一部の機能を排すことで高性能 (高スループット) なポートになっています．  
-今回は AXI4 High performance port を使用します．
+Zedboard 構成は RSD のメモリマスターを `S_AXI_HP0` に接続します．
 
 AXI4 プロトコルでは，通信はマスターとスレーブの 2 者間で行われます．  
 マスターとスレーブはそれぞれ入出力関係が逆のインターフェースを持ち，マスターとマスター，スレーブとスレーブが通信を行うことはできません．  
@@ -63,8 +63,7 @@ RSD からのライト要求は，memAccessWE と memAccessWriteData， memAcces
 しかし，AXI4 プロトコルの規定により，書き込むデータの転送順番は要求を出した順番にならなければなりません．  
 `memoryWriteDataQueue` は未送信の書き込みデータを保持します．メモリエントリが AXI のデータ幅より大きい構成では，1 エントリを複数 beat に分けて送ります．
 
-書き込みが正常に終了すると，スレーブ側から AXI\_BID と AXI\_BVALID を介して書き込み完了応答が発行されます．
-この完了応答をもってライト要求は完了し，memoryWriteDataQueue からデータが削除されます．
+`M_AXI_BVALID` と `M_AXI_BREADY` がともに 1 になったとき，コントローラは書き込みキューの先頭を取り除き，`M_AXI_BID` を完了した要求の ID として RSD に通知します．
 本来，ここで正常に書き込みが終了しなかった場合にライト要求とデータを再送する処理が必要なのですが，現在はすべての書き込みは必ず正常に完了することを想定してこの処理は未実装です．
 
 TODO\
