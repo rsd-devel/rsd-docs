@@ -2,7 +2,7 @@
 
 These guides cover the simulator, tests, and ZedBoard Linux image for RSD v1.2.0. Hardware and CAD instructions use the tool versions listed on each page.
 
-For other releases, select the rsd-docs tag matching your RSD version. The `master` branches track each other. See [Documentation versions](development/repository-convention.md#documentation-versions).
+The `master` branch of rsd-docs documents RSD `master`. For each RSD release, tag the corresponding rsd-docs commit with the same version. To use a release, select the same tag (for example, `v1.2.0`) in both repositories. See [Documentation versions](development/repository-convention.md#documentation-versions).
 
 When adding a page, place the English version under `en/` and the Japanese version at the same relative path under `jp/`. Start each page with its title and add it to the index for its language.
 
